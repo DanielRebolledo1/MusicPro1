@@ -227,3 +227,48 @@ footer {
     min-height: 75px;
     background: #efefef;
 }
+
+
+
+.header-container-log{
+    background-color: #efefef;
+    height: 75px;
+    margin: 0;
+    padding: 0;
+}
+
+
+.header-home-log {
+    margin-left: 2vw;
+}
+
+
+
+
+
+.footer-container-log {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    min-height: 150px;
+    background-color: #efefef;
+    margin-top: 10vh;
+}
+
+.footer-content-log {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-self: flex-start;
+    flex-wrap: wrap;
+    margin: 3vh 2vw 0 4vw;
+    
+
+}
+
+
+
+.nav-pills{
+    margin: 3vh 30vw 0 30vw;
+    
+}
