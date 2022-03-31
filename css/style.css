@@ -1,8 +1,3 @@
-body {
-    font-family: 'Public Sans', sans-serif;
-    padding-top: 75px;
-}
-
 a {
     text-decoration: none;
     color: #2E2E2E;
@@ -42,6 +37,11 @@ h5 {
     font-size: 16px;
     margin: 1vh 0 1vh 0;
     color: #2E2E2E;
+}
+
+.home {
+    font-family: 'Public Sans', sans-serif;
+    padding-top: 75px;
 }
 
 .home .circles-container,
@@ -290,36 +290,82 @@ footer {
 
 /*Inicio de sesion*/
 
-.header-container-log{
-    background-color: #efefef;
-    height: 75px;
-    margin: 0;
-    padding: 0;
+.login-register {
+    font-family: 'Public Sans', sans-serif;
+    height: 100vh;
 }
 
-.header-home-log {
-    margin-left: 2vw;
+.login-register .form-container a {
+    text-decoration: underline;
+    color: #2E2E2E;
 }
 
-.footer-container-log {
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    min-height: 150px;
-    background-color: #efefef;
-    margin-top: 10vh;
+.login-register .form-container a:hover {
+    color: #8083ff;
 }
 
-.footer-content-log {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-self: flex-start;
-    flex-wrap: wrap;
-    margin: 3vh 2vw 0 4vw;
+.login-register .form-container {
+    height: 100%;
 }
 
-.nav-pills{
-    margin: 3vh 30vw 0 30vw;
+.login-register .form-box {
+    max-width: 800px;
+}
 
+.login-register .nav-pills .nav-link.active {
+    background-color: #8083ff;
+}
+
+.login-register .nav-pills .nav-link {
+    text-transform: unset;
+    font-size: 14px;
+}
+
+.login-register .btn-submit {
+    background-color: rgb(128, 131, 255);
+    border: 1px solid rgb(128, 131, 255);
+    box-shadow: none;
+    transition: .3s;
+    color: #ffffff;
+    text-transform: unset;
+    font-size: 14px;
+}
+
+.login-register .btn-submit:hover{
+    background-color: transparent;
+    color: rgb(128, 131, 255);
+}
+
+.login-register .custom-input:focus ~ .form-notch div {
+    border-color: #8083ff !important;
+}
+
+.login-register .form-check-input[type='checkbox']:checked {
+    background-color: #8083ff;
+    border-color: #8083ff;
+}
+
+.login-register .custom-input.is-invalid:focus ~ .form-notch div {
+    border-color: #f93154 !important;
+}
+
+.login-register .custom-sh-button,
+.login-register .custom-sh-button:active{
+    padding: 0 5px 0 0;
+    box-shadow: none;
+    font-size: 20px;
+}
+
+.login-register #login-pw,
+.login-register #register-pw {
+    padding-right: 50px;
+}
+
+.login-register .invalid-feedback {
+    font-size: 12px;
+}
+
+.login-register .footer-content-container {
+    min-height: 75px;
+    background: #efefef;
 }

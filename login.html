@@ -2,212 +2,215 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login : zuzuPlay</title>
 
-    <link
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
-    <link
-    href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-    rel="stylesheet" />
-    <link
-    href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.css"
-    rel="stylesheet"/>
-    <link rel="stylesheet" href="css/style.css">
-
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.css" rel="stylesheet"/>
+    <link href="css/style.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;1,400;1,600&display=swap"
+          rel="stylesheet">
 </head>
-<body>
-<header> <!--Menu superior-->
-    <div class="d-flex justify-content-between align-items-center header-container-log">
-        <div class="header-home-log">
-            <a href="index.html"><img src="img/logo.png" alt="logo"></a>
-        </div>
-</header>
-<br>
-<br> 
-<br>
-<section >
-<ul class=" nav nav-pills nav-justified mb-3  " id="ex1" role="tablist">
-    <li class="nav-item" role="presentation">
-      <a
-        class="nav-link active"
-        id="tab-login"
-        data-mdb-toggle="pill"
-        href="#pills-login"
-        role="tab"
-        aria-controls="pills-login"
-        aria-selected="true"
-        >iniciar sesion</a
-      >
-    </li>
-    <li class="nav-item" role="presentation">
-      <a
-        class="nav-link"
-        id="tab-register"
-        data-mdb-toggle="pill"
-        href="#pills-register"
-        role="tab"
-        aria-controls="pills-register"
-        aria-selected="false"
-        >Registrarme</a
-      >
-    </li>
-  </ul>
-  <!-- Pills navs -->
-  
-  <!-- Pills content -->
-  <div class="tab-content w-100 p-4 d-flex justify-content-center">
-    <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
-      <form>
-        <div class="text-center mb-3">
-          <p>Inicia sesión con:</p>
-          <button type="button" class="btn btn-primary btn-floating mx-1">
-            <i class="fab fa-facebook-f"></i>
-          </button>
-  
-          <button type="button" class="btn btn-primary btn-floating mx-1">
-            <i class="fab fa-google"></i>
-          </button>
-  
-          <button type="button" class="btn btn-primary btn-floating mx-1">
-            <i class="fab fa-twitter"></i>
-          </button>
-  
-          <button type="button" class="btn btn-primary btn-floating mx-1">
-            <i class="fab fa-github"></i>
-          </button>
-        </div>
-  
-        <p class="text-center">o:</p>
-  
-        <!-- Email input -->
-        <div class="form-outline mb-4">
-          <input type="email" id="loginName" class="form-control" />
-          <label class="form-label" for="loginName">Nombre de usuario</label>
-        </div>
-  
-        <!-- Password input -->
-        <div class="form-outline mb-4">
-          <input type="password" id="loginPassword" class="form-control" />
-          <label class="form-label" for="loginPassword">contraseña</label>
-        </div>
-  
-        <!-- 2 column grid layout -->
-        <div class="row mb-4">
-          <div class="col-md-6 d-flex justify-content-center">
-            <!-- Checkbox -->
-            <div class="form-check mb-3 mb-md-0">
-              <input class="form-check-input" type="checkbox" value="" id="loginCheck" checked />
-              <label class="form-check-label" for="loginCheck"> Mantenerme conectado </label>
-            </div>
-          </div>
-  
-          <div class="col-md-6 d-flex justify-content-center">
-            <!-- Simple link -->
-            <a href="#!">olvidaste la contraseña?</a>
-          </div>
-        </div>
-  
-        <!-- Submit button -->
-        <button type="submit" class="btn btn-primary btn-block mb-4">iniciar sesión</button>
-  
-      </form>
-    </div>
-    <div class="tab-pane fade" id="pills-register" role="tabpanel" aria-labelledby="tab-register">
-      <form>
-        <div class="text-center mb-3">
-          <p>Registrate:</p>
-        <!-- Name input -->
-        <div class="form-outline mb-4">
-          <input type="text" id="registerName" class="form-control" />
-          <label class="form-label" for="registerName">Nombre</label>
-        </div>
-  
-        <!-- Username input -->
-        <div class="form-outline mb-4">
-          <input type="text" id="registerUsername" class="form-control" />
-          <label class="form-label" for="registerUsername">Nombre de usuario</label>
-        </div>
-  
-        <!-- Email input -->
-        <div class="form-outline mb-4">
-          <input type="email" id="registerEmail" class="form-control" />
-          <label class="form-label" for="registerEmail">Correo electronico</label>
-        </div>
-  
-        <!-- Password input -->
-        <div class="form-outline mb-4">
-          <input type="password" id="registerPassword" class="form-control" />
-          <label class="form-label" for="registerPassword">contraseña</label>
-        </div>
-  
-        <!-- Repeat Password input -->
-        <div class="form-outline mb-4">
-          <input type="password" id="registerRepeatPassword" class="form-control" />
-          <label class="form-label" for="registerRepeatPassword">Repita la contraseña</label>
-        </div>
-  
-        <!-- Checkbox -->
-        <div class="form-check d-flex justify-content-center mb-4">
-          <input
-            class="form-check-input me-2"
-            type="checkbox"
-            value=""
-            id="registerCheck"
-            checked
-            aria-describedby="registerCheckHelpText"
-          />
-          <label class="form-check-label" for="registerCheck">
-            He leído y acepto los términos
-          </label>
-        </div>
-  
-        <!-- Submit button -->
-        <button type="submit" class="btn btn-primary btn-block mb-3">Registrar</button>
-      </form>
-    </div>
-  </div>
-</section>
-<section>
-    <footer> <!--Pie de página-->
-        <div class="footer-container-log">
-            <div class="footer-content-log">
-                <a id="footer-color" href="#"><p>Servicio al cliente</p></a>
-                <a id="footer-color" href="#"><p>Contacto</p></a>
-                <a id="footer-color" href="#"><p>Términos y condiciones</p></a>
-            </div>
-                <div class="footer-images-container">
-                <img src="img/logo.png" alt="paypal" height="120" width="130">
+<body class="login-register">
+<div class="d-flex flex-column h-100 page-wrapper">
+    <div class="container-fluid form-container">
+        <div class="row h-100 flex-column justify-content-center align-items-center">
+            <div class="col-12 p-4 form-box">
+                <div class="row justify-content-center mb-3">
+                    <div class="col-auto">
+                        <img src="img/logo.png" alt="img-fluid">
                     </div>
-            <div class="footer-content-log">
-                <a id="footer-color" href="#"><p>Preguntas frecuentes</p></a>
-                <a id="footer-color" href="#"><p>Despacho</p></a>
+                </div>
+                <ul class="nav nav-pills mb-3 gx-0 justify-content-center" id="pills-tab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="pills-login-tab" data-mdb-toggle="pill"
+                                data-mdb-target="#pills-login"
+                                type="button" role="tab" aria-controls="pills-home" aria-selected="true">
+                            Iniciar sesión
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="pills-register-tab" data-mdb-toggle="pill"
+                                data-mdb-target="#pills-register"
+                                type="button" role="tab" aria-controls="pills-profile" aria-selected="false">
+                            Registrarse
+                        </button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="pills-tabContent">
+                    <!--Login Tab Content-->
+                    <div class="tab-pane fade show active" id="pills-login" role="tabpanel"
+                         aria-labelledby="pills-login-tab">
+                        <form id="login-form" class="row g-3" novalidate>
+                            <div class="col-12 gx-0">
+                                <!-- Email input -->
+                                <div class="form-outline">
+                                    <input type="email" id="login-email" class="form-control form-control-lg custom-input"/>
+                                    <label class="form-label" for="login-email">Email</label>
+                                    <div class="invalid-feedback">Error</div>
+                                </div>
+                            </div>
+                            <div class="col-12 gx-0">
+                                <!-- Password input -->
+                                <div class="form-outline">
+                                    <input type="password" id="login-pw" class="form-control form-control-lg custom-input"/>
+                                    <label class="form-label" for="login-pw">Contraseña</label>
+                                    <button id="login-sh-btn" class="btn trailing pe-auto custom-sh-button" type="button"><i class="fa-regular fa-eye"></i></button>
+                                    <div class="invalid-feedback">Error</div>
+                                </div>
+                            </div>
+                            <div class="col-12 gx-0">
+                                <!-- 2 column grid layout for inline styling -->
+                                <div class="row">
+                                    <div class="col d-flex justify-content-center">
+                                        <!-- Checkbox -->
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value=""
+                                                   id="login-cbx"/>
+                                            <label class="form-check-label" for="login-cbx">Recordarme</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+                                        <!-- Simple link -->
+                                        <a href="#!">Olvidé mi contraseña</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 gx-0">
+                                <!-- Submit button -->
+                                <button type="submit" class="btn btn-primary btn-block btn-submit">Iniciar sesión
+                                </button>
+                            </div>
+                            <div class="col-12 gx-0">
+                                <!-- Register buttons -->
+                                <div class="text-center">
+                                    <p>¿Aún no tienes cuenta? <a href="#!">Regístrate</a></p>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!--Register Tab Content-->
+                    <div class="tab-pane fade" id="pills-register" role="tabpanel" aria-labelledby="pills-register-tab">
+                        <form id="register-form" class="row g-3" novalidate>
+                            <div class="col-12 gx-0">
+                                <!-- 2 column grid layout with text inputs for the first and last names -->
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-outline">
+                                            <input type="text" id="register-name"
+                                                   class="form-control form-control-lg custom-input"/>
+                                            <label class="form-label" for="register-name">Nombre</label>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-outline">
+                                            <input type="text" id="register-lastname"
+                                                   class="form-control form-control-lg custom-input"/>
+                                            <label class="form-label" for="register-lastname">Apellidos</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 gx-0">
+                                <!-- Email input -->
+                                <div class="form-outline">
+                                    <input type="email" id="register-email"
+                                           class="form-control form-control-lg custom-input"/>
+                                    <label class="form-label" for="register-email">Email</label>
+                                </div>
+                            </div>
+                            <div class="col-12 gx-0">
+                                <!-- Password input -->
+                                <div class="form-outline">
+                                    <input type="password" id="register-pw"
+                                           class="form-control form-control-lg custom-input"/>
+                                    <label class="form-label" for="register-pw">Contraseña</label>
+                                    <button id="register-sh-btn" class="btn trailing pe-auto custom-sh-button" type="button"><i class="fa-regular fa-eye"></i></button>
+                                </div>
+                            </div>
+                            <div class="col-12 gx-0">
+                                <!-- Checkbox -->
+                                <div class="form-check d-flex justify-content-center">
+                                    <input class="form-check-input me-2" type="checkbox" value="" id="register-cbx"
+                                           checked/>
+                                    <label class="form-check-label" for="register-cbx">
+                                        Suscribirse al boletín
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-12 gx-0">
+                                <!-- Submit button -->
+                                <button type="submit" class="btn btn-primary btn-block btn-submit">Registrarse</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-
         </div>
-    </footer>
-</section>
+    </div>
+    <div class="container-fluid pt-auto footer-container">
+        <div class="row justify-content-center justify-content-sm-start align-items-center ps-3 pe-3 pt-3 pb-3 gap-3 gap-sm-0 footer-content-container">
+            <div class="col-auto col-sm-6">
+                <div class="row gap-2 justify-content-center justify-content-sm-start align-items-center">
+                    <div class="col-12 col-md-auto text-center text-sm-start">
+                        <h4>Síguenos en</h4>
+                    </div>
+                    <div class="col-auto">
+                        <a class="btn btn-primary btn-lg btn-floating" style="background-color: #8083ff;" href="#"
+                           role="button">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                    <div class="col-auto">
+                        <a class="btn btn-primary btn-lg btn-floating" style="background-color: #8083ff;" href="#"
+                           role="button">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                    </div>
+                    <div class="col-auto">
+                        <a class="btn btn-primary btn-lg btn-floating" style="background-color: #8083ff;" href="#"
+                           role="button">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-auto col-sm-6">
+                <div class="row gap-3 justify-content-center justify-content-sm-end">
+                    <div class="col-auto">
+                        <a href="#"><h4>Términos y condiciones</h4></a>
+                    </div>
+                    <div class="col-auto">
+                        <a href="#"><h4>Preguntas frecuentes</h4></a>
+                    </div>
+                    <div class="col-auto">
+                        <a href="#"><h4>Sobre nosotros</h4></a>
+                    </div>
+                    <div class="col-auto">
+                        <a href="#"><h4>Contacto</h4></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+<script crossorigin="anonymous"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+        src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script crossorigin="anonymous"
         integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+        src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+<script crossorigin="anonymous"
         integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
-        crossorigin="anonymous"></script>
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
 
-        <script src="script.js"></script>
-        <!-- MDB -->
-<script
-type="text/javascript"
-src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.js"
-></script>
+<script crossorigin="anonymous" src="https://kit.fontawesome.com/777d474a1b.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.js" type="text/javascript"></script>
+<script src="js/script.js"></script>
 </body>
 </html>
