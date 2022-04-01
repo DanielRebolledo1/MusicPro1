@@ -202,19 +202,19 @@ function checkRegisterInputsOnSubmit() {
     }
 
     if(passwordValue === '') {
-        setErrorFor(registerPassword, 'Por favor ingrese su contraseña');
+        setErrorFor(registerPassword, 'Por favor ingrese una contraseña');
     } else {
         setSuccessFor(registerPassword);
     }
 
     if(nameValue === '') {
-        setErrorFor(registerName, 'Por favor ingrese su Nombre');
+        setErrorFor(registerName, 'Por favor ingrese su nombre');
     } else {
         setSuccessFor(registerName);
     }
 
     if(lastNameValue === '') {
-        setErrorFor(registerLastName, 'Por favor ingrese su Apellido');
+        setErrorFor(registerLastName, 'Por favor ingrese su apellido');
     } else {
         setSuccessFor(registerLastName);
     }

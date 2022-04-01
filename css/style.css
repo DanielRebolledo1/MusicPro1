@@ -201,7 +201,8 @@ footer {
     background-color: #8083ff;
 }
 
-.home .item-card-v-all a {
+.home .item-card-v-all a,
+.home .item-card-v-all h4{
     color: #ffffff;
     text-decoration-color: #ffffff;
 }
