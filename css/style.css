@@ -39,6 +39,10 @@ h5 {
     color: #2E2E2E;
 }
 
+.invalid-feedback {
+    font-size: 12px;
+}
+
 .home {
     font-family: 'Public Sans', sans-serif;
     padding-top: 75px;
@@ -233,14 +237,6 @@ footer {
     color: rgb(128, 131, 255);
 }
 
-.home .email-input:focus ~ .form-notch div {
-    border-color: #8083ff !important;
-}
-
-.home .email-input:focus ~ .form-label {
-    color: #8083ff !important;
-}
-
 .home .footer-content-container {
     min-height: 75px;
     background: #efefef;
@@ -288,10 +284,13 @@ footer {
     }
 }
 
-/*Inicio de sesion*/
+/*Inicio de sesion y registro*/
 
 .login-register {
     font-family: 'Public Sans', sans-serif;
+}
+
+.login-register .page-wrapper {
     height: 100vh;
 }
 
@@ -302,10 +301,6 @@ footer {
 
 .login-register .form-container a:hover {
     color: #8083ff;
-}
-
-.login-register .form-container {
-    height: 100%;
 }
 
 .login-register .form-box {
@@ -336,17 +331,29 @@ footer {
     color: rgb(128, 131, 255);
 }
 
+.home .custom-input:focus ~ .form-notch div,
 .login-register .custom-input:focus ~ .form-notch div {
     border-color: #8083ff !important;
+}
+
+.home .custom-input:focus ~ .form-label,
+.login-register .custom-input:focus ~ .form-label {
+    color: #8083ff !important;
+}
+
+.home .custom-input.is-invalid:focus ~ .form-notch div,
+.login-register .custom-input.is-invalid:focus ~ .form-notch div {
+    border-color: #f93154 !important;
+}
+
+.home .custom-input.is-invalid:focus ~ .form-label,
+.login-register .custom-input.is-invalid:focus ~ .form-label {
+    color: #f93154 !important;
 }
 
 .login-register .form-check-input[type='checkbox']:checked {
     background-color: #8083ff;
     border-color: #8083ff;
-}
-
-.login-register .custom-input.is-invalid:focus ~ .form-notch div {
-    border-color: #f93154 !important;
 }
 
 .login-register .custom-sh-button,
@@ -356,13 +363,22 @@ footer {
     font-size: 20px;
 }
 
+.login-register .custom-button,
+.login-register .custom-button:active{
+    box-shadow: none;
+    padding: 0;
+    text-transform: none;
+    text-decoration: underline;
+    font-size: 16px;
+}
+
+.login-register .custom-button:hover {
+    color: #8083ff;
+}
+
 .login-register #login-pw,
 .login-register #register-pw {
     padding-right: 50px;
-}
-
-.login-register .invalid-feedback {
-    font-size: 12px;
 }
 
 .login-register .footer-content-container {
