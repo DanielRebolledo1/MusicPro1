@@ -3,6 +3,11 @@
 const loginForm = document.getElementById('login-form')
 const loginEmail = document.getElementById('login-email')
 const loginPassword = document.getElementById('login-pw')
+
+const registerForm = document.getElementById('register-form')
+const registerName = document.getElementById('register-name')
+const registerLastName = document.getElementById('register-lastname')
+const registerEmail = document.getElementById('register-email')
 const registerPassword = document.getElementById('register-pw')
 
 loginForm.addEventListener('submit', (e) => {
@@ -127,3 +132,80 @@ function togglePasswordView(password, button){
         button.innerHTML = '<i class="fa-regular fa-eye"></i>';
     }
 }
+
+
+//registrar
+
+
+registerForm.addEventListener('submit', (e) => {
+    if(!checkRegisterInputsOnSubmit()){
+        e.preventDefault();
+    }
+});
+
+registerEmail.addEventListener('focusout', () => {
+    checkEmailOnFocusOut(registerEmail);
+});
+
+registerEmail.addEventListener('input', () => {
+    resetInput(registerEmail);
+});
+
+
+registerName.addEventListener('input', () => {
+    resetInput(registerName);
+});
+
+
+registerLastName.addEventListener('input', () => {
+    resetInput(registerLastName);
+});
+
+
+registerPassword.addEventListener('input', () => {
+    resetInput(registerPassword);
+});
+
+
+function checkRegisterInputsOnSubmit() {
+    //get values from the inputs
+    const emailValue = registerEmail.value.trim();
+    const passwordValue = registerPassword.value.trim();
+    const registerNameValue = registerName.value.trim();
+    const registerLastNameValue = registerLastName.value.trim();
+    
+    if(emailValue === '') {
+        //add error class
+        setErrorFor(registerEmail, 'Por favor ingrese un email');
+    } else if(!isEmail(emailValue)) {
+            setErrorFor(registerEmail, 'Por favor ingrese un email válido');
+    } else {
+        //add success class
+        setSuccessFor(registerEmail);
+    }
+
+    if(passwordValue === '') {
+        setErrorFor(registerPassword, 'Por favor ingrese su contraseña');
+    } else {
+        setSuccessFor(registerPassword);
+    }
+
+    if(registerNameValue === '') {
+        setErrorFor(registerName, 'Por favor ingrese su Nombre');
+    } else {
+        setSuccessFor(registerName);
+    }
+
+    if(registerLastNameValue === '') {
+        setErrorFor(registerLastName, 'Por favor ingrese su Apellido');
+    } else {
+        setSuccessFor(registerLastName);
+    }
+
+    return checkSuccess(registerEmail) && checkSuccess(registerPassword) && checkSuccess(registerName) && checkSuccess(registerLastName) ;
+}
+
+
+
+
+
