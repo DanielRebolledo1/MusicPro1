@@ -4,9 +4,17 @@ const loginForm = document.getElementById('login-form')
 const loginEmail = document.getElementById('login-email')
 const loginPassword = document.getElementById('login-pw')
 const registerPassword = document.getElementById('register-pw')
+const forgotPasswordForm = document.getElementById('forgot-pw-form')
+const forgotPasswordEmail = document.getElementById('forgot-pw-email')
 
 loginForm.addEventListener('submit', (e) => {
     if(!checkLoginInputsOnSubmit()){
+        e.preventDefault();
+    }
+});
+
+forgotPasswordForm.addEventListener('submit', (e) => {
+    if(!checkForgotPasswordInputsOnSubmit()){
         e.preventDefault();
     }
 });
@@ -23,11 +31,19 @@ loginPassword.addEventListener('input', () => {
     resetInput(loginPassword);
 });
 
+forgotPasswordEmail.addEventListener('focusout', () => {
+    checkEmailOnFocusOut(forgotPasswordEmail);
+});
+
+forgotPasswordEmail.addEventListener('input', () => {
+    resetInput(forgotPasswordEmail);
+});
+
 function checkLoginInputsOnSubmit() {
     //get values from the inputs
     const emailValue = loginEmail.value.trim();
     const passwordValue = loginPassword.value.trim();
-    
+
     if(emailValue === '') {
         //add error class
         setErrorFor(loginEmail, 'Por favor ingrese un email');
@@ -45,6 +61,23 @@ function checkLoginInputsOnSubmit() {
     }
 
     return checkSuccess(loginEmail) && checkSuccess(loginPassword);
+}
+
+function checkForgotPasswordInputsOnSubmit() {
+    //get values from the inputs
+    const emailValue = forgotPasswordEmail.value.trim();
+
+    if(emailValue === '') {
+        //add error class
+        setErrorFor(forgotPasswordEmail, 'Por favor ingrese un email');
+    } else if(!isEmail(emailValue)) {
+        setErrorFor(forgotPasswordEmail, 'Por favor ingrese un email válido');
+    } else {
+        //add success class
+        setSuccessFor(forgotPasswordEmail);
+    }
+
+    return checkSuccess(forgotPasswordEmail);
 }
 
 function checkEmailOnFocusOut(email) {
@@ -67,33 +100,22 @@ function setErrorFor(input, message) {
     //add error class
     formOutline.className = 'form-outline error';
 
-    if (input.classList.contains('active')){
-        input.className = 'form-control form-control-lg custom-input is-invalid active';
-    } else {
-        input.className = 'form-control form-control-lg custom-input is-invalid';
-    }
+    input.classList.remove('is-invalid');
+    input.classList.add('is-invalid');
 }
 
 function setSuccessFor(input) {
     const formOutline = input.parentElement;
     formOutline.className = 'form-outline success';
 
-    if (input.classList.contains('active')){
-        input.className = 'form-control form-control-lg custom-input active';
-    } else {
-        input.className = 'form-control form-control-lg custom-input';
-    }
+    input.classList.remove('is-invalid');
 }
 
 function resetInput(input) {
     const formOutline = input.parentElement;
     formOutline.className = 'form-outline';
 
-    if (input.classList.contains('active')){
-        input.className = 'form-control form-control-lg custom-input active';
-    } else {
-        input.className = 'form-control form-control-lg custom-input';
-    }
+    input.classList.remove('is-invalid');
 }
 
 function isEmail(email) {
@@ -127,3 +149,57 @@ function togglePasswordView(password, button){
         button.innerHTML = '<i class="fa-regular fa-eye"></i>';
     }
 }
+
+//Funciones JQuery
+
+jQuery(document).on('click', '#forgot-pw-btn', function() {
+    jQuery('#login-register-tabs, #forgot-pw-tab').toggle();
+    resetInput(loginEmail);
+    resetInput(loginPassword);
+});
+
+jQuery(document).on('click', '#forgot-pw-back-btn', function() {
+    jQuery('#login-register-tabs, #forgot-pw-tab').toggle();
+    resetInput(forgotPasswordEmail);
+});
+
+jQuery(document).on('click', '#register-shortcut-btn', function() {
+    const registerTab = document.getElementById('pills-register-tab');
+    registerTab.click();
+});
+
+/*
+const subsForm = document.getElementById('subs-form')
+const subsEmail = document.getElementById('subs-email')
+
+subsForm.addEventListener('submit', (e) => {
+    if(!checkSubsInputsOnSubmit()){
+        e.preventDefault();
+    }
+});
+
+subsEmail.addEventListener('focusout', () => {
+    checkEmailOnFocusOut(subsEmail);
+});
+
+subsEmail.addEventListener('input', () => {
+    resetInput(subsEmail);
+});
+
+function checkSubsInputsOnSubmit() {
+    //get values from the inputs
+    const emailValue = subsEmail.value.trim();
+
+    if(emailValue === '') {
+        //add error class
+        setErrorFor(subsEmail, 'Por favor ingrese un email');
+    } else if(!isEmail(emailValue)) {
+        setErrorFor(subsEmail, 'Por favor ingrese un email válido');
+    } else {
+        //add success class
+        setSuccessFor(subsEmail);
+    }
+
+    return checkSuccess(subsEmail);
+}
+*/
