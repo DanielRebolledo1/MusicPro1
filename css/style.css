@@ -9,7 +9,7 @@ a:hover {
 }
 
 p {
-    margin: 1vh 0 1vh 0;
+    margin: 0;
 }
 
 h2 {
@@ -41,6 +41,21 @@ h5 {
 
 .invalid-feedback {
     font-size: 12px;
+}
+
+.custom-button,
+.custom-button:active {
+    box-shadow: none !important;
+    padding: 0;
+    text-transform: none;
+    text-decoration: underline;
+    font-size: 16px;
+    color: #2E2E2E;
+}
+
+.custom-button:hover {
+    box-shadow: none;
+    color: #8083ff;
 }
 
 .home {
@@ -100,6 +115,85 @@ footer {
     color: #2E2E2E;
 }
 
+.home #sidebar-container {
+    position: fixed;
+    z-index: 1100;
+    top: 0;
+    bottom:0;
+    display: none;
+}
+
+.home #sidebar-bg {
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.5);
+    left: 0;
+}
+
+.home .sidebar-header {
+    color: #2E2E2E;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 2vh 1vw 2vh 1vw;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.15);
+}
+
+.home #sidebar {
+    position: absolute;
+    max-width: 375px;
+    left: 0;
+    background: #ffffff;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.35);
+    padding-bottom: 1rem;
+    font-size: 18px;
+    display: none;
+    overflow-y: auto;
+    scrollbar-width: none; /* Firefox */
+}
+
+.home #sidebar::-webkit-scrollbar {
+    width: 0;
+}
+
+.home #sidebar ul {
+    display: none;
+    font-size: 16px;
+}
+
+.home #sidebar ul li a {
+    padding: 0 4rem 0 4rem;
+}
+
+.home .nav-link {
+    color: #2E2E2E;
+}
+
+.home .sidebar-subtitle {
+    font-weight: bold;
+    font-size: 20px;
+    color: #2E2E2E;
+}
+
+.home .show-icon.hide {
+    transform: rotate(-180deg);
+    transition: .4s;
+}
+
+.home .show-icon.show {
+    transform: rotate(0);
+    transition: .4s;
+}
+
+.home .sidebar-content p,
+.home .sidebar-content a {
+    padding: 0 2rem 0 2rem;
+    line-height: 3rem;
+}
+
+.home .sidebar-content a:hover {
+    background-color: #f3f3f3;
+    text-decoration: none;
+}
+
 .home .circle {
     font-size: 15px;
     text-align: center;
@@ -107,7 +201,6 @@ footer {
 
 .home .circle:hover {
     transform: translateY(-20px);
-    box-shadow:  #00000033;
 }
 
 .home .circle-img {
@@ -362,19 +455,6 @@ footer {
     padding: 0 5px 0 0;
     box-shadow: none;
     font-size: 20px;
-}
-
-.login-register .custom-button,
-.login-register .custom-button:active{
-    box-shadow: none;
-    padding: 0;
-    text-transform: none;
-    text-decoration: underline;
-    font-size: 16px;
-}
-
-.login-register .custom-button:hover {
-    color: #8083ff;
 }
 
 .login-register #login-pw,

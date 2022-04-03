@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ZuzuPlay - Inicio</title>
+    <title>Inicio : zuzuPlay</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
@@ -24,7 +24,9 @@
                 <a href="index.html"><img src="img/logo.png" class="img-fluid header-logo" alt="logo"></a>
             </div>
             <div class="col-auto col-md-auto order-1 order-md-2">
-                <a href="#"><i class="fa-solid fa-bars header-icons"></i></a>
+                <button id="sidebar-open-btn" type="button" class="btn custom-button">
+                    <i class="fa-solid fa-bars header-icons"></i>
+                </button>
             </div>
             <div class="col-12 col-md-5 order-3 order-md-3">
                 <div class="row mb-2 mb-md-0 gx-0 justify-content-center search-bar-container">
@@ -49,6 +51,89 @@
         </div>
     </div>
 </header>
+<!--Menu lateral-->
+<section>
+    <div id="sidebar-container" class="container-fluid">
+        <div id="sidebar-bg" class="w-100 h-100"></div>
+        <div id="sidebar" class="w-100 h-100">
+            <div class="row justify-content-between align-items-center m-0 mb-2 sidebar-header">
+                <div class="col-auto">
+                    <p>Tienda</p>
+                </div>
+                <div class="col-auto">
+                    <button id="sidebar-close-btn" type="button" class="btn custom-button"><i class="fa-solid fa-x"></i></button>
+                </div>
+            </div>
+            <nav class="nav flex-column sidebar-content">
+                <p class="sidebar-subtitle">Categorías</p>
+                <a id="category-1-btn" href="#" class="row gx-0">
+                    <div class="col-auto">Videojuegos</div>
+                    <div class="col-auto ms-auto">
+                        <i id="show-icon-1" class="show-icon fa-solid fa-angle-down"></i>
+                    </div>
+                </a>
+                <ul id="category-1-sub" class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Playstation 5</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Xbox Series X/S</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Nintendo Switch</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Ver todo</a>
+                    </li>
+                </ul>
+                <a id="category-2-btn" href="#" class="row gx-0">
+                    <div class="col-auto">Consolas</div>
+                    <div class="col-auto ms-auto">
+                        <i id="show-icon-2" class="show-icon fa-solid fa-angle-down"></i>
+                    </div>
+                </a>
+                <ul id="category-2-sub" class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Playstation 5</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Xbox Series X/S</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Nintendo Switch</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Ver todo</a>
+                    </li>
+                </ul>
+                <a id="category-3-btn" href="#" class="row gx-0">
+                    <div class="col-auto">Accesorios</div>
+                    <div class="col-auto ms-auto">
+                        <i id="show-icon-3" class="show-icon fa-solid fa-angle-down"></i>
+                    </div>
+                </a>
+                <ul id="category-3-sub" class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Controles</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Audífonos Gamer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Ver todo</a>
+                    </li>
+                </ul>
+                <p class="sidebar-subtitle">Más</p>
+                <a href="#">Próximos lanzamientos</a>
+                <a href="#">Ofertas</a>
+                <hr>
+                <p class="sidebar-subtitle">Soporte</p>
+                <a href="#">Contacto</a>
+                <a href="#">Preguntas frecuentes</a>
+            </nav>
+        </div>
+    </div>
+</section>
 <!--Categorias en circulos-->
 <section>
     <div class="container-fluid circles-container">
@@ -135,7 +220,7 @@
                 <div class="popular-card-img">
                     <img src="img/kirby%20card.png" class="img-fluid" alt="ps5">
                 </div>
-                <h3>Kirby and the Forgotten Land</h3></a>
+                <h3>Kirby and the Forgotten Land</h3>
             </div>
             <div class="col-6 col-md-auto card popular-card">
                 <a href="#">
@@ -249,7 +334,8 @@
                 <div class="swiper-slide">
                     <div class="card item-card">
                         <a href="#" class="col-5 col-md-auto align-self-center">
-                            <img src="img/triangle%20box.png" class="card-img-top img-fluid" alt="triangle strategy switch">
+                            <img src="img/triangle%20box.png" class="card-img-top img-fluid"
+                                 alt="triangle strategy switch">
                         </a>
                         <div class="col-7 col-md-auto card-body">
                             <div class="item-title-wrapper text-center">
@@ -364,7 +450,8 @@
                 <div class="swiper-slide">
                     <div class="card item-card">
                         <a href="#" class="col-5 col-md-auto align-self-center">
-                            <img src="img/triangle%20box.png" class="card-img-top img-fluid" alt="triangle strategy switch">
+                            <img src="img/triangle%20box.png" class="card-img-top img-fluid"
+                                 alt="triangle strategy switch">
                         </a>
                         <div class="col-7 col-md-auto card-body">
                             <div class="item-title-wrapper text-center">
@@ -767,7 +854,7 @@
                         </div>
                     </div>
                     <div class="col-auto gx-0">
-                        <button type="button" class="btn btn-primary btn-floating" style="background-color: #8083ff;">
+                        <button type="submit" class="btn btn-primary btn-floating" style="background-color: #8083ff;">
                             <i class="fas fa-paper-plane"></i>
                         </button>
                     </div>
@@ -780,162 +867,16 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
         crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
         integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
         crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
         integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
         crossorigin="anonymous"></script>
-
 <script src="https://kit.fontawesome.com/777d474a1b.js" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.js"></script>
-
 <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
-<script>
-    const swiper1 = new Swiper('.swiper1', {
-        // Optional parameters
-        direction: 'horizontal',
-        rewind: true,
-        speed: 1000,
-
-        // Autoplay
-        autoplay: {
-            delay: 5000,
-            disableOnInteraction: false,
-        },
-
-        // If we need pagination
-        pagination: {
-            el: '.swiper-pagination1',
-            clickable: true,
-        },
-
-        // Navigation arrows
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-    });
-    const swiper2 = new Swiper('.swiper2', {
-        grabCursor: true,
-        clickable: false,
-        slidesPerView: 1,
-        speed: 500,
-        autoHeight: true,
-        // Optional parameters
-        direction: 'horizontal',
-
-        // Navigation arrows
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-
-        scrollbar: {
-            el: ".swiper-scrollbar",
-            hide: true,
-        },
-
-        breakpoints: {
-            // when window width is >= 1400px
-            1400: {
-                slidesPerView: 6,
-                slidesPerGroup: 6,
-            },
-            1200: {
-                slidesPerView: 5,
-                slidesPerGroup: 5,
-            },
-            900: {
-                slidesPerView: 4,
-                slidesPerGroup: 4,
-            },
-            768: {
-                slidesPerView: 3,
-                slidesPerGroup: 3,
-            },
-            620: {
-                slidesPerView: 2.25,
-                slidesPerGroup: 2,
-            },
-            560: {
-                slidesPerView: 2,
-                slidesPerGroup: 2,
-            },
-            500: {
-                slidesPerView: 1.75,
-                slidesPerGroup: 1,
-            },
-            430: {
-                slidesPerView: 1.5,
-                slidesPerGroup: 1,
-            },
-            360: {
-                slidesPerView: 1.25,
-                slidesPerGroup: 1,
-            },
-        }
-    });
-    const swiper3 = new Swiper('.swiper3', {
-        grabCursor: true,
-        clickable: false,
-        slidesPerView: 1,
-        speed: 500,
-        autoHeight: true,
-        // Optional parameters
-        direction: 'horizontal',
-
-        // Navigation arrows
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-
-        scrollbar: {
-            el: ".swiper-scrollbar",
-            hide: true,
-        },
-
-        breakpoints: {
-            // when window width is >= 1400px
-            1400: {
-                slidesPerView: 6,
-                slidesPerGroup: 6,
-            },
-            1200: {
-                slidesPerView: 5,
-                slidesPerGroup: 5,
-            },
-            900: {
-                slidesPerView: 4,
-                slidesPerGroup: 4,
-            },
-            768: {
-                slidesPerView: 3,
-                slidesPerGroup: 3,
-            },
-            620: {
-                slidesPerView: 2.25,
-                slidesPerGroup: 2,
-            },
-            560: {
-                slidesPerView: 2,
-                slidesPerGroup: 2,
-            },
-            500: {
-                slidesPerView: 1.75,
-                slidesPerGroup: 1,
-            },
-            430: {
-                slidesPerView: 1.5,
-                slidesPerGroup: 1,
-            },
-            360: {
-                slidesPerView: 1.25,
-                slidesPerGroup: 1,
-            },
-        }
-    });
-</script>
+<script src="js/script.js"></script>
 </body>
 </html>
