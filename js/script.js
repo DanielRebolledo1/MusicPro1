@@ -482,3 +482,67 @@ function toggleCategoryShow(category, icon){
         icon.classList.add('hide');
     }
 }
+
+if (body.classList.contains('home-contacto')){
+    console.log('home-contacto') 
+    const contactoForm = document.getElementById('contacto-form')
+    const contactoSelect = document.getSelection('contacto-select')
+    const contactoEmail = document.getElementById('contacto-email')
+    const contactoMensaje = document.getElementById('contacto-mensaje')
+
+
+    contactoForm.addEventListener('submit', (e) => {
+        if(!checkContactoInputsOnSubmit(contactoEmail, contactoSelect,contactoMensaje)){
+            e.preventDefault();
+        }
+    });
+
+    contactoEmail.addEventListener('focusout', () => {
+        checkEmailOnFocusOut(contactoEmail);
+    });
+
+    contactoEmail.addEventListener('input', () => {
+        resetInput(contactoEmail);
+    });
+
+    contactoSelect.addEventListener('input', () => {
+        resetInput(contactoSelect);
+    });
+
+    contactoMensaje.addEventListener('input', () => {
+        resetInput(contactoMensaje);
+    });
+
+}
+
+function checkContactoInputsOnSubmit(contactoEmail, contactoSelect, contactoMensaje) {
+    //get values from the inputs
+    const emailValue = contactoEmail.value.trim();
+    const contactoSelectValue = contactoSelect.value.trim();
+    const contactoMensajeValue = contactoMensaje.value.trim();
+
+    if(emailValue === '') {
+        //add error class
+        setErrorFor(contactoEmail, 'Por favor ingrese un email');
+    } else if(!isEmail(emailValue)) {
+        setErrorFor(contactoEmail, 'Por favor ingrese un email válido');
+    } else {
+        //add success class
+        setSuccessFor(contactoEmail );
+    }
+
+    if(contactoSelectValue === '') {
+        setErrorFor(contactoSelect, 'Por favor seleccione algo');
+    } else {
+        setSuccessFor(contactoSelect);
+    }
+
+    if(contactoMensajeValue === '') {
+        setErrorFor(contactoMensaje, 'Por favor ingrese sun mensaje');
+    } else {
+        setSuccessFor(contactoMensaje);
+    }
+
+
+    return checkSuccess(contactoEmail) && checkSuccess(contactoSelect) && checkSuccess(contactoMensaje);
+}

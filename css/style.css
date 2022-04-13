@@ -380,6 +380,43 @@ footer {
 
 /*Inicio de sesion y registro*/
 
+.login-register .header-logo {
+    max-height: 50px;
+}
+
+.login-register .header-container {
+    background-color: #efefef;
+    min-height: 75px;
+}
+
+.login-register .search-bar-container {
+    width: 100%;
+    height: 40px;
+    background: #BABABA;
+    border-radius: 30px;
+    padding: 5px 20px 5px 5px;
+}
+
+.login-register .search-bar-btn {
+    color: #2E2E2E;
+    font-size: 20px;
+    margin: 0 0.75rem 0 1rem;
+}
+
+.login-register .search-bar-input {
+    padding-left: 0;
+    border: none;
+    outline: none;
+    background: none;
+    font-size: 18px;
+    width: 100%;
+}
+
+.login-register .header-icons{
+    font-size: 40px;
+    color: #2E2E2E;
+}
+
 .login-register {
     font-family: 'Public Sans', sans-serif;
 }
@@ -466,3 +503,307 @@ footer {
     min-height: 75px;
     background: #efefef;
 }
+
+
+
+
+/*PREGUNTAS FRECUENTES*/
+
+.home-Terminos .header-logo {
+    max-height: 50px;
+}
+
+.home-Terminos .header-container {
+    background-color: #efefef;
+    min-height: 75px;
+}
+
+.home-Terminos .search-bar-container {
+    width: 100%;
+    height: 40px;
+    background: #BABABA;
+    border-radius: 30px;
+    padding: 5px 20px 5px 5px;
+}
+
+.home-Terminos .search-bar-btn {
+    color: #2E2E2E;
+    font-size: 20px;
+    margin: 0 0.75rem 0 1rem;
+}
+
+.home-Terminos .search-bar-input {
+    padding-left: 0;
+    border: none;
+    outline: none;
+    background: none;
+    font-size: 18px;
+    width: 100%;
+}
+
+.home-Terminos .header-icons{
+    font-size: 40px;
+    color: #2E2E2E;
+}
+
+.home-Terminos h4{
+    margin: 1vh;
+    padding: 1vh;
+    margin-left: 10vh;
+    margin-right: 10vh;
+
+}
+
+.home-Terminos h1{
+    margin: 2vh;
+    padding: 1vh;
+    margin-left: 10vh;
+    margin-right: 10vh;
+
+}
+
+.home-Terminos h2{
+    margin: 1vh;
+    padding: 1vh;
+    margin-left: 10vh;
+    margin-right: 10vh;
+
+}
+
+.home-Terminos p{
+    margin: 1vh;
+    padding: 1vh;
+    margin-left: 10vh;
+    margin-right: 10vh;
+    
+}
+
+.home-Terminos ul{
+    margin: 1vh;
+    padding: 1vh;
+    margin-left: 10vh;
+    margin-right: 10vh;
+    
+}
+.home-container {
+    margin: 25vh;
+    
+    
+}
+
+.home-Terminos .footer-content-container {
+    margin-top: 50px;
+    min-height: 75px;
+    background: #efefef;
+}
+
+
+
+
+/*PREGUNTAS FRECUENTES*/
+
+
+.home-contacto .header-logo {
+    max-height: 50px;
+}
+
+.home-contacto .header-container {
+    background-color: #efefef;
+    min-height: 75px;
+}
+
+.home-contacto .search-bar-container {
+    width: 100%;
+    height: 40px;
+    background: #BABABA;
+    border-radius: 30px;
+    padding: 5px 20px 5px 5px;
+}
+
+.home-contacto .search-bar-btn {
+    color: #2E2E2E;
+    font-size: 20px;
+    margin: 0 0.75rem 0 1rem;
+}
+
+.home-contacto .search-bar-input {
+    padding-left: 0;
+    border: none;
+    outline: none;
+    background: none;
+    font-size: 18px;
+    width: 100%;
+}
+
+.home-contacto .header-icons{
+    font-size: 40px;
+    color: #2E2E2E;
+}
+
+.home-contacto {
+    font-family: 'Public Sans', sans-serif;
+}
+
+.home-contacto .page-wrapper {
+    height: 100vh;
+}
+
+.home-contacto .form-container a {
+    text-decoration: underline;
+    color: #2E2E2E;
+}
+
+.home-contacto .form-container a:hover {
+    color: #8083ff;
+}
+
+
+
+.home-contacto .form-box {
+    max-width: 700px;
+}
+
+
+.home-contacto .btn-submit {
+    background-color: #8083ff;
+    border: 1px solid #8083ff;
+    box-shadow: none;
+    transition: .3s;
+    color: #ffffff;
+    text-transform: unset;
+    font-size: 14px;
+}
+
+.home-contacto .btn-submit:hover{
+    background-color: transparent;
+    color: rgb(128, 131, 255);
+}
+
+
+.home-contacto .form-check-input[type='checkbox']:checked {
+    background-color: #8083ff;
+    border-color: #8083ff;
+}
+
+
+
+.home .custom-input:focus ~ .form-notch div,
+.home-contacto .custom-input:focus ~ .form-notch div {
+    border-color: #8083ff !important;
+}
+
+.home .custom-input:focus ~ .form-label,
+.home-contacto .custom-input:focus ~ .form-label {
+    color: #8083ff !important;
+}
+
+.home .custom-input.is-invalid:focus ~ .form-notch div,
+.home-contacto .custom-input.is-invalid:focus ~ .form-notch div {
+    border-color: #f93154 !important;
+}
+
+.home .custom-input.is-invalid:focus ~ .form-label,
+.home-contacto .custom-input.is-invalid:focus ~ .form-label {
+    color: #f93154 !important;
+}
+
+
+.home-contacto .footer-content-container {
+    min-height: 75px;
+    background: #efefef;
+}
+
+/*PREGUNTAS FRECUENTES*/
+
+
+
+.home-tiendas .header-logo {
+    max-height: 50px;
+}
+
+.home-tiendas .header-container {
+    background-color: #efefef;
+    min-height: 75px;
+}
+
+.home-tiendas .search-bar-container {
+    width: 100%;
+    height: 40px;
+    background: #BABABA;
+    border-radius: 30px;
+    padding: 5px 20px 5px 5px;
+}
+
+.home-tiendas .search-bar-btn {
+    color: #2E2E2E;
+    font-size: 20px;
+    margin: 0 0.75rem 0 1rem;
+}
+
+.home-tiendas .search-bar-input {
+    padding-left: 0;
+    border: none;
+    outline: none;
+    background: none;
+    font-size: 18px;
+    width: 100%;
+}
+
+.home-tiendas .header-icons{
+    font-size: 40px;
+    color: #2E2E2E;
+}
+
+
+
+
+.home-tiendas .container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40vh;
+    background-color: #8083ff;
+}
+.home-tiendas .card-container{
+    display: flex;
+    width: 800px;
+    height: auto;
+    background: #ffffff;
+    border-radius: 2px;
+    box-shadow: 1px 1px 4px 2px #00000033;
+}
+
+.descripcion{
+    padding: 20px;
+    text-align: center;
+}
+
+#map{
+    padding: 20px;
+    border-radius: 10%;
+}
+
+#cuerpo{
+    margin-top: 100px;
+    margin-bottom:10px;
+}
+
+#cuerpotittle {
+    margin-left: 30vh;
+    margin-right: 30vh;
+}
+
+#cuerpoparrafo {
+    margin-left: 30vh;
+    margin-right: 30vh;
+}
+
+
+.home-tiendas .footer-content-container {
+    min-height: 75px;
+    background: #efefef;
+}
+
+
+
+/*PREGUNTAS FRECUENTES*/
