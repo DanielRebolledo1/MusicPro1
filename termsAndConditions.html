@@ -15,36 +15,42 @@
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;1,400;1,600&display=swap"
           rel="stylesheet">
 </head>
-<body class="home-Terminos " >
-    <header>
-        <div class="container-fluid fixed-top">
-            <div class="row align-items-center pe-3 ps-3 header-container">
-                <div class="col-4 col-md-2 order-2 order-md-1 m-md-0 me-md-auto">
-                    <a href="index.html"><img src="img/logo.png" class="img-fluid header-logo" alt="logo"></a>
-                </div>
-                <div class="col-12 col-md-5 order-3 order-md-3">
-                    <div class="row mb-2 mb-md-0 gx-0 justify-content-center search-bar-container">
-                        <div class="col-auto">
-                            <a href="#" class="search-bar-btn"><i class="fa-solid fa-magnifying-glass"></i></a>
-                        </div>
-                        <div class="col">
-                            <input type="text" class="search-bar-input">
-                        </div>
+<body class="home-Terminos">
+<!--Menu superior-->
+<header class="navbar-header">
+    <div class="container-fluid fixed-top">
+        <div class="row align-items-center pe-3 ps-3 header-container">
+            <div class="col-4 col-md-2 order-2 order-md-1 m-md-0 me-md-auto">
+                <a href="index.html"><img src="img/logo.png" class="img-fluid header-logo" alt="logo"></a>
+            </div>
+            <div class="col-auto col-md-auto order-1 order-md-2">
+                <button id="sidebar-open-btn" type="button" class="btn custom-btn1">
+                    <i class="fa-solid fa-bars header-icons"></i>
+                </button>
+            </div>
+            <div class="col-12 col-md-5 order-3 order-md-3">
+                <div class="row mb-2 mb-md-0 gx-0 justify-content-center search-bar-container">
+                    <div class="col-auto">
+                        <a href="#" class="search-bar-btn"><i class="fa-solid fa-magnifying-glass"></i></a>
+                    </div>
+                    <div class="col">
+                        <input type="text" class="search-bar-input">
                     </div>
                 </div>
-                <div class="col-4 col-md-2 order-2 order-md-4 ms-auto">
-                    <div class="row justify-content-end flex-nowrap header-icons">
-                        <div class="col-auto gx-1">
-                            <a href="login.html"><i class="fa-solid fa-circle-user"></i></a>
-                        </div>
-                        <div class="col-auto">
-                            <a href="#"><i class="fa-solid fa-cart-shopping"></i></a>
-                        </div>
+            </div>
+            <div class="col-4 col-md-2 order-2 order-md-4 ms-auto">
+                <div class="row justify-content-end flex-nowrap header-icons">
+                    <div class="col-auto gx-1">
+                        <a href="login.html"><i class="fa-solid fa-circle-user"></i></a>
+                    </div>
+                    <div class="col-auto">
+                        <a href="#"><i class="fa-solid fa-cart-shopping"></i></a>
                     </div>
                 </div>
             </div>
         </div>
-    </header>
+    </div>
+</header>
 <!--Terminos y condiciones-->
 <section>
     <div class="container ">
@@ -105,70 +111,59 @@
     </div>
     
 </section>
-
-
-
 <!--Pie de pagina-->
-<footer class="container-fluid footer-container m-0">
-    <div
-        class="row justify-content-center justify-content-sm-start align-items-center ps-3 pe-3 pt-3 pb-3 gap-3 gap-sm-0 footer-content-container">
-        <div class="col-auto col-sm-6">
-            <div class="row gap-2 justify-content-center justify-content-sm-start align-items-center">
-                <div class="col-12 col-md-auto text-center text-sm-start">
-                    <h4>Síguenos en</h4>
+<footer>
+    <div class="container-fluid">
+        <div class="row justify-content-center justify-content-sm-start align-items-center ps-3 pe-3 pt-3 pb-3 gap-3 gap-sm-0 footer-content-container">
+            <div class="col-auto col-sm-6">
+                <div class="row gap-2 justify-content-center justify-content-sm-start align-items-center">
+                    <div class="col-12 col-md-auto text-center text-sm-start">
+                        <h4>Síguenos en</h4>
+                    </div>
+                    <div class="col-auto">
+                        <a class="btn btn-primary btn-lg btn-floating" style="background-color: #8083ff;" href="#"
+                           role="button">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                    <div class="col-auto">
+                        <a class="btn btn-primary btn-lg btn-floating" style="background-color: #8083ff;" href="#"
+                           role="button">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                    </div>
+                    <div class="col-auto">
+                        <a class="btn btn-primary btn-lg btn-floating" style="background-color: #8083ff;" href="#"
+                           role="button">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
                 </div>
-                <div class="col-auto">
-                    <a class="btn btn-primary btn-lg btn-floating" style="background-color: #8083ff;" href="#"
-                        role="button">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                </div>
-                <div class="col-auto">
-                    <a class="btn btn-primary btn-lg btn-floating" style="background-color: #8083ff;" href="#"
-                        role="button">
-                        <i class="fab fa-facebook"></i>
-                    </a>
-                </div>
-                <div class="col-auto">
-                    <a class="btn btn-primary btn-lg btn-floating" style="background-color: #8083ff;" href="#"
-                        role="button">
-                        <i class="fab fa-youtube"></i>
-                    </a>
+            </div>
+            <div class="col-auto col-sm-6">
+                <div class="row gap-3 justify-content-center justify-content-sm-end">
+                    <div class="col-auto">
+                        <a href="termsAndConditions.html"><h4>Términos y condiciones</h4></a>
+                    </div>
+                    <div class="col-auto">
+                        <a href="questions.html"><h4>Preguntas frecuentes</h4></a>
+                    </div>
+                    <div class="col-auto">
+                        <a href="stores.html"><h4>Nuestras tiendas</h4></a>
+                    </div>
+                    <div class="col-auto">
+                        <a href="contact.html"><h4>Contacto</h4></a>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-auto col-sm-6">
-            <div class="row gap-3 justify-content-center justify-content-sm-end">
-                <div class="col-auto">
-                    <a href="#">
-                        <h4>Términos y condiciones</h4>
-                    </a>
-                </div>
-                <div class="col-auto">
-                    <a href="#">
-                        <h4>Preguntas frecuentes</h4>
-                    </a>
-                </div>
-                <div class="col-auto">
-                    <a href="#">
-                        <h4>Sobre nosotros</h4>
-                    </a>
-                </div>
-                <div class="col-auto">
-                    <a href="#">
-                        <h4>Contacto</h4>
-                    </a>
-                </div>
-                <div class="col-auto">
-                    <a href="index.html">
-                        <h4>Inicio</h4>
-                    </a>
-                </div>
+        <div class="row justify-content-center">
+            <div class="col-md-auto gx-0">
+                <img src="img/footer%20galaxy.png" class="img-fluid" alt="galaxy">
             </div>
         </div>
     </div>
 </footer>
-
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="

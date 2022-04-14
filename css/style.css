@@ -716,75 +716,6 @@ footer {
 
 /*Terminos y condiciones*/
 
-.home-Terminos .header-logo {
-    max-height: 50px;
-}
-
-.home-Terminos .header-container {
-    background-color: #efefef;
-    min-height: 75px;
-}
-
-.home-Terminos .search-bar-container {
-    width: 100%;
-    height: 40px;
-    background: #BABABA;
-    border-radius: 30px;
-    padding: 5px 20px 5px 5px;
-}
-
-.home-Terminos .search-bar-btn {
-    color: #2E2E2E;
-    font-size: 20px;
-    margin: 0 0.75rem 0 1rem;
-}
-
-.home-Terminos .search-bar-input {
-    padding-left: 0;
-    border: none;
-    outline: none;
-    background: none;
-    font-size: 18px;
-    width: 100%;
-}
-
-.home-Terminos .header-icons{
-    font-size: 40px;
-    color: #2E2E2E;
-}
-
-.home-Terminos h4{
-    margin: 1vh;
-    padding: 1vh;
-    margin-left: 10vh;
-    margin-right: 10vh;
-
-}
-
-.home-Terminos h1{
-    margin: 2vh;
-    padding: 1vh;
-    margin-left: 10vh;
-    margin-right: 10vh;
-
-}
-
-.home-Terminos h2{
-    margin: 1vh;
-    padding: 1vh;
-    margin-left: 10vh;
-    margin-right: 10vh;
-
-}
-
-.home-Terminos p{
-    margin: 1vh;
-    padding: 1vh;
-    margin-left: 10vh;
-    margin-right: 10vh;
-
-}
-
 .home-Terminos ul{
     margin: 1vh;
     padding: 1vh;
@@ -794,54 +725,9 @@ footer {
 }
 .home-container {
     margin: 25vh;
-
-
-}
-
-.home-Terminos .footer-content-container {
-    margin-top: 50px;
-    min-height: 75px;
-    background: #efefef;
 }
 
 /*Contacto*/
-
-.home-contacto .header-logo {
-    max-height: 50px;
-}
-
-.home-contacto .header-container {
-    background-color: #efefef;
-    min-height: 75px;
-}
-
-.home-contacto .search-bar-container {
-    width: 100%;
-    height: 40px;
-    background: #BABABA;
-    border-radius: 30px;
-    padding: 5px 20px 5px 5px;
-}
-
-.home-contacto .search-bar-btn {
-    color: #2E2E2E;
-    font-size: 20px;
-    margin: 0 0.75rem 0 1rem;
-}
-
-.home-contacto .search-bar-input {
-    padding-left: 0;
-    border: none;
-    outline: none;
-    background: none;
-    font-size: 18px;
-    width: 100%;
-}
-
-.home-contacto .header-icons{
-    font-size: 40px;
-    color: #2E2E2E;
-}
 
 .home-contacto {
     font-family: 'Public Sans', sans-serif;
@@ -904,50 +790,7 @@ footer {
     color: #f93154 !important;
 }
 
-
-.home-contacto .footer-content-container {
-    min-height: 75px;
-    background: #efefef;
-}
-
 /*Nuestras tiendas*/
-
-.home-tiendas .header-logo {
-    max-height: 50px;
-}
-
-.home-tiendas .header-container {
-    background-color: #efefef;
-    min-height: 75px;
-}
-
-.home-tiendas .search-bar-container {
-    width: 100%;
-    height: 40px;
-    background: #BABABA;
-    border-radius: 30px;
-    padding: 5px 20px 5px 5px;
-}
-
-.home-tiendas .search-bar-btn {
-    color: #2E2E2E;
-    font-size: 20px;
-    margin: 0 0.75rem 0 1rem;
-}
-
-.home-tiendas .search-bar-input {
-    padding-left: 0;
-    border: none;
-    outline: none;
-    background: none;
-    font-size: 18px;
-    width: 100%;
-}
-
-.home-tiendas .header-icons{
-    font-size: 40px;
-    color: #2E2E2E;
-}
 
 .home-tiendas .container{
     display: flex;
@@ -988,10 +831,4 @@ footer {
 #cuerpoparrafo {
     margin-left: 30vh;
     margin-right: 30vh;
-}
-
-
-.home-tiendas .footer-content-container {
-    min-height: 75px;
-    background: #efefef;
 }

@@ -295,39 +295,37 @@ if (body.classList.contains('login-register')) {
 
 if (body.classList.contains('home-contacto')){
     console.log('home-contacto')
-    const contactoForm = document.getElementById('contacto-form')
-    const contactoSelect = document.getSelection('contacto-select')
-    const contactoEmail = document.getElementById('contacto-email')
-    const contactoMensaje = document.getElementById('contacto-mensaje')
 
+    $(document).ready(function() {
+        sidebarFunctions();
 
-    contactoForm.addEventListener('submit', (e) => {
-        if(!checkContactoInputsOnSubmit(contactoEmail, contactoSelect,contactoMensaje)){
-            e.preventDefault();
-        }
-    });
+        const contactoForm = document.getElementById('contacto-form')
+        const contactoEmail = document.getElementById('contacto-email')
+        const contactoMensaje = document.getElementById('contacto-mensaje')
 
-    contactoEmail.addEventListener('focusout', () => {
-        checkEmailOnFocusOut(contactoEmail);
-    });
+        contactoForm.addEventListener('submit', (e) => {
+            if(!checkContactoInputsOnSubmit(contactoEmail, contactoMensaje)){
+                e.preventDefault();
+            }
+        });
 
-    contactoEmail.addEventListener('input', () => {
-        resetInput(contactoEmail);
-    });
+        contactoEmail.addEventListener('focusout', () => {
+            checkEmailOnFocusOut(contactoEmail);
+        });
 
-    contactoSelect.addEventListener('input', () => {
-        resetInput(contactoSelect);
-    });
+        contactoEmail.addEventListener('input', () => {
+            resetInput(contactoEmail);
+        });
 
-    contactoMensaje.addEventListener('input', () => {
-        resetInput(contactoMensaje);
+        contactoMensaje.addEventListener('input', () => {
+            resetInput(contactoMensaje);
+        });
     });
 }
 
-function checkContactoInputsOnSubmit(contactoEmail, contactoSelect, contactoMensaje) {
+function checkContactoInputsOnSubmit(contactoEmail, contactoMensaje) {
     //get values from the inputs
     const emailValue = contactoEmail.value.trim();
-    const contactoSelectValue = contactoSelect.value.trim();
     const contactoMensajeValue = contactoMensaje.value.trim();
 
     if(emailValue === '') {
@@ -340,20 +338,13 @@ function checkContactoInputsOnSubmit(contactoEmail, contactoSelect, contactoMens
         setSuccessFor(contactoEmail );
     }
 
-    if(contactoSelectValue === '') {
-        setErrorFor(contactoSelect, 'Por favor seleccione algo');
-    } else {
-        setSuccessFor(contactoSelect);
-    }
-
     if(contactoMensajeValue === '') {
-        setErrorFor(contactoMensaje, 'Por favor ingrese sun mensaje');
+        setErrorFor(contactoMensaje, 'Por favor ingrese un mensaje');
     } else {
         setSuccessFor(contactoMensaje);
     }
 
-
-    return checkSuccess(contactoEmail) && checkSuccess(contactoSelect) && checkSuccess(contactoMensaje);
+    return checkSuccess(contactoEmail) && checkSuccess(contactoMensaje);
 }
 
 if (body.classList.contains('product')) {
