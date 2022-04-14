@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Product : zuzuPlay</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simplelightbox@2.10.3/dist/simple-lightbox.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap"
+          rel="stylesheet">
+</head>
+<body class="product">
+<!--Menu superior-->
+<header class="navbar-header">
+    <div class="container-fluid fixed-top">
+        <div class="row align-items-center pe-3 ps-3 header-container">
+            <div class="col-4 col-md-2 order-2 order-md-1 m-md-0 me-md-auto">
+                <a href="index.html"><img src="img/logo.png" class="img-fluid header-logo" alt="logo"></a>
+            </div>
+            <div class="col-auto col-md-auto order-1 order-md-2">
+                <button id="sidebar-open-btn" type="button" class="btn custom-btn1">
+                    <i class="fa-solid fa-bars header-icons"></i>
+                </button>
+            </div>
+            <div class="col-12 col-md-5 order-3 order-md-3">
+                <div class="row mb-2 mb-md-0 gx-0 justify-content-center search-bar-container">
+                    <div class="col-auto">
+                        <a href="#" class="search-bar-btn"><i class="fa-solid fa-magnifying-glass"></i></a>
+                    </div>
+                    <div class="col">
+                        <input type="text" class="search-bar-input">
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 col-md-2 order-2 order-md-4 ms-auto">
+                <div class="row justify-content-end flex-nowrap header-icons">
+                    <div class="col-auto gx-1">
+                        <a href="login.html"><i class="fa-solid fa-circle-user"></i></a>
+                    </div>
+                    <div class="col-auto">
+                        <a href="#"><i class="fa-solid fa-cart-shopping"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!--Menu lateral-->
+<section>
+    <div id="sidebar-container" class="container-fluid">
+        <div id="sidebar-bg" class="w-100 h-100"></div>
+        <div id="sidebar" class="w-100 h-100">
+            <div class="row justify-content-between align-items-center m-0 mb-2 sidebar-header">
+                <div class="col-auto">
+                    <p>Tienda</p>
+                </div>
+                <div class="col-auto">
+                    <button id="sidebar-close-btn" type="button" class="btn custom-btn1"><i class="fa-solid fa-x"></i>
+                    </button>
+                </div>
+            </div>
+            <nav class="nav flex-column sidebar-content">
+                <p class="sidebar-subtitle">Categorías</p>
+                <button type="button" id="category-1-btn" class="row gx-0 custom-btn1">
+                    <div class="col-auto">Videojuegos</div>
+                    <div class="col-auto ms-auto">
+                        <i id="show-icon-1" class="show-icon fa-solid fa-angle-down"></i>
+                    </div>
+                </button>
+                <ul id="category-1-sub" class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Playstation 5</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Xbox Series X/S</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Nintendo Switch</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Ver todo</a>
+                    </li>
+                </ul>
+                <button type="button" id="category-2-btn" class="row gx-0 custom-btn1">
+                    <div class="col-auto">Consolas</div>
+                    <div class="col-auto ms-auto">
+                        <i id="show-icon-2" class="show-icon fa-solid fa-angle-down"></i>
+                    </div>
+                </button>
+                <ul id="category-2-sub" class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Playstation 5</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Xbox Series X/S</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Nintendo Switch</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Ver todo</a>
+                    </li>
+                </ul>
+                <button type="button" id="category-3-btn" class="row gx-0 custom-btn1">
+                    <div class="col-auto">Accesorios</div>
+                    <div class="col-auto ms-auto">
+                        <i id="show-icon-3" class="show-icon fa-solid fa-angle-down"></i>
+                    </div>
+                </button>
+                <ul id="category-3-sub" class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Controles</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Audífonos Gamer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Ver todo</a>
+                    </li>
+                </ul>
+                <p class="sidebar-subtitle">Más</p>
+                <a href="#">Próximos lanzamientos</a>
+                <a href="#">Ofertas</a>
+                <hr>
+                <p class="sidebar-subtitle">Soporte</p>
+                <a href="#">Contacto</a>
+                <a href="#">Preguntas frecuentes</a>
+            </nav>
+        </div>
+    </div>
+</section>
+<!--Detalle del producto-->
+<section>
+    <div class="container-fluid product-container mt-4">
+        <div class="row justify-content-center">
+            <div class="row gap-3 flex-column flex-lg-row justify-content-center product-box">
+                <div class="col-12">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="index.html">Inicio</a></li>
+                            <li class="breadcrumb-item"><a href="#">Videojuegos</a></li>
+                            <li class="breadcrumb-item"><a href="#">PS5</a></li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="col-12 text-center text-md-start">
+                    <span class="product-title">LEGO Star Wars: The Skywalker Saga - PS5</span>
+                </div>
+                <div class="col-auto flex-shrink-1">
+                    <div class="row flex-column flex-md-row align-items-center justify-content-center flex-md-nowrap gx-0">
+                        <div class="col col-md-auto me-md-3 gallery-thumbs-container">
+                            <div class="row gx-0 flex-column">
+                                <div class="col-auto text-center mb-2">
+                                    <div class="thumbs-prev"><i class="fa-solid fa-chevron-up"></i></div>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="swiper w-100 h-100 gallery-thumbs">
+                                        <div class="swiper-wrapper thumbs-wrapper">
+                                            <div class="swiper-slide">
+                                                <div class="row thumbs-images h-100 justify-content-center align-items-center">
+                                                    <img src="img/legoswbigboxps5.png" class="img-fluid" alt="">
+                                                </div>
+                                            </div>
+                                            <div class="swiper-slide">
+                                                <div class="row thumbs-images h-100 justify-content-center align-items-center">
+                                                    <img src="https://img.youtube.com/vi/n49TsZAwFEs/default.jpg"
+                                                         alt="">
+                                                    <i class="fa-regular fa-circle-play position-absolute text-center"></i>
+                                                </div>
+                                            </div>
+                                            <div class="swiper-slide">
+                                                <div class="row thumbs-images h-100 justify-content-center align-items-center">
+                                                    <img src="https://img.youtube.com/vi/kRHlJ3WwzDc/default.jpg"
+                                                         alt="">
+                                                    <i class="fa-regular fa-circle-play position-absolute text-center"></i>
+                                                </div>
+                                            </div>
+                                            <div class="swiper-slide">
+                                                <div class="row thumbs-images h-100 justify-content-center align-items-center">
+                                                    <img src="img/legoswimg1.jpg" class="img-fluid" alt="">
+                                                </div>
+                                            </div>
+                                            <div class="swiper-slide">
+                                                <div class="row thumbs-images h-100 justify-content-center align-items-center">
+                                                    <img src="img/legoswimg2.jpg" class="img-fluid" alt="">
+                                                </div>
+                                            </div>
+                                            <div class="swiper-slide">
+                                                <div class="row thumbs-images h-100 justify-content-center align-items-center">
+                                                    <img src="img/legoswimg3.jpg" class="img-fluid" alt="">
+                                                </div>
+                                            </div>
+                                            <div class="swiper-slide">
+                                                <div class="row thumbs-images h-100 justify-content-center align-items-center">
+                                                    <img src="img/legoswimg4.jpg" class="img-fluid" alt="">
+                                                </div>
+                                            </div>
+                                            <div class="swiper-slide">
+                                                <div class="row thumbs-images h-100 justify-content-center align-items-center">
+                                                    <img src="img/legoswimg5.jpg" class="img-fluid" alt="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-auto text-center mt-2">
+                                    <div class="thumbs-next"><i class="fa-solid fa-chevron-down"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-auto">
+                            <div class="row flex-column">
+                                <div class="col-auto">
+                                    <div class="swiper w-100 h-100 gallery-main">
+                                        <div class="swiper-wrapper gallery-wrapper gallery">
+                                            <div class="swiper-slide">
+                                                <div class="row main-images gx-0 h-100 justify-content-center align-items-center">
+                                                    <a href="img/legoswbigboxps5.png"><img
+                                                            src="img/legoswbigboxps5.png" class="img-fluid" alt=""></a>
+                                                </div>
+                                            </div>
+                                            <div class="swiper-slide">
+                                                <div class="row main-videos gx-0 h-100 justify-content-center align-items-center">
+                                                    <iframe class="video-player" src="" allowfullscreen
+                                                            data-src="https://www.youtube-nocookie.com/embed/n49TsZAwFEs?autoplay=1"
+                                                            allow="autoplay;"></iframe>
+                                                    <button class="video-cover">
+                                                        <div class="row gx-0 w-100 h-100 justify-content-center align-items-center">
+                                                            <img src="https://img.youtube.com/vi/n49TsZAwFEs/maxresdefault.jpg"
+                                                                 class="img-fluid" alt="">
+                                                            <i class="fa-regular fa-circle-play position-absolute"></i>
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="swiper-slide">
+                                                <div class="row main-videos gx-0 h-100 justify-content-center align-items-center">
+                                                    <iframe class="video-player" src="" allowfullscreen
+                                                            data-src="https://www.youtube-nocookie.com/embed/kRHlJ3WwzDc?autoplay=1"
+                                                            allow="autoplay;"></iframe>
+                                                    <button class="video-cover">
+                                                        <div class="row gx-0 w-100 h-100 justify-content-center align-items-center">
+                                                            <img src="https://img.youtube.com/vi/kRHlJ3WwzDc/maxresdefault.jpg"
+                                                                 class="img-fluid" alt="">
+                                                            <i class="fa-regular fa-circle-play position-absolute"></i>
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="swiper-slide">
+                                                <div class="row main-images gx-0 h-100 justify-content-center align-items-center">
+                                                    <a href="img/legoswimg1.jpg"><img src="img/legoswimg1.jpg"
+                                                                                      class="img-fluid" alt=""></a>
+                                                </div>
+                                            </div>
+                                            <div class="swiper-slide">
+                                                <div class="row main-images gx-0 h-100 justify-content-center align-items-center">
+                                                    <a href="img/legoswimg2.jpg"><img src="img/legoswimg2.jpg"
+                                                                                      class="img-fluid" alt=""></a>
+                                                </div>
+                                            </div>
+                                            <div class="swiper-slide">
+                                                <div class="row main-images gx-0 h-100 justify-content-center align-items-center">
+                                                    <a href="img/legoswimg3.jpg"><img src="img/legoswimg3.jpg"
+                                                                                      class="img-fluid" alt=""></a>
+                                                </div>
+                                            </div>
+                                            <div class="swiper-slide">
+                                                <div class="row main-images gx-0 h-100 justify-content-center align-items-center">
+                                                    <a href="img/legoswimg4.jpg"><img src="img/legoswimg4.jpg"
+                                                                                      class="img-fluid" alt=""></a>
+                                                </div>
+                                            </div>
+                                            <div class="swiper-slide">
+                                                <div class="row main-images gx-0 h-100 justify-content-center align-items-center">
+                                                    <a href="img/legoswimg5.jpg"><img src="img/legoswimg5.jpg"
+                                                                                      class="img-fluid" alt=""></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-auto mt-3 align-self-center">
+                                    <div class="gallery-pagination"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg align-self-center product-info-container">
+                    <div class="row flex-column gap-3 gx-0">
+                        <div class="row gx-0 justify-content-between">
+                            <p class="col-auto" style="font-size: 12px">Precio Web</p>
+                            <p class="col-auto" style="font-size: 12px">SKU: PS5J1</p>
+                            <p class="col-12 price">$59.990</p>
+                            <div class="col-auto row gx-0 gap-1" style="font-size: 14px">
+                                <p class="col-auto">Normal</p>
+                                <p class="col-auto" style="font-weight: 600">$64.990</p>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-3 pe-0">
+                                    <select class="h-100 form-select">
+                                        <option selected value="opt1">1</option>
+                                        <option value="opt2">2</option>
+                                        <option value="opt3">3</option>
+                                        <option value="opt4">4</option>
+                                        <option value="opt5">5</option>
+                                        <option value="opt6">6</option>
+                                        <option value="opt7">7</option>
+                                        <option value="opt8">8</option>
+                                        <option value="opt9">9</option>
+                                        <option value="opt10">10</option>
+                                    </select>
+                                </div>
+                                <div class="col-9">
+                                    <button class="custom-btn2 w-100">Agregar al carro</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row gap-2 gx-0">
+                            <i class="col-auto fa-solid fa-store" style="font-size: 26px; color: #6CBAA2"></i>
+                            <p class="col-auto">Retiro en tienda</p>
+                        </div>
+                        <div class="row gap-2 gx-0">
+                            <i class="col-auto fa-solid fa-truck" style="font-size: 26px; color: #6CBAA2"></i>
+                            <p class="col-auto">Despacho</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--Descripcion del producto-->
+<section>
+    <div class="container-fluid product-description-container mt-3">
+        <div class="row justify-content-center">
+            <div class="row product-description-box">
+                <div class="product-description">
+                    <div class="row">
+                        <div class="col-12 col-md-2">
+                            <div class="nav flex-lg-column nav-tabs mb-3" id="product-tabs" role="tablist">
+                                <button class="nav-link active" id="description-tab" data-mdb-toggle="tab"
+                                        data-mdb-target="#description-content"
+                                        type="button" role="tab" aria-controls="description" aria-selected="true">
+                                    Descripción
+                                </button>
+                                <button class="nav-link" id="warranty-tab" data-mdb-toggle="tab"
+                                        data-mdb-target="#warranty-content"
+                                        type="button" role="tab" aria-controls="warranty" aria-selected="false">
+                                    Garantía
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-10">
+                            <div class="tab-content" id="product-tabs-content">
+                                <div class="tab-pane fade show active" id="description-content" role="tabpanel"
+                                     aria-labelledby="description-tab">
+                                    <div class="row pe-3 justify-content-center justify-content-md-end">
+                                        <div class="col-12 description-wrapper">
+                                            <ul>
+                                                <h3>LEGO Star Wars: The Skywalker Saga</h3>
+                                                <p>
+                                                    La galaxia es tuya en LEGO® Star Wars™: The Skywalker Saga.
+                                                    En este nuevo juego, los jugadores experimentarán momentos
+                                                    memorables y acción ininterrumpida de las nueve películas
+                                                    de la saga Skywalker reinventadas con el humor
+                                                    característico de LEGO. El juego sumergirá a los jugadores
+                                                    en la saga expansiva con la libertad de controlar cientos
+                                                    de personajes, barcos y vehículos para crear su propio
+                                                    viaje único a través de la galaxia.
+                                                </p>
+                                                <br>
+                                                <li>Explora las trilogías en cualquier orden</li>
+                                                <p>
+                                                    Los jugadores revivirán la historia épica de las nueve
+                                                    películas de la Saga Skywalker , y todo comienza con la
+                                                    elección de la trilogía de tu preferencia para comenzar
+                                                    el viaje.
+                                                </p>
+                                                <br>
+                                                <li>Juega como los héroes y villanos icónicos</li>
+                                                <p>
+                                                    Hay más de 300 personajes jugables de toda la galaxia.
+                                                    Los jugadores pueden elegir entre una legión de héroes
+                                                    como Luke Skywalker, Qui-Gon Jinn, Chewbacca, Leia Organa
+                                                    y Poe Dameron o pasarse al lado oscuro como Darth Vader,
+                                                    Kylo Ren, Darth Maul, el Emperador Palpatine y más.
+                                                </p>
+                                                <br>
+                                                <li>Descubre lugares legendarios</li>
+                                                <p>
+                                                    Los jugadores pueden visitar lugares conocidos de sus
+                                                    películas favoritas de Star Wars, como las mesas de
+                                                    Geonosis, los pantanos de Dagobah y las salinas de Crait.
+                                                    Pueden desbloquear y tener la libertad de viajar sin
+                                                    problemas a 23 planetas mientras juegan a través de la saga
+                                                    o exploran y descubren emocionantes misiones.
+                                                </p>
+                                                <br>
+                                                <li>Comanda vehículos poderosos</li>
+                                                <p>
+                                                    Hay más de 100 vehículos de toda la galaxia para comandar.
+                                                    Los jugadores pueden saltar a la velocidad de la luz en el
+                                                    Millennium Falcon para escapar de las naves estelares
+                                                    imperiales, luchar contra los cazas TIE de la Primera Orden
+                                                    en Alas-X de la Resistencia o competir en vainas en
+                                                    Tatooine. También pueden unirse a combates aéreos y
+                                                    derrotar naves capitales como el Super Star Destroyer que
+                                                    se puede abordar y explorar.
+                                                </p>
+                                                <br>
+                                                <li>Experiencias de juego inmersivas</li>
+                                                <p>
+                                                    Los jugadores pueden experimentar batallas como nunca
+                                                    antes en un juego de LEGO al unir diferentes ataques para
+                                                    formar cadenas combinadas y defenderse de los ataques que
+                                                    se aproximan. Los nuevos controles y mecánicas de los
+                                                    blaster permite a los jugadores apuntar con precisión y
+                                                    ponerse a cubierto para planear su próximo movimiento o
+                                                    utilizar las habilidades de un Jedi empuñando un sable de
+                                                    luz usando el poder de La Fuerza.
+                                                </p>
+                                                <br>
+                                                <li>Habilidades de personajes actualizables</li>
+                                                <p>
+                                                    La exploración recompensa a los jugadores a medida que
+                                                    descubren Kyber Bricks que desbloquean nuevas funciones y
+                                                    habilidades mejoradas en una variedad de clases de
+                                                    personajes, incluidos Jedi, Hero, Dark Side, Villain,
+                                                    Scavenger, Scoundrel, Bounty Hunter, Astromech Droid y
+                                                    Protocol Droid.
+                                                </p>
+                                                <br>
+                                                <li>Siempre apto para toda la familia</li>
+                                                <p>
+                                                    Los fanáticos de todas las generaciones pueden jugar juntos
+                                                    y experimentar la saga completa contada con el nuevo y
+                                                    divertido humor de LEGO. El juego es un punto de entrada
+                                                    accesible a la galaxia de Star Wars que es fácil de
+                                                    aprender y jugar para una audiencia más joven mientras aún
+                                                    es lo suficientemente profundo para que cualquiera lo
+                                                    disfrute.
+                                                </p>
+                                            </ul>
+                                        </div>
+                                        <div class="col-auto">
+                                            <button id="show-description-btn" type="button"
+                                                    class="btn btn-rounded custom-btn2">Ver más
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="warranty-content" role="tabpanel"
+                                     aria-labelledby="warranty-tab">
+                                    <p>
+                                        Todos nuestros juegos tienen una garantía de 6 meses
+                                        (Por compras realizadas a partir del 24 de marzo del 2022)
+                                        desde el momento que se realiza la compra
+                                        (La garantía de cada marca viene señalada en el interior
+                                        de la caja del producto).
+                                        <br><br>
+                                        La garantía solo cubre fallas de fabricación.
+                                        <br><br>
+                                        El disco no puede estar rayado ni con señales de uso.
+                                        Para hacer efectiva su garantía con zuzuPlay
+                                        deberá de incluir su recibo de pago original y el producto debe estar
+                                        completo y en buen estado.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--Recomendados-->
+<section>
+    <div class="container-fluid item-carousel-container mt-3">
+        <div class="subtitle text-center">
+            <h2>Recomendados</h2>
+        </div>
+        <div class="swiper item-carousel1">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <a href="#">
+                        <div class="card item-card">
+                            <div class="col-auto align-self-center">
+                                <img src="img/gt7%20box.png" class="card-img-top img-fluid" alt="gt7 ps5">
+                            </div>
+                            <div class="col-auto card-body">
+                                <div class="item-title-wrapper text-center">
+                                    <span>Gran Turismo 7 PS5</span>
+                                </div>
+                                <p class="text-center" style="font-size: 18px; font-weight: 600">$64.990</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="swiper-slide">
+                    <a href="#">
+                        <div class="card item-card">
+                            <div class="col-auto align-self-center">
+                                <img src="img/hfw%20box.png" class="card-img-top img-fluid" alt="hfw ps5">
+                            </div>
+                            <div class="col-auto card-body">
+                                <div class="item-title-wrapper text-center">
+                                    <span>Horizon Forbidden West PS5</span>
+                                </div>
+                                <p class="text-center" style="font-size: 18px; font-weight: 600">$79.990</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="swiper-slide">
+                    <a href="#">
+                        <div class="card item-card">
+                            <div class="col-auto align-self-center">
+                                <img src="img/elden%20ring%20box.png" class="card-img-top img-fluid" alt="elden ring xbxs">
+                            </div>
+                            <div class="col-auto card-body">
+                                <div class="item-title-wrapper text-center">
+                                    <span>Elden Ring Xbox Series</span>
+                                </div>
+                                <p class="text-center" style="font-size: 18px; font-weight: 600">$59.990</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="swiper-slide">
+                    <a href="#">
+                        <div class="card item-card">
+                            <div class="col-auto align-self-center">
+                                <img src="img/triangle%20box.png" class="card-img-top img-fluid"
+                                     alt="triangle strategy switch">
+                            </div>
+                            <div class="col-auto card-body">
+                                <div class="item-title-wrapper text-center">
+                                    <span>Triangle Strategy Switch</span>
+                                </div>
+                                <p class="text-center" style="font-size: 18px; font-weight: 600">$59.990</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="swiper-slide">
+                    <a href="#">
+                        <div class="card item-card">
+                            <div class="col-auto align-self-center">
+                                <img src="img/kofxv%20box.png" class="card-img-top img-fluid" alt="kofxv xbxs">
+                            </div>
+                            <div class="col-auto card-body">
+                                <div class="item-title-wrapper text-center">
+                                    <span>King Of Fighters XV Xbox Series</span>
+                                </div>
+                                <p class="text-center" style="font-size: 18px; font-weight: 600">$56.990</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="swiper-slide">
+                    <a href="#">
+                        <div class="card item-card">
+                            <div class="col-auto align-self-center">
+                                <img src="img/w2k22%20box.png" class="card-img-top img-fluid" alt="w2k22 ps5">
+                            </div>
+                            <div class="col-auto card-body">
+                                <div class="item-title-wrapper text-center">
+                                    <span>WWE 2K22 PS5</span>
+                                </div>
+                                <p class="text-center" style="font-size: 18px; font-weight: 600">$69.990</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="swiper-slide">
+                    <a href="#">
+                        <div class="card item-card">
+                            <div class="col-auto align-self-center">
+                                <img src="img/gt7%20box.png" class="card-img-top img-fluid" alt="gt7 ps5">
+                            </div>
+                            <div class="col-auto card-body">
+                                <div class="item-title-wrapper text-center">
+                                    <span>Gran Turismo 7 PS5</span>
+                                </div>
+                                <p class="text-center" style="font-size: 18px; font-weight: 600">$64.990</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="swiper-slide">
+                    <a href="#">
+                        <div class="card item-card">
+                            <div class="col-auto align-self-center">
+                                <img src="img/hfw%20box.png" class="card-img-top img-fluid" alt="hfw ps5">
+                            </div>
+                            <div class="col-auto card-body">
+                                <div class="item-title-wrapper text-center">
+                                    <span>Horizon Forbidden West PS5</span>
+                                </div>
+                                <p class="text-center" style="font-size: 18px; font-weight: 600">$79.990</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="swiper-slide">
+                    <a href="#">
+                        <div class="card item-card">
+                            <div class="col-auto align-self-center">
+                                <img src="img/elden%20ring%20box.png" class="card-img-top img-fluid" alt="elden ring xbxs">
+                            </div>
+                            <div class="col-auto card-body">
+                                <div class="item-title-wrapper text-center">
+                                    <span>Elden Ring Xbox Series</span>
+                                </div>
+                                <p class="text-center" style="font-size: 18px; font-weight: 600">$59.990</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="swiper-slide">
+                    <a href="#">
+                        <div class="card item-card">
+                            <div class="col-auto align-self-center">
+                                <img src="img/triangle%20box.png" class="card-img-top img-fluid"
+                                     alt="triangle strategy switch">
+                            </div>
+                            <div class="col-auto card-body">
+                                <div class="item-title-wrapper text-center">
+                                    <span>Triangle Strategy Switch</span>
+                                </div>
+                                <p class="text-center" style="font-size: 18px; font-weight: 600">$59.990</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="swiper-slide">
+                    <a href="#">
+                        <div class="card item-card">
+                            <div class="col-auto align-self-center">
+                                <img src="img/kofxv%20box.png" class="card-img-top img-fluid" alt="kofxv xbxs">
+                            </div>
+                            <div class="col-auto card-body">
+                                <div class="item-title-wrapper text-center">
+                                    <span>King Of Fighters XV Xbox Series</span>
+                                </div>
+                                <p class="text-center" style="font-size: 18px; font-weight: 600">$56.990</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="swiper-slide">
+                    <a href="#">
+                        <div class="card item-card">
+                            <div class="col-auto align-self-center">
+                                <img src="img/w2k22%20box.png" class="card-img-top img-fluid" alt="w2k22 ps5">
+                            </div>
+                            <div class="col-auto card-body">
+                                <div class="item-title-wrapper text-center">
+                                    <span>WWE 2K22 PS5</span>
+                                </div>
+                                <p class="text-center" style="font-size: 18px; font-weight: 600">$69.990</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="swiper-button-prev item-carousel-prev">
+                <i class="fa-solid fa-circle-chevron-left arrow-icon"></i>
+            </div>
+            <div class="swiper-button-next item-carousel-next">
+                <i class="fa-solid fa-circle-chevron-right arrow-icon"></i>
+            </div>
+
+            <div class="swiper-scrollbar"></div>
+        </div>
+    </div>
+</section>
+<!--Pie de pagina-->
+<footer>
+    <div class="container-fluid">
+        <div class="row justify-content-center justify-content-sm-start align-items-center ps-3 pe-3 pt-3 pb-3 gap-3 gap-sm-0 footer-content-container">
+            <div class="col-auto col-sm-6">
+                <div class="row gap-2 justify-content-center justify-content-sm-start align-items-center">
+                    <div class="col-12 col-md-auto text-center text-sm-start">
+                        <h4>Síguenos en</h4>
+                    </div>
+                    <div class="col-auto">
+                        <a class="btn btn-primary btn-lg btn-floating" style="background-color: #8083ff;" href="#"
+                           role="button">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                    <div class="col-auto">
+                        <a class="btn btn-primary btn-lg btn-floating" style="background-color: #8083ff;" href="#"
+                           role="button">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                    </div>
+                    <div class="col-auto">
+                        <a class="btn btn-primary btn-lg btn-floating" style="background-color: #8083ff;" href="#"
+                           role="button">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-auto col-sm-6">
+                <div class="row gap-3 justify-content-center justify-content-sm-end">
+                    <div class="col-auto">
+                        <a href="#"><h4>Términos y condiciones</h4></a>
+                    </div>
+                    <div class="col-auto">
+                        <a href="#"><h4>Preguntas frecuentes</h4></a>
+                    </div>
+                    <div class="col-auto">
+                        <a href="#"><h4>Sobre nosotros</h4></a>
+                    </div>
+                    <div class="col-auto">
+                        <a href="#"><h4>Contacto</h4></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-auto gx-0">
+                <img src="img/footer%20galaxy.png" class="img-fluid" alt="galaxy">
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+        integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+        integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
+        crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/777d474a1b.js" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/simplelightbox@2.10.3/dist/simple-lightbox.jquery.min.js"></script>
+<script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+<script src="js/script.js"></script>
+</body>
+</html>
