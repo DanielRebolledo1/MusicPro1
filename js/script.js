@@ -302,9 +302,10 @@ if (body.classList.contains('home-contacto')){
         const contactoForm = document.getElementById('contacto-form')
         const contactoEmail = document.getElementById('contacto-email')
         const contactoMensaje = document.getElementById('contacto-mensaje')
+        const contactoselect = document.getElementById('contacto-select')
 
         contactoForm.addEventListener('submit', (e) => {
-            if(!checkContactoInputsOnSubmit(contactoEmail, contactoMensaje)){
+            if(!checkContactoInputsOnSubmit(contactoEmail, contactoMensaje,contactoselect)){
                 e.preventDefault();
             }
         });
@@ -320,13 +321,26 @@ if (body.classList.contains('home-contacto')){
         contactoMensaje.addEventListener('input', () => {
             resetInput(contactoMensaje);
         });
+        contactoselect.addEventListener('input', () => {
+            resetInput(contactoselect);
+        });
+
     });
 }
 
-function checkContactoInputsOnSubmit(contactoEmail, contactoMensaje) {
+function checkContactoInputsOnSubmit(contactoEmail, contactoMensaje, contactoselect) {
     //get values from the inputs
     const emailValue = contactoEmail.value.trim();
     const contactoMensajeValue = contactoMensaje.value.trim();
+    const contactoSelectValue = contactoselect.value.trim();;
+
+    
+    if(contactoSelectValue == '') {
+        setErrorFor(contactoselect, 'Por favor seleccione tipo de consulta ');
+    } else {
+        setSuccessFor(contactoselect);
+    }
+
 
     if(emailValue === '') {
         //add error class
@@ -344,7 +358,7 @@ function checkContactoInputsOnSubmit(contactoEmail, contactoMensaje) {
         setSuccessFor(contactoMensaje);
     }
 
-    return checkSuccess(contactoEmail) && checkSuccess(contactoMensaje);
+    return checkSuccess(contactoEmail) && checkSuccess(contactoMensaje) && checkSuccess(contactoselect);
 }
 
 if (body.classList.contains('product')) {
