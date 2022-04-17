@@ -650,7 +650,7 @@ footer {
     -webkit-background-clip: text;
 }
 
-.product .product-description ul li {
+.product .product-description ul ul li {
     font-weight: 600;
 }
 
