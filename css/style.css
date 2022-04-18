@@ -42,6 +42,50 @@ h5 {
     font-size: 12px;
 }
 
+.custom-input:focus ~ .form-notch div {
+    border-color: #8083ff !important;
+}
+
+.custom-input:focus ~ .form-label {
+    color: #8083ff !important;
+}
+
+.custom-input.is-invalid:focus ~ .form-notch div {
+    border-color: #f93154 !important;
+}
+
+.custom-input.is-invalid:focus ~ .form-label {
+    color: #f93154 !important;
+}
+
+.custom-select:focus {
+    border-color: #8083ff;
+    box-shadow: inset 0 0 0 1px #8083ff;
+}
+
+.custom-select.is-invalid {
+    margin-bottom: 1rem;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%234f4f4f' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3E%3C/svg%3E") !important;
+    padding-right: 2.25rem !important;
+    background-repeat: no-repeat;
+    background-position: right .75rem center;
+    background-size: 16px 12px;
+    color: #f93154;
+}
+
+.custom-select.is-invalid:focus {
+    border-color: #f93154;
+    box-shadow: inset 0 0 0 1px #f93154;
+}
+
+.custom-select.is-invalid option {
+    color: #4f4f4f;
+}
+
+.custom-select.is-invalid + .invalid-feedback {
+    margin-top: -.75rem;
+}
+
 .custom-btn1,
 .custom-btn1:active {
     box-shadow: none !important;
@@ -74,7 +118,7 @@ h5 {
 
 /*Navbar Header*/
 .navbar-header {
-    height: 75px;
+    min-height: 75px;
 }
 
 .navbar-header .header-logo {
@@ -116,7 +160,7 @@ h5 {
 
 @media (max-width: 767.98px) {
     .navbar-header {
-        height: 112px;
+        min-height: 112px;
     }
 }
 
@@ -232,7 +276,7 @@ h5 {
 .home .circles-container,
 .home .cards-container,
 .home .ads-container,
-footer {
+.home footer {
     margin-top: 5vh;
 }
 
@@ -448,26 +492,6 @@ footer {
 .login-register .btn-submit:hover{
     background-color: transparent;
     color: rgb(128, 131, 255);
-}
-
-.home .custom-input:focus ~ .form-notch div,
-.login-register .custom-input:focus ~ .form-notch div {
-    border-color: #8083ff !important;
-}
-
-.home .custom-input:focus ~ .form-label,
-.login-register .custom-input:focus ~ .form-label {
-    color: #8083ff !important;
-}
-
-.home .custom-input.is-invalid:focus ~ .form-notch div,
-.login-register .custom-input.is-invalid:focus ~ .form-notch div {
-    border-color: #f93154 !important;
-}
-
-.home .custom-input.is-invalid:focus ~ .form-label,
-.login-register .custom-input.is-invalid:focus ~ .form-label {
-    color: #f93154 !important;
 }
 
 .login-register .form-check-input[type='checkbox']:checked {
@@ -714,43 +738,36 @@ footer {
     }
 }
 
-/*Terminos y condiciones*/
-
-.home-Terminos ul{
-    margin: 1vh;
-    padding: 1vh;
-    margin-left: 10vh;
-    margin-right: 10vh;
-
-}
-.home-container {
-    margin: 25vh;
+@media (max-width: 991.98px) {
+    .product .product-info-container {
+        max-width: unset;
+    }
 }
 
 /*Contacto*/
 
-.home-contacto {
-    font-family: 'Public Sans', sans-serif;
+.contact {
+    font-family: 'Noto Sans', sans-serif;
 }
 
-.home-contacto .page-wrapper {
+.contact .page-wrapper {
     height: 100vh;
 }
 
-.home-contacto .form-container a {
+.contact .form-container a {
     text-decoration: underline;
     color: #2E2E2E;
 }
 
-.home-contacto .form-container a:hover {
+.contact .form-container a:hover {
     color: #8083ff;
 }
 
-.home-contacto .form-box {
-    max-width: 700px;
+.contact .form-box {
+    max-width: 600px;
 }
 
-.home-contacto .btn-submit {
+.contact .btn-submit {
     background-color: #8083ff;
     border: 1px solid #8083ff;
     box-shadow: none;
@@ -760,34 +777,34 @@ footer {
     font-size: 14px;
 }
 
-.home-contacto .btn-submit:hover{
+.contact .btn-submit:hover{
     background-color: transparent;
     color: rgb(128, 131, 255);
 }
 
-.home-contacto .form-check-input[type='checkbox']:checked {
+.contact .form-check-input[type='checkbox']:checked {
     background-color: #8083ff;
     border-color: #8083ff;
 }
 
-.home .custom-input:focus ~ .form-notch div,
-.home-contacto .custom-input:focus ~ .form-notch div {
-    border-color: #8083ff !important;
+@media (max-width: 767.98px) {
+    .contact .title {
+        font-size: 20px;
+    }
 }
 
-.home .custom-input:focus ~ .form-label,
-.home-contacto .custom-input:focus ~ .form-label {
-    color: #8083ff !important;
+/*Terminos y condiciones*/
+
+.terms {
+    font-family: 'Noto Sans', sans-serif;
 }
 
-.home .custom-input.is-invalid:focus ~ .form-notch div,
-.home-contacto .custom-input.is-invalid:focus ~ .form-notch div {
-    border-color: #f93154 !important;
-}
+.terms ul{
+    margin: 1vh;
+    padding: 1vh;
+    margin-left: 10vh;
+    margin-right: 10vh;
 
-.home .custom-input.is-invalid:focus ~ .form-label,
-.home-contacto .custom-input.is-invalid:focus ~ .form-label {
-    color: #f93154 !important;
 }
 
 /*Nuestras tiendas*/

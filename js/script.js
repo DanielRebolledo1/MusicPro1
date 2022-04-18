@@ -293,72 +293,39 @@ if (body.classList.contains('login-register')) {
     });
 }
 
-if (body.classList.contains('home-contacto')){
-    console.log('home-contacto')
+if (body.classList.contains('contact')){
+    console.log('contact')
 
     $(document).ready(function() {
         sidebarFunctions();
 
-        const contactoForm = document.getElementById('contacto-form')
-        const contactoEmail = document.getElementById('contacto-email')
-        const contactoMensaje = document.getElementById('contacto-mensaje')
-        const contactoselect = document.getElementById('contacto-select')
+        const contactForm = document.getElementById('contact-form');
+        const contactEmail = document.getElementById('contact-email');
+        const contactMessage = document.getElementById('contact-message');
+        const contactSelect = document.getElementById('contact-select');
 
-        contactoForm.addEventListener('submit', (e) => {
-            if(!checkContactoInputsOnSubmit(contactoEmail, contactoMensaje,contactoselect)){
+        contactForm.addEventListener('submit', (e) => {
+            if(!checkContactInputsOnSubmit(contactEmail, contactMessage, contactSelect)){
                 e.preventDefault();
             }
         });
 
-        contactoEmail.addEventListener('focusout', () => {
-            checkEmailOnFocusOut(contactoEmail);
+        contactEmail.addEventListener('focusout', () => {
+            checkEmailOnFocusOut(contactEmail);
         });
 
-        contactoEmail.addEventListener('input', () => {
-            resetInput(contactoEmail);
+        contactEmail.addEventListener('input', () => {
+            resetInput(contactEmail);
         });
 
-        contactoMensaje.addEventListener('input', () => {
-            resetInput(contactoMensaje);
-        });
-        contactoselect.addEventListener('input', () => {
-            resetInput(contactoselect);
+        contactMessage.addEventListener('input', () => {
+            resetInput(contactMessage);
         });
 
+        contactSelect.addEventListener('change', () => {
+            resetInput(contactSelect);
+        });
     });
-}
-
-function checkContactoInputsOnSubmit(contactoEmail, contactoMensaje, contactoselect) {
-    //get values from the inputs
-    const emailValue = contactoEmail.value.trim();
-    const contactoMensajeValue = contactoMensaje.value.trim();
-    const contactoSelectValue = contactoselect.value.trim();;
-
-    
-    if(contactoSelectValue == '') {
-        setErrorFor(contactoselect, 'Por favor seleccione tipo de consulta ');
-    } else {
-        setSuccessFor(contactoselect);
-    }
-
-
-    if(emailValue === '') {
-        //add error class
-        setErrorFor(contactoEmail, 'Por favor ingrese un email');
-    } else if(!isEmail(emailValue)) {
-        setErrorFor(contactoEmail, 'Por favor ingrese un email válido');
-    } else {
-        //add success class
-        setSuccessFor(contactoEmail );
-    }
-
-    if(contactoMensajeValue === '') {
-        setErrorFor(contactoMensaje, 'Por favor ingrese un mensaje');
-    } else {
-        setSuccessFor(contactoMensaje);
-    }
-
-    return checkSuccess(contactoEmail) && checkSuccess(contactoMensaje) && checkSuccess(contactoselect);
 }
 
 if (body.classList.contains('product')) {
@@ -367,9 +334,7 @@ if (body.classList.contains('product')) {
     $(document).ready(function() {
         sidebarFunctions();
 
-        $(".video-cover").on("click", function (ev) {
-            "use strict";
-            ev.preventDefault();
+        $(".video-cover").on("click", function() {
             videoStop();
             var $poster = $(this);
             var $wrapper = $poster.closest(".main-videos");
@@ -597,6 +562,37 @@ function checkSubsInputsOnSubmit(subsEmail) {
     return checkSuccess(subsEmail);
 }
 
+function checkContactInputsOnSubmit(contactEmail, contactMessage, contactSelect) {
+    //get values from the inputs
+    const emailValue = contactEmail.value.trim();
+    const messageValue = contactMessage.value.trim();
+    const selectValue = contactSelect.value.trim();
+
+    if(selectValue === '') {
+        setErrorFor(contactSelect, 'Por favor seleccione un tipo de consulta');
+    } else {
+        setSuccessFor(contactSelect);
+    }
+
+    if(emailValue === '') {
+        //add error class
+        setErrorFor(contactEmail, 'Por favor ingrese un email');
+    } else if(!isEmail(emailValue)) {
+        setErrorFor(contactEmail, 'Por favor ingrese un email válido');
+    } else {
+        //add success class
+        setSuccessFor(contactEmail);
+    }
+
+    if(messageValue === '') {
+        setErrorFor(contactMessage, 'Por favor ingrese un mensaje');
+    } else {
+        setSuccessFor(contactMessage);
+    }
+
+    return checkSuccess(contactEmail) && checkSuccess(contactMessage) && checkSuccess(contactSelect);
+}
+
 function checkEmailOnFocusOut(email) {
     const emailValue = email.value.trim();
 
@@ -720,9 +716,8 @@ function sidebarFunctions() {
 
 //Funciones de videos
 function videoPlay($wrapper) {
-    "use strict";
-    var $iframe = $wrapper.find(".video-player");
-    var src = $iframe.data("src");
+    let $iframe = $wrapper.find(".video-player");
+    let src = $iframe.data("src");
     // hide poster
     $wrapper.addClass("main-videos-active");
     // add iframe src in, starting the video
@@ -730,7 +725,6 @@ function videoPlay($wrapper) {
 }
 
 function videoStop($wrapper) {
-    "use strict";
     let $iframe;
     // if we're stopping all videos on page
     if (!$wrapper) {
