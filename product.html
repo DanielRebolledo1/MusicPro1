@@ -228,7 +228,7 @@
                                             </div>
                                             <div class="swiper-slide">
                                                 <div class="row main-videos gx-0 h-100 justify-content-center align-items-center">
-                                                    <iframe class="video-player" src="https://www.youtube-nocookie.com/embed/n49TsZAwFEs?" allowfullscreen
+                                                    <iframe class="video-player" src="data:," allowfullscreen
                                                             data-src="https://www.youtube-nocookie.com/embed/n49TsZAwFEs?autoplay=1"
                                                             allow="autoplay;"></iframe>
                                                     <button class="video-cover">
@@ -242,7 +242,7 @@
                                             </div>
                                             <div class="swiper-slide">
                                                 <div class="row main-videos gx-0 h-100 justify-content-center align-items-center">
-                                                    <iframe class="video-player" src="https://www.youtube-nocookie.com/embed/kRHlJ3WwzDc?" allowfullscreen
+                                                    <iframe class="video-player" src="data:," allowfullscreen
                                                             data-src="https://www.youtube-nocookie.com/embed/kRHlJ3WwzDc?autoplay=1"
                                                             allow="autoplay;"></iframe>
                                                     <button class="video-cover">
@@ -354,6 +354,11 @@
                                         type="button" role="tab" aria-selected="true">
                                     Descripción
                                 </button>
+                                <button class="nav-link" id="specs-tab" data-mdb-toggle="tab"
+                                        data-mdb-target="#specs-content"
+                                        type="button" role="tab" aria-selected="true">
+                                    Especificaciones
+                                </button>
                                 <button class="nav-link" id="warranty-tab" data-mdb-toggle="tab"
                                         data-mdb-target="#warranty-content"
                                         type="button" role="tab" aria-selected="false">
@@ -369,7 +374,7 @@
                                         <div class="col-12 description-wrapper">
                                             <ul class="list-unstyled">
                                                 <li>
-                                                    <h3>LEGO Star Wars: The Skywalker Saga</h3>
+                                                    <h3 id="product-title">LEGO Star Wars: The Skywalker Saga</h3>
                                                     <p>
                                                         La galaxia es tuya en LEGO® Star Wars™: The Skywalker Saga.
                                                         En este nuevo juego, los jugadores experimentarán momentos
@@ -504,6 +509,31 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="tab-pane fade" id="specs-content" role="tabpanel"
+                                     aria-labelledby="specs-tab">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <p class="col-auto" style="font-weight: 600">Clasificación ESRB:</p>
+                                                <p id="esrb-rating" class="col-auto p-0"></p>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <p class="col-auto" style="font-weight: 600">Metascore:</p>
+                                                <div class="col-auto p-0 row gx-0 align-items-center text-center metascore">
+                                                    <p id="metascore"></p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <p class="col-auto" style="font-weight: 600">Fecha de lanzamiento:</p>
+                                                <p id="release-date" class="col-auto p-0"></p>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
                                 <div class="tab-pane fade" id="warranty-content" role="tabpanel"
                                      aria-labelledby="warranty-tab">
                                     <p>
@@ -571,7 +601,8 @@
                     <a href="#">
                         <div class="card item-card">
                             <div class="col-auto align-self-center">
-                                <img src="img/elden%20ring%20box.png" class="card-img-top img-fluid" alt="elden ring xbxs">
+                                <img src="img/elden%20ring%20box.png" class="card-img-top img-fluid"
+                                     alt="elden ring xbxs">
                             </div>
                             <div class="col-auto card-body">
                                 <div class="item-title-wrapper text-center">
@@ -663,7 +694,8 @@
                     <a href="#">
                         <div class="card item-card">
                             <div class="col-auto align-self-center">
-                                <img src="img/elden%20ring%20box.png" class="card-img-top img-fluid" alt="elden ring xbxs">
+                                <img src="img/elden%20ring%20box.png" class="card-img-top img-fluid"
+                                     alt="elden ring xbxs">
                             </div>
                             <div class="col-auto card-body">
                                 <div class="item-title-wrapper text-center">

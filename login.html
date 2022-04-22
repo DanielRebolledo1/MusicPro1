@@ -48,7 +48,8 @@
                                 <div class="col-12 gx-0">
                                     <!-- Email input -->
                                     <div class="form-outline">
-                                        <input type="email" id="login-email" class="form-control form-control-lg custom-input"/>
+                                        <input type="email" id="login-email" maxlength="254"
+                                               class="form-control form-control-lg custom-input"/>
                                         <label class="form-label" for="login-email">Email</label>
                                         <div class="invalid-feedback">Error</div>
                                     </div>
@@ -56,7 +57,8 @@
                                 <div class="col-12 gx-0">
                                     <!-- Password input -->
                                     <div class="form-outline">
-                                        <input type="password" id="login-pw" class="form-control form-control-lg custom-input"/>
+                                        <input type="password" id="login-pw" maxlength="20"
+                                               class="form-control form-control-lg custom-input"/>
                                         <label class="form-label" for="login-pw">Contraseña</label>
                                         <button id="login-sh-btn" class="btn trailing pe-auto custom-sh-button" type="button"><i class="fa-regular fa-eye"></i></button>
                                         <div class="invalid-feedback">Error</div>
@@ -101,7 +103,7 @@
                                     <div class="row">
                                         <div class="col">
                                             <div class="form-outline">
-                                                <input type="text" id="register-name"
+                                                <input type="text" id="register-name" maxlength="40"
                                                        class="form-control form-control-lg custom-input"/>
                                                 <label class="form-label" for="register-name">Nombre</label>
                                                 <div class="invalid-feedback">Error</div>
@@ -109,7 +111,7 @@
                                         </div>
                                         <div class="col">
                                             <div class="form-outline">
-                                                <input type="text" id="register-lastname"
+                                                <input type="text" id="register-lastname" maxlength="40"
                                                        class="form-control form-control-lg custom-input"/>
                                                 <label class="form-label" for="register-lastname">Apellido</label>
                                                 <div class="invalid-feedback">Error</div>
@@ -120,7 +122,7 @@
                                 <div class="col-12 gx-0">
                                     <!-- Email input -->
                                     <div class="form-outline">
-                                        <input type="email" id="register-email"
+                                        <input type="email" id="register-email" maxlength="254"
                                                class="form-control form-control-lg custom-input"/>
                                         <label class="form-label" for="register-email">Email</label>
                                         <div class="invalid-feedback">Error</div>
@@ -129,11 +131,48 @@
                                 <div class="col-12 gx-0">
                                     <!-- Password input -->
                                     <div class="form-outline">
-                                        <input type="password" id="register-pw"
+                                        <input type="password" id="register-pw" maxlength="20"
                                                class="form-control form-control-lg custom-input"/>
                                         <label class="form-label" for="register-pw">Contraseña</label>
                                         <button id="register-sh-btn" class="btn trailing pe-auto custom-sh-button" type="button"><i class="fa-regular fa-eye"></i></button>
                                         <div class="invalid-feedback">Error</div>
+                                    </div>
+                                </div>
+                                <div class="col-12 gx-0">
+                                    <div class="row gx-0 gap-2">
+                                        <div class="col-12">
+                                            <div class="progress-bar">
+                                                <div id="pw-strength" class="pw-strength"></div>
+                                            </div>
+                                        </div>
+                                        <ul id="pw-policies" class="pw-policies list-unstyled m-0">
+                                            <li>
+                                                <span style="font-weight: bold">Debe contener:</span>
+                                                <ul class="list-unstyled">
+                                                    <li id="length-policy" class="row gx-0 gap-2 align-items-center">
+                                                        <i class="col-auto fa-solid fa-check"></i>
+                                                        <p class="col-auto">8-20 caracteres</p>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <span style="font-weight: bold">Y 2 de los siguientes aspectos:</span>
+                                                <ul class="list-unstyled">
+                                                    <li id="lowercase-policy" class="row gx-0 gap-2 align-items-center">
+                                                        <i class="col-auto fa-solid fa-check"></i>
+                                                        <p class="col-auto">Letras minúsculas</p>
+                                                    </li>
+                                                    <li id="uppercase-policy" class="row gx-0 gap-2 align-items-center">
+                                                        <i class="col-auto fa-solid fa-check"></i>
+                                                        <p class="col-auto">Letras mayúsculas</p>
+                                                    </li>
+                                                    <li id="number-policy" class="row gx-0 gap-2 align-items-center">
+                                                        <i class="col-auto fa-solid fa-check"></i>
+                                                        <p class="col-auto">Números</p>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
                                 <div class="col-12 gx-0">

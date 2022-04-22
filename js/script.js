@@ -3,20 +3,20 @@ const body = document.body;
 if (body.classList.contains('home')) {
     console.log('home')
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         const $subsEmail = $('#subs-email');
 
-        $('#subs-form').on('submit', function(e){
+        $('#subs-form').on('submit', function (e) {
             if (!checkSubsInputsOnSubmit($subsEmail.get(0))) {
                 e.preventDefault();
             }
         });
 
         $($subsEmail).on({
-            focusout: function() {
+            focusout: function () {
                 checkEmailOnFocusOut($subsEmail.get(0));
             },
-            input: function() {
+            input: function () {
                 resetInput($subsEmail.get(0));
             }
         });
@@ -176,7 +176,7 @@ if (body.classList.contains('home')) {
 if (body.classList.contains('login-register')) {
     console.log('login/register')
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         const $loginEmail = $('#login-email');
         const $loginPassword = $('#login-pw');
         const $forgotPasswordEmail = $('#forgot-pw-email');
@@ -184,74 +184,76 @@ if (body.classList.contains('login-register')) {
         const $registerLastName = $('#register-lastname');
         const $registerEmail = $('#register-email');
         const $registerPassword = $('#register-pw');
+        const passwordStrengthIndicator = document.getElementById('pw-strength');
 
-        $('#login-form').on('submit', function(e){
+        $('#login-form').on('submit', function (e) {
             if (!checkLoginInputsOnSubmit($loginEmail.get(0), $loginPassword.get(0))) {
                 e.preventDefault();
             }
         });
 
         $($loginEmail).on({
-            focusout: function() {
+            focusout: function () {
                 checkEmailOnFocusOut($loginEmail.get(0));
             },
-            input: function() {
+            input: function () {
                 resetInput($loginEmail.get(0));
             }
         });
 
-        $($loginPassword).on('input', function(){
+        $($loginPassword).on('input', function () {
             resetInput($loginPassword.get(0));
         });
 
-        $('#forgot-pw-form').on('submit', function (e){
+        $('#forgot-pw-form').on('submit', function (e) {
             if (!checkForgotPasswordInputsOnSubmit($forgotPasswordEmail.get(0))) {
                 e.preventDefault();
             }
         });
 
         $($forgotPasswordEmail).on({
-            focusout: function() {
+            focusout: function () {
                 checkEmailOnFocusOut($forgotPasswordEmail.get(0));
             },
-            input: function() {
+            input: function () {
                 resetInput($forgotPasswordEmail.get(0));
             }
         });
 
-        $('#register-form').on('submit', function (e){
+        $('#register-form').on('submit', function (e) {
             if (!checkRegisterInputsOnSubmit($registerEmail.get(0), $registerPassword.get(0),
-                $registerName.get(0), $registerLastName.get(0))) {
-                    e.preventDefault();
+                passwordStrengthIndicator, $registerName.get(0), $registerLastName.get(0))) {
+                e.preventDefault();
             }
         });
 
-        $($registerName).on('input', function(){
+        $($registerName).on('input', function () {
             resetInput($registerName.get(0));
         });
 
-        $($registerLastName).on('input', function(){
+        $($registerLastName).on('input', function () {
             resetInput($registerLastName.get(0));
         });
 
         $($registerEmail).on({
-            focusout: function() {
+            focusout: function () {
                 checkEmailOnFocusOut($registerEmail.get(0));
             },
-            input: function() {
+            input: function () {
                 resetInput($registerEmail.get(0));
             }
         });
 
-        $($registerPassword).on('input', function(){
+        $($registerPassword).on('input', function () {
             resetInput($registerPassword.get(0));
+            checkPasswordStrength($registerPassword.get(0), passwordStrengthIndicator);
         });
 
-        $('#login-sh-btn').on('click', function(){
+        $('#login-sh-btn').on('click', function () {
             togglePasswordView($loginPassword.get(0), $('#login-sh-btn').get(0));
         });
 
-        $('#register-sh-btn').on('click', function(){
+        $('#register-sh-btn').on('click', function () {
             togglePasswordView($registerPassword.get(0), $('#register-sh-btn').get(0));
         });
 
@@ -285,6 +287,8 @@ if (body.classList.contains('login-register')) {
 
         $('#pills-login-tab').on('click', function () {
             $('#register-form').get(0).reset();
+            $('#pw-policies').slideUp(400);
+            resetPasswordStrength(passwordStrengthIndicator);
             resetInput($registerEmail.get(0));
             resetInput($registerName.get(0));
             resetInput($registerLastName.get(0));
@@ -293,10 +297,10 @@ if (body.classList.contains('login-register')) {
     });
 }
 
-if (body.classList.contains('contact')){
+if (body.classList.contains('contact')) {
     console.log('contact')
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         sidebarFunctions();
 
         const contactForm = document.getElementById('contact-form');
@@ -305,7 +309,7 @@ if (body.classList.contains('contact')){
         const contactSelect = document.getElementById('contact-select');
 
         contactForm.addEventListener('submit', (e) => {
-            if(!checkContactInputsOnSubmit(contactEmail, contactMessage, contactSelect)){
+            if (!checkContactInputsOnSubmit(contactEmail, contactMessage, contactSelect)) {
                 e.preventDefault();
             }
         });
@@ -331,10 +335,11 @@ if (body.classList.contains('contact')){
 if (body.classList.contains('product')) {
     console.log('product')
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         sidebarFunctions();
+        getProductSpecs();
 
-        $(".video-cover").on("click", function() {
+        $(".video-cover").on("click", function () {
             videoStop();
             var $poster = $(this);
             var $wrapper = $poster.closest(".main-videos");
@@ -507,7 +512,7 @@ function checkForgotPasswordInputsOnSubmit(forgotPasswordEmail) {
     return checkSuccess(forgotPasswordEmail);
 }
 
-function checkRegisterInputsOnSubmit(registerEmail, registerPassword, registerName, registerLastName) {
+function checkRegisterInputsOnSubmit(registerEmail, registerPassword, passwordStrengthIndicator, registerName, registerLastName) {
     //get values from the inputs
     const emailValue = registerEmail.value.trim();
     const passwordValue = registerPassword.value.trim();
@@ -526,6 +531,8 @@ function checkRegisterInputsOnSubmit(registerEmail, registerPassword, registerNa
 
     if (passwordValue === '') {
         setErrorFor(registerPassword, 'Por favor ingrese una contraseña');
+    } else if (!checkPasswordStrength(registerPassword, passwordStrengthIndicator)) {
+        setErrorFor(registerPassword, 'La contraseña no cumple con los requisitos');
     } else {
         setSuccessFor(registerPassword);
     }
@@ -568,23 +575,23 @@ function checkContactInputsOnSubmit(contactEmail, contactMessage, contactSelect)
     const messageValue = contactMessage.value.trim();
     const selectValue = contactSelect.value.trim();
 
-    if(selectValue === '') {
+    if (selectValue === '') {
         setErrorFor(contactSelect, 'Por favor seleccione un tipo de consulta');
     } else {
         setSuccessFor(contactSelect);
     }
 
-    if(emailValue === '') {
+    if (emailValue === '') {
         //add error class
         setErrorFor(contactEmail, 'Por favor ingrese un email');
-    } else if(!isEmail(emailValue)) {
+    } else if (!isEmail(emailValue)) {
         setErrorFor(contactEmail, 'Por favor ingrese un email válido');
     } else {
         //add success class
         setSuccessFor(contactEmail);
     }
 
-    if(messageValue === '') {
+    if (messageValue === '') {
         setErrorFor(contactMessage, 'Por favor ingrese un mensaje');
     } else {
         setSuccessFor(contactMessage);
@@ -631,6 +638,81 @@ function resetInput(input) {
 
 function isEmail(email) {
     return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
+}
+
+function checkPasswordStrength(password, passwordStrengthIndicator) {
+    let passwordValue = password.value.trim();
+    let strengthCount = 0;
+    let hasLength = false;
+    const $lengthPolicyCheck = $('#length-policy i');
+    const $numberPolicyCheck = $('#number-policy i');
+    const $uppercasePolicyCheck = $('#uppercase-policy i');
+    const $lowercasePolicyCheck = $('#lowercase-policy i');
+    const $pwPolicies = $('#pw-policies');
+
+    //If password length is between 8-20
+    if (passwordValue.length > 7 && passwordValue.length < 21) {
+        $($lengthPolicyCheck).css('visibility', 'visible');
+        hasLength = true;
+    } else {
+        $($lengthPolicyCheck).css('visibility', 'hidden');
+    }
+
+    //If password contains any lowercase character
+    if (passwordValue.match(/([a-z])/)) {
+        $($lowercasePolicyCheck).css('visibility', 'visible');
+        strengthCount += 1;
+    } else {
+        $($lowercasePolicyCheck).css('visibility', 'hidden');
+    }
+
+    //If password contains any uppercase character
+    if (passwordValue.match(/([A-Z])/)) {
+        $($uppercasePolicyCheck).css('visibility', 'visible');
+        strengthCount += 1;
+    } else {
+        $($uppercasePolicyCheck).css('visibility', 'hidden');
+    }
+
+    //If password contains any number character
+    if (passwordValue.match(/([0-9])/)) {
+        $($numberPolicyCheck).css('visibility', 'visible');
+        strengthCount += 1;
+    } else {
+        $($numberPolicyCheck).css('visibility', 'hidden');
+    }
+
+    if (passwordValue !== '') {
+        if (hasLength) {
+            if (strengthCount === 1) {
+                resetPasswordStrength(passwordStrengthIndicator);
+                passwordStrengthIndicator.classList.add('weak');
+                passwordStrengthIndicator.style = "width: 66.6%";
+            } else if (strengthCount >= 2) {
+                resetPasswordStrength(passwordStrengthIndicator);
+                passwordStrengthIndicator.classList.add('good');
+                passwordStrengthIndicator.style = "width: 100%";
+                $($pwPolicies).slideUp(400);
+                return true;
+            }
+        } else {
+            resetPasswordStrength(passwordStrengthIndicator);
+            passwordStrengthIndicator.classList.add('very-weak');
+            passwordStrengthIndicator.style = "width: 33.3%";
+        }
+    } else {
+        resetPasswordStrength(passwordStrengthIndicator);
+    }
+
+    $($pwPolicies).slideDown(400);
+    return false;
+}
+
+function resetPasswordStrength(passwordStrengthIndicator) {
+    passwordStrengthIndicator.classList.remove('very-weak');
+    passwordStrengthIndicator.classList.remove('weak');
+    passwordStrengthIndicator.classList.remove('good');
+    passwordStrengthIndicator.style.width = '0';
 }
 
 function checkSuccess(input) {
@@ -749,4 +831,46 @@ function toggleViewMore(wrapper, button) {
         wrapper.classList.add("show-less");
         button.innerText = 'Ver menos';
     }
+}
+
+//Funciones de APIs
+
+function getProductSpecs() {
+    const gameName = document.getElementById('product-title').innerText;
+    /*document.getElementById('product-title').innerText*/
+    let gameAgeRating = 'Sin clasificación';
+    let gameMetascore = 'Pendiente';
+    let gameReleased = 'Sin determinar';
+
+    $.get(
+        "https://api.rawg.io/api/games?key=b4337f817a6140928baa06eddfaa532f&platforms=186,187,7&search_exact=true&search=" +
+        gameName,
+        function (data) {
+            if ($(data.results).get(0).esrb_rating != null) {
+                gameAgeRating = $(data.results).get(0).esrb_rating.name;
+            }
+            if ($(data.results).get(0).metacritic != null) {
+                gameMetascore = $(data.results).get(0).metacritic;
+            }
+            if ($(data.results).get(0).released != null) {
+                gameReleased = $(data.results).get(0).released;
+            }
+
+            let $metascore = $('#metascore');
+
+            $('#esrb-rating').html(gameAgeRating);
+            $($metascore).html(gameMetascore);
+            $('#release-date').html(gameReleased);
+
+            if (gameMetascore < 40) {
+                $($metascore).parent().addClass('bad');
+            } else if (gameMetascore >= 40 && gameMetascore < 70) {
+                $($metascore).parent().addClass('normal');
+            } else if (gameMetascore >= 70) {
+                $($metascore).parent().addClass('good');
+            } else {
+                $($metascore).parent().addClass('pending');
+            }
+        }
+    );
 }
