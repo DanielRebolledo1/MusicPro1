@@ -858,54 +858,79 @@ h5 {
 .terms {
     font-family: 'Noto Sans', sans-serif;
 }
-
-.terms ul{
-    margin: 1vh;
-    padding: 1vh;
-    margin-left: 10vh;
-    margin-right: 10vh;
-
+.terms .container h1{
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
+.terms .container h4{
+    font-size: calc(1.375rem + 1.5vw);
+    font-size: 20px;
+    padding-top: 10px;
+    color: #504f4f;
+}
+.terms .container p{
+    padding: 10px ;
+    line-height: 16px;
+}
+.terms .container ul{
+padding: 15px 0 15px 50px;
+}
+
+.terms .container li{
+    line-height: 16px;
+    padding: 10px 0;
+    }
+
 
 /*Nuestras tiendas*/
 
 .home-tiendas .container{
-    display: flex;
+
     align-items: center;
     justify-content: center;
-    height: 40vh;
-    background-color: #8083ff;
+    padding: 20px;
+    padding-left: 50px;
+    padding-right: 50px;
 }
 .home-tiendas .card-container{
+
     display: flex;
-    width: 800px;
+    
     height: auto;
-    background: #ffffff;
+    background: #f3f3f3;
     border-radius: 2px;
-    box-shadow: 1px 1px 4px 2px #00000033;
+
+    margin-bottom: 10px;
 }
 
 .descripcion{
     padding: 20px;
+    text-align: left;
+}
+
+.descripcion h2{
     text-align: center;
 }
 
-#map{
-    padding: 20px;
-    border-radius: 10%;
+iframe{
+    padding: 15px;
+    border-radius: 5%;
 }
 
-#cuerpo{
-    margin-top: 100px;
-    margin-bottom:10px;
-}
+/*Preguntas frecuentes*/
 
-#cuerpotittle {
-    margin-left: 30vh;
-    margin-right: 30vh;
+.home-PregFrec h1{
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
-
-#cuerpoparrafo {
-    margin-left: 30vh;
-    margin-right: 30vh;
+.home-PregFrec .container h4{
+    font-size: calc(1.375rem + 1.5vw);
+    font-size: 25px;
+    padding-top: 10px;
+    color: #504f4f;
+}
+.home-PregFrec .container p{
+    padding: 10px;
+    line-height: 16px;
+    padding-bottom: 15px;
 }
