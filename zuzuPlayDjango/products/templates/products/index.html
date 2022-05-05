@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -7,7 +9,7 @@
 
     <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="{% static 'products/css/style.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap"
@@ -19,7 +21,7 @@
     <div class="container-fluid fixed-top">
         <div class="row align-items-center pe-3 ps-3 header-container">
             <div class="col-4 col-md-2 order-2 order-md-1 m-md-0 me-md-auto">
-                <a href="index.html"><img src="img/logo.png" class="img-fluid header-logo" alt="logo"></a>
+                <a href="{% url 'home' %}"><img src="{% static 'products/img/logo.png' %}" class="img-fluid header-logo" alt="logo"></a>
             </div>
             <div class="col-auto col-md-auto order-1 order-md-2">
                 <button id="sidebar-open-btn" type="button" class="btn custom-btn1">
@@ -39,7 +41,7 @@
             <div class="col-4 col-md-2 order-2 order-md-4 ms-auto">
                 <div class="row justify-content-end flex-nowrap header-icons">
                     <div class="col-auto gx-1">
-                        <a href="login.html"><i class="fa-solid fa-circle-user"></i></a>
+                        <a href="{% url 'login' %}"><i class="fa-solid fa-circle-user"></i></a>
                     </div>
                     <div class="col-auto">
                         <a href="#"><i class="fa-solid fa-cart-shopping"></i></a>
@@ -140,7 +142,7 @@
             <div class="col-4 col-md-auto circle mb-3">
                 <a href="#">
                     <div class="circle-img mb-1">
-                        <img src="img/xbxs.png" class="img-fluid" alt="xbxs">
+                        <img src="{% static 'products/img/xbxs.png' %}" class="img-fluid" alt="xbxs">
                     </div>
                     <span class="two-line-wrapper">Xbox Series X/S</span>
                 </a>
@@ -148,7 +150,7 @@
             <div class="col-4 col-md-auto circle mb-3">
                 <a href="#">
                     <div class="circle-img mb-1">
-                        <img src="img/nsw.png" class="img-fluid" alt="nsw">
+                        <img src="{% static 'products/img/nsw.png' %}" class="img-fluid" alt="nsw">
                     </div>
                     <span class="two-line-wrapper">Nintendo Switch</span>
                 </a>
@@ -156,7 +158,7 @@
             <div class="col-4 col-md-auto circle mb-3">
                 <a href="#">
                     <div class="circle-img mb-1">
-                        <img src="img/ps5.png" class="img-fluid" alt="ps5">
+                        <img src="{% static 'products/img/ps5.png' %}" class="img-fluid" alt="ps5">
                     </div>
                     <span class="two-line-wrapper">Playstation 5</span>
                 </a>
@@ -164,7 +166,7 @@
             <div class="col-4 col-md-auto circle">
                 <a href="#">
                     <div class="circle-img mb-1">
-                        <img src="img/headphones.png" class="img-fluid" alt="accesorios">
+                        <img src="{% static 'products/img/headphones.png' %}" class="img-fluid" alt="accesorios">
                     </div>
                     <span class="two-line-wrapper">Accesorios</span>
                 </a>
@@ -172,7 +174,7 @@
             <div class="col-4 col-md-auto circle">
                 <a href="#">
                     <div class="circle-img mb-1">
-                        <img src="img/deals.png" class="img-fluid" alt="ofertas">
+                        <img src="{% static 'products/img/deals.png' %}" class="img-fluid" alt="ofertas">
                     </div>
                     <span class="two-line-wrapper">Ofertas de videojuegos</span>
                 </a>
@@ -180,7 +182,7 @@
             <div class="col-4 col-md-auto circle">
                 <a href="#">
                     <div class="circle-img mb-1">
-                        <img src="img/pre-order.png" class="img-fluid" alt="preventa">
+                        <img src="{% static 'products/img/pre-order.png' %}" class="img-fluid" alt="preventa">
                     </div>
                     <span class="two-line-wrapper">Preventa de videojuegos</span>
                 </a>
@@ -193,13 +195,13 @@
     <div class="swiper swiper1">
         <div class="swiper-wrapper">
             <div class="swiper-slide">
-                <a href=""><img src="img/kirby.png" class="img-fluid" alt="kirby preventa"></a>
+                <a href=""><img src="{% static 'products/img/kirby.png' %}" class="img-fluid" alt="kirby preventa"></a>
             </div>
             <div class="swiper-slide">
-                <img src="img/elden%20ring.png" class="img-fluid" alt="elden ring">
+                <img src="{% static 'products/img/elden ring.png' %}" class="img-fluid" alt="elden ring">
             </div>
             <div class="swiper-slide">
-                <img src="img/w2k22.png" class="img-fluid" alt="w2k22">
+                <img src="{% static 'products/img/w2k22.png' %}" class="img-fluid" alt="w2k22">
             </div>
         </div>
         <div class="swiper-pagination swiper-pagination1"></div>
@@ -217,25 +219,25 @@
             </div>
             <div class="col-6 col-md-auto card popular-card">
                 <a href="">
-                    <img src="img/kirby%20card.png" class="img-fluid" alt="ps5">
+                    <img src="{% static 'products/img/kirby card.png' %}" class="img-fluid" alt="ps5">
                     <h3>Kirby and the Forgotten Land</h3>
                 </a>
             </div>
             <div class="col-6 col-md-auto card popular-card">
-                <a href="product.html">
-                    <img src="img/legosw%20card.png" class="img-fluid" alt="ps5">
+                <a href="{% url 'product' %}">
+                    <img src="{% static 'products/img/legosw card.png' %}" class="img-fluid" alt="ps5">
                     <h3>LEGO Star Wars: The Skywalker Saga</h3>
                 </a>
             </div>
             <div class="col-6 col-md-auto card popular-card">
                 <a href="#">
-                    <img src="img/elden%20card.png" class="img-fluid" alt="ps5">
+                    <img src="{% static 'products/img/elden card.png' %}" class="img-fluid" alt="ps5">
                     <h3>Elden Ring</h3>
                 </a>
             </div>
             <div class="col-6 col-md-auto card popular-card">
                 <a href="#">
-                    <img src="img/hfw%20card.png" class="img-fluid" alt="ps5">
+                    <img src="{% static 'products/img/hfw card.png' %}" class="img-fluid" alt="ps5">
                     <h3>Horizon Forbidden West</h3>
                 </a>
             </div>
@@ -248,19 +250,19 @@
         <div class="row justify-content-center">
             <div class="col-auto">
                 <a href="#">
-                    <img src="img/ad%201.png" class="img-fluid" alt="ad 1">
+                    <img src="{% static 'products/img/ad 1.png' %}" class="img-fluid" alt="ad 1">
                 </a>
             </div>
             <div class="col-auto">
                 <div class="row h-100 flex-column justify-content-between">
                     <div class="col-md-auto">
                         <a href="#">
-                            <img src="img/ad%202.png" class="img-fluid" alt="ad 2">
+                            <img src="{% static 'products/img/ad 2.png' %}" class="img-fluid" alt="ad 2">
                         </a>
                     </div>
                     <div class="col-auto">
                         <a href="#">
-                            <img src="img/ad%203.png" class="img-fluid" alt="ad 3">
+                            <img src="{% static 'products/img/ad 3.png' %}" class="img-fluid" alt="ad 3">
                         </a>
                     </div>
                 </div>
@@ -279,7 +281,7 @@
                 <div class="swiper-slide">
                     <div class="card item-card">
                         <a href="#" class="col-5 col-md-auto align-self-center">
-                            <img src="img/gt7%20box.png" class="card-img-top img-fluid" alt="gt7 ps5">
+                            <img src="{% static 'products/img/gt7 box.png' %}" class="card-img-top img-fluid" alt="gt7 ps5">
                         </a>
                         <div class="col-7 col-md-auto card-body">
                             <div class="item-title-wrapper text-center">
@@ -298,7 +300,7 @@
                 <div class="swiper-slide">
                     <div class="card item-card">
                         <a href="#" class="col-5 col-md-auto align-self-center">
-                            <img src="img/hfw%20box.png" class="card-img-top img-fluid" alt="hfw ps5">
+                            <img src="{% static 'products/img/hfw box.png' %}" class="card-img-top img-fluid" alt="hfw ps5">
                         </a>
                         <div class="col-7 col-md-auto card-body">
                             <div class="item-title-wrapper text-center">
@@ -317,7 +319,7 @@
                 <div class="swiper-slide">
                     <div class="card item-card">
                         <a href="#" class="col-5 col-md-auto align-self-center">
-                            <img src="img/elden%20ring%20box.png" class="card-img-top img-fluid" alt="elden ring xbxs">
+                            <img src="{% static 'products/img/elden ring box.png' %}" class="card-img-top img-fluid" alt="elden ring xbxs">
                         </a>
                         <div class="col-7 col-md-auto card-body">
                             <div class="item-title-wrapper text-center">
@@ -336,7 +338,7 @@
                 <div class="swiper-slide">
                     <div class="card item-card">
                         <a href="#" class="col-5 col-md-auto align-self-center">
-                            <img src="img/triangle%20box.png" class="card-img-top img-fluid"
+                            <img src="{% static 'products/img/triangle box.png' %}" class="card-img-top img-fluid"
                                  alt="triangle strategy switch">
                         </a>
                         <div class="col-7 col-md-auto card-body">
@@ -356,7 +358,7 @@
                 <div class="swiper-slide">
                     <div class="card item-card">
                         <a href="#" class="col-5 col-md-auto align-self-center">
-                            <img src="img/kofxv%20box.png" class="card-img-top img-fluid" alt="kofxv xbxs">
+                            <img src="{% static 'products/img/kofxv box.png' %}" class="card-img-top img-fluid" alt="kofxv xbxs">
                         </a>
                         <div class="col-7 col-md-auto card-body">
                             <div class="item-title-wrapper text-center">
@@ -375,7 +377,7 @@
                 <div class="swiper-slide">
                     <div class="card item-card">
                         <a href="#" class="col-5 col-md-auto align-self-center">
-                            <img src="img/w2k22%20box.png" class="card-img-top img-fluid" alt="w2k22 ps5">
+                            <img src="{% static 'products/img/w2k22 box.png' %}" class="card-img-top img-fluid" alt="w2k22 ps5">
                         </a>
                         <div class="col-7 col-md-auto card-body">
                             <div class="item-title-wrapper text-center">
@@ -395,7 +397,7 @@
                 <div class="swiper-slide">
                     <div class="card item-card">
                         <a href="#" class="col-5 col-md-auto align-self-center">
-                            <img src="img/gt7%20box.png" class="card-img-top img-fluid" alt="gt7 ps5">
+                            <img src="{% static 'products/img/gt7 box.png' %}" class="card-img-top img-fluid" alt="gt7 ps5">
                         </a>
                         <div class="col-7 col-md-auto card-body">
                             <div class="item-title-wrapper text-center">
@@ -414,7 +416,7 @@
                 <div class="swiper-slide">
                     <div class="card item-card">
                         <a href="#" class="col-5 col-md-auto align-self-center">
-                            <img src="img/hfw%20box.png" class="card-img-top img-fluid" alt="hfw ps5">
+                            <img src="{% static 'products/img/hfw box.png' %}" class="card-img-top img-fluid" alt="hfw ps5">
                         </a>
                         <div class="col-7 col-md-auto card-body">
                             <div class="item-title-wrapper text-center">
@@ -433,7 +435,7 @@
                 <div class="swiper-slide">
                     <div class="card item-card">
                         <a href="#" class="col-5 col-md-auto align-self-center">
-                            <img src="img/elden%20ring%20box.png" class="card-img-top img-fluid" alt="elden ring xbxs">
+                            <img src="{% static 'products/img/elden ring box.png' %}" class="card-img-top img-fluid" alt="elden ring xbxs">
                         </a>
                         <div class="col-7 col-md-auto card-body">
                             <div class="item-title-wrapper text-center">
@@ -452,7 +454,7 @@
                 <div class="swiper-slide">
                     <div class="card item-card">
                         <a href="#" class="col-5 col-md-auto align-self-center">
-                            <img src="img/triangle%20box.png" class="card-img-top img-fluid"
+                            <img src="{% static 'products/img/triangle box.png' %}" class="card-img-top img-fluid"
                                  alt="triangle strategy switch">
                         </a>
                         <div class="col-7 col-md-auto card-body">
@@ -472,7 +474,7 @@
                 <div class="swiper-slide">
                     <div class="card item-card">
                         <a href="#" class="col-5 col-md-auto align-self-center">
-                            <img src="img/kofxv%20box.png" class="card-img-top img-fluid" alt="kofxv xbxs">
+                            <img src="{% static 'products/img/kofxv box.png' %}" class="card-img-top img-fluid" alt="kofxv xbxs">
                         </a>
                         <div class="col-7 col-md-auto card-body">
                             <div class="item-title-wrapper text-center">
@@ -491,7 +493,7 @@
                 <div class="swiper-slide">
                     <div class="card item-card">
                         <a href="#" class="col-5 col-md-auto align-self-center">
-                            <img src="img/w2k22%20box.png" class="card-img-top img-fluid" alt="w2k22 ps5">
+                            <img src="{% static 'products/img/w2k22 box.png' %}" class="card-img-top img-fluid" alt="w2k22 ps5">
                         </a>
                         <div class="col-7 col-md-auto card-body">
                             <div class="item-title-wrapper text-center">
@@ -539,7 +541,7 @@
                 <div class="swiper-slide">
                     <div class="card item-card">
                         <a href="#" class="col-5 col-md-auto align-self-center">
-                            <img src="img/ghostwire%20box.png" class="card-img-top img-fluid" alt="ghostwire ps5">
+                            <img src="{% static 'products/img/ghostwire box.png' %}" class="card-img-top img-fluid" alt="ghostwire ps5">
                         </a>
                         <div class="col-7 col-md-auto card-body">
                             <div class="item-title-wrapper text-center">
@@ -558,7 +560,7 @@
                 <div class="swiper-slide">
                     <div class="card item-card">
                         <a href="#" class="col-5 col-md-auto align-self-center">
-                            <img src="img/kirby%20box.png" class="card-img-top img-fluid" alt="kirby switch">
+                            <img src="{% static 'products/img/kirby box.png' %}" class="card-img-top img-fluid" alt="kirby switch">
                         </a>
                         <div class="col-7 col-md-auto card-body">
                             <div class="item-title-wrapper text-center">
@@ -577,7 +579,7 @@
                 <div class="swiper-slide">
                     <div class="card item-card">
                         <a href="#" class="col-5 col-md-auto align-self-center">
-                            <img src="img/sopffo%20box.png" class="card-img-top img-fluid" alt="sopffo ps5">
+                            <img src="{% static 'products/img/sopffo box.png' %}" class="card-img-top img-fluid" alt="sopffo ps5">
                         </a>
                         <div class="col-7 col-md-auto card-body">
                             <div class="item-title-wrapper text-center">
@@ -596,7 +598,7 @@
                 <div class="swiper-slide">
                     <div class="card item-card">
                         <a href="#" class="col-5 col-md-auto align-self-center">
-                            <img src="img/legosw%20box.png" class="card-img-top img-fluid" alt="lego star wars ps5">
+                            <img src="{% static 'products/img/legosw box.png' %}" class="card-img-top img-fluid" alt="lego star wars ps5">
                         </a>
                         <div class="col-7 col-md-auto card-body">
                             <div class="item-title-wrapper text-center">
@@ -615,7 +617,7 @@
                 <div class="swiper-slide">
                     <div class="card item-card">
                         <a href="#" class="col-5 col-md-auto align-self-center">
-                            <img src="img/swsports%20box.png" class="card-img-top img-fluid" alt="nsw sports">
+                            <img src="{% static 'products/img/swsports box.png' %}" class="card-img-top img-fluid" alt="nsw sports">
                         </a>
                         <div class="col-7 col-md-auto card-body">
                             <div class="item-title-wrapper text-center">
@@ -634,7 +636,7 @@
                 <div class="swiper-slide">
                     <div class="card item-card">
                         <a href="#" class="col-5 col-md-auto align-self-center">
-                            <img src="img/forspoken%20box.png" class="card-img-top img-fluid" alt="forspoken ps5">
+                            <img src="{% static 'products/img/forspoken box.png' %}" class="card-img-top img-fluid" alt="forspoken ps5">
                         </a>
                         <div class="col-7 col-md-auto card-body">
                             <div class="item-title-wrapper text-center">
@@ -654,7 +656,7 @@
                 <div class="swiper-slide">
                     <div class="card item-card">
                         <a href="#" class="col-5 col-md-auto align-self-center">
-                            <img src="img/ghostwire%20box.png" class="card-img-top img-fluid" alt="ghostwire ps5">
+                            <img src="{% static 'products/img/ghostwire box.png' %}" class="card-img-top img-fluid" alt="ghostwire ps5">
                         </a>
                         <div class="col-7 col-md-auto card-body">
                             <div class="item-title-wrapper text-center">
@@ -673,7 +675,7 @@
                 <div class="swiper-slide">
                     <div class="card item-card">
                         <a href="#" class="col-5 col-md-auto align-self-center">
-                            <img src="img/kirby%20box.png" class="card-img-top img-fluid" alt="kirby switch">
+                            <img src="{% static 'products/img/kirby box.png' %}" class="card-img-top img-fluid" alt="kirby switch">
                         </a>
                         <div class="col-7 col-md-auto card-body">
                             <div class="item-title-wrapper text-center">
@@ -692,7 +694,7 @@
                 <div class="swiper-slide">
                     <div class="card item-card">
                         <a href="#" class="col-5 col-md-auto align-self-center">
-                            <img src="img/sopffo%20box.png" class="card-img-top img-fluid" alt="sopffo ps5">
+                            <img src="{% static 'products/img/sopffo box.png' %}" class="card-img-top img-fluid" alt="sopffo ps5">
                         </a>
                         <div class="col-7 col-md-auto card-body">
                             <div class="item-title-wrapper text-center">
@@ -711,7 +713,7 @@
                 <div class="swiper-slide">
                     <div class="card item-card">
                         <a href="#" class="col-5 col-md-auto align-self-center">
-                            <img src="img/legosw%20box.png" class="card-img-top img-fluid" alt="lego star wars ps5">
+                            <img src="{% static 'products/img/legosw box.png' %}" class="card-img-top img-fluid" alt="lego star wars ps5">
                         </a>
                         <div class="col-7 col-md-auto card-body">
                             <div class="item-title-wrapper text-center">
@@ -730,7 +732,7 @@
                 <div class="swiper-slide">
                     <div class="card item-card">
                         <a href="#" class="col-5 col-md-auto align-self-center">
-                            <img src="img/swsports%20box.png" class="card-img-top img-fluid" alt="nsw sports">
+                            <img src="{% static 'products/img/swsports box.png' %}" class="card-img-top img-fluid" alt="nsw sports">
                         </a>
                         <div class="col-7 col-md-auto card-body">
                             <div class="item-title-wrapper text-center">
@@ -749,7 +751,7 @@
                 <div class="swiper-slide">
                     <div class="card item-card">
                         <a href="#" class="col-5 col-md-auto align-self-center">
-                            <img src="img/forspoken%20box.png" class="card-img-top img-fluid" alt="forspoken ps5">
+                            <img src="{% static 'products/img/forspoken box.png' %}" class="card-img-top img-fluid" alt="forspoken ps5">
                         </a>
                         <div class="col-7 col-md-auto card-body">
                             <div class="item-title-wrapper text-center">
@@ -818,23 +820,23 @@
             <div class="col-auto col-sm-6">
                 <div class="row gap-3 justify-content-center justify-content-sm-end shortcuts">
                     <div class="col-auto">
-                        <a href="terms.html"><h4>Términos y condiciones</h4></a>
+                        <a href="{% url 'terms' %}"><h4>Términos y condiciones</h4></a>
                     </div>
                     <div class="col-auto">
-                        <a href="questions.html"><h4>Preguntas frecuentes</h4></a>
+                        <a href="{% url 'questions' %}"><h4>Preguntas frecuentes</h4></a>
                     </div>
                     <div class="col-auto">
-                        <a href="stores.html"><h4>Nuestras tiendas</h4></a>
+                        <a href="{% url 'stores' %}"><h4>Nuestras tiendas</h4></a>
                     </div>
                     <div class="col-auto">
-                        <a href="contact.html"><h4>Contacto</h4></a>
+                        <a href="{% url 'contact' %}"><h4>Contacto</h4></a>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row justify-content-center">
             <div class="col-md-auto gx-0">
-                <img src="img/footer%20galaxy.png" class="img-fluid" alt="galaxy">
+                <img src="{% static 'products/img/footer galaxy.png' %}" class="img-fluid" alt="galaxy">
             </div>
         </div>
     </div>
@@ -873,6 +875,6 @@
 <script src="https://kit.fontawesome.com/777d474a1b.js" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.js"></script>
 <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
-<script src="js/script.js"></script>
+<script src="{% static 'products/js/script.js' %}"></script>
 </body>
 </html>
