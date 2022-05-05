@@ -21,7 +21,7 @@ if (body.classList.contains('home')) {
             }
         });
 
-        sidebarFunctions();
+        sidebarMenuFunctions();
     });
 
     //Carousels configuration (Swiper)
@@ -301,7 +301,7 @@ if (body.classList.contains('contact')) {
     console.log('contact')
 
     $(document).ready(function () {
-        sidebarFunctions();
+        sidebarMenuFunctions();
 
         const contactForm = document.getElementById('contact-form');
         const contactEmail = document.getElementById('contact-email');
@@ -336,7 +336,7 @@ if (body.classList.contains('product')) {
     console.log('product')
 
     $(document).ready(function () {
-        sidebarFunctions();
+        sidebarMenuFunctions();
         getProductSpecs();
 
         $(".video-cover").on("click", function () {
@@ -466,6 +466,185 @@ if (body.classList.contains('product')) {
                 slidesPerGroup: 1,
             },
         }
+    });
+}
+
+if (body.classList.contains('catalog')) {
+    console.log('catalog')
+
+    $(document).ready(function (node, child) {
+        sidebarMenuFunctions();
+
+        const $sidebar = $('#cat-sb');
+        const $sidebarContainer = $('#cat-sb-container');
+        const filterShowIcon1 = document.getElementById('filter-show-icon-1');
+        const filterShowIcon2 = document.getElementById('filter-show-icon-2');
+        const filterShowIcon3 = document.getElementById('filter-show-icon-3');
+
+        $('#cat-sb-open-btn').on('click', function () {
+            $($sidebarContainer).show();
+            $($sidebar).show("slide", 300);
+            $($sidebar).css('overflow', 'auto');
+            $('body').css('overflow', 'hidden');
+        });
+
+        $('#cat-sb-close-btn').on('click', function () {
+            $($sidebarContainer).hide("fade", 300);
+            $($sidebar).hide("slide", 300);
+            $('body').css('overflow', 'auto');
+
+            if (filterShowIcon1.classList.contains('hide')) {
+                toggleCategoryShow($('#filter-1-sub'), filterShowIcon1);
+            }
+
+            if (filterShowIcon2.classList.contains('hide')) {
+                toggleCategoryShow($('#filter-2-sub'), filterShowIcon2);
+            }
+
+            if (filterShowIcon3.classList.contains('hide')) {
+                toggleCategoryShow($('#filter-3-sub'), filterShowIcon3);
+            }
+        });
+
+        $('#cat-sb-bg').on('click', function () {
+            $('#cat-sb-close-btn').click();
+        });
+
+        $('#filter-1-btn').on('click', function () {
+            toggleCategoryShow($('#filter-1-sub'), filterShowIcon1);
+        });
+
+        $('#filter-2-btn').on('click', function () {
+            toggleCategoryShow($('#filter-2-sub'), filterShowIcon2);
+        });
+
+        $('#filter-3-btn').on('click', function () {
+            toggleCategoryShow($('#filter-3-sub'), filterShowIcon3);
+        });
+
+        // Create a condition that targets viewports at least 768px wide
+        const mediaQuery = window.matchMedia('(min-width: 768px)');
+
+        function handleViewportChange(e) {
+            // Check if the media query is true
+            if (e.matches) {
+                $sidebar.removeAttr('style');
+                $sidebarContainer.removeAttr('style');
+                $('body').css('overflow', 'auto');
+            }
+        }
+
+        // Register event listener
+        mediaQuery.addListener(handleViewportChange);
+
+        // Initial check
+        handleViewportChange(mediaQuery);
+
+        // Pagination
+        const productList = Array.from(document.querySelectorAll('#cat-products>a'));
+        const pageButtons = document.getElementsByClassName('page-btn');
+        $firstBtn = $('#first-page');
+        $lastBtn = $('#last-page');
+        let pageCount = pageButtons.length;
+        let productCount = productList.length;
+        let limitPerPage = 10;
+        let pageTotal = Math.ceil(productCount / limitPerPage);
+        let currentPage = parseInt(document.getElementsByClassName('page-item active')[0].innerText);
+
+        checkPage(currentPage);
+
+        while(pageCount !== pageTotal){
+            let pageNumber = pageCount + 1;
+            let buttonFormat = '<li class="page-item">' +
+                '<button class="page-link page-btn">' + pageNumber +
+                '</button></li>'
+            $(buttonFormat).insertBefore($($lastBtn).parent(), child);
+
+            pageCount += 1;
+        }
+
+        function checkPage(currentPage) {
+            hideProducts();
+
+            $($firstBtn).parent().toggleClass("disabled", currentPage === 1);
+            $($lastBtn).parent().toggleClass("disabled", currentPage === pageTotal);
+
+            for (let i = 0; i < productList.length; i += limitPerPage) {
+                const pageProducts = productList.slice(i, i + limitPerPage);
+                if (i === (currentPage-1)*limitPerPage){
+                    pageProducts.forEach(showProducts);
+                }
+            }
+        }
+
+        function showProducts(item) {
+            for (let i = 0; i < productList.length; i += 1) {
+                if(item === productList[i]) {
+                    $(productList[i]).show('fade', 200);
+                }
+            }
+        }
+
+        function hideProducts() {
+            for (let i = 0; i < productList.length; i += 1) {
+                $(productList[i]).removeAttr('style');
+            }
+        }
+
+        for (let i = 0; i < pageButtons.length; i += 1) {
+            pageButtons[i].addEventListener("click", function(){
+                let previousPage = currentPage;
+
+                document.getElementsByClassName('page-item active')[0].classList.remove('active');
+                pageButtons[i].parentElement.classList.add('active');
+
+                currentPage = parseInt(document.getElementsByClassName('page-item active')[0].innerText);
+
+                if (currentPage!==previousPage){
+                    checkPage(currentPage);
+                }
+
+                scrollToTop();
+            });
+        }
+
+        $($firstBtn).on("click", function(){
+            currentPage = 1;
+            checkPage(currentPage);
+            document.getElementsByClassName('page-item active')[0].classList.remove('active');
+            pageButtons[0].parentElement.classList.add('active');
+        });
+
+        $($lastBtn).on("click", function(){
+            currentPage = pageTotal;
+            checkPage(currentPage);
+            document.getElementsByClassName('page-item active')[0].classList.remove('active');
+            pageButtons[currentPage-1].parentElement.classList.add('active');
+        });
+    });
+}
+
+if (body.classList.contains('questions')) {
+    console.log('questions')
+
+    $(document).ready(function () {
+        sidebarMenuFunctions();
+    });
+}
+
+if (body.classList.contains('stores')) {
+    console.log('stores')
+
+    $(document).ready(function () {
+        sidebarMenuFunctions();
+    });
+}
+
+if (body.classList.contains('terms')) {
+    console.log('terms')
+
+    $(document).ready(function () {
+        sidebarMenuFunctions();
     });
 }
 
@@ -747,7 +926,7 @@ function toggleCategoryShow($category, icon) {
 }
 
 //Funciones del sidebar
-function sidebarFunctions() {
+function sidebarMenuFunctions() {
     const $sidebar = $('#sidebar');
     const $sidebarContainer = $('#sidebar-container');
     const categoryShowIcon1 = document.getElementById('show-icon-1')
@@ -873,4 +1052,10 @@ function getProductSpecs() {
             }
         }
     );
+}
+
+//Ir arriba
+function scrollToTop() {
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 }
