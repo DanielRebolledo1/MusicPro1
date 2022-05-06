@@ -1,7 +1,7 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -129,8 +129,9 @@
                 <a href="#">Ofertas</a>
                 <hr>
                 <p class="sidebar-subtitle">Soporte</p>
-                <a href="#">Contacto</a>
-                <a href="#">Preguntas frecuentes</a>
+                <a href="{% url 'contact' %}">Contacto</a>
+                <a href="{% url 'questions' %}">Preguntas frecuentes</a>
+                <a href="{% url 'stores' %}">Nuestras tiendas</a>
             </nav>
         </div>
     </div>
