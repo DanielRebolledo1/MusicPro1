@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +7,7 @@
     <title>Nuestras tiendas : zuzuPlay</title>
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="../../static/products/css/style.css">
+    <link rel="stylesheet" href="{% static 'products/css/style.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
@@ -17,7 +18,7 @@
     <div class="container-fluid fixed-top">
         <div class="row align-items-center pe-3 ps-3 header-container">
             <div class="col-4 col-md-2 order-2 order-md-1 m-md-0 me-md-auto">
-                <a href="index.html"><img src="../../static/products/img/logo.png" class="img-fluid header-logo" alt="logo"></a>
+                <a href="{% url 'home' %}"><img src="{% static 'products/img/logo.png' %}" class="img-fluid header-logo" alt="logo"></a>
             </div>
             <div class="col-auto col-md-auto order-1 order-md-2">
                 <button id="sidebar-open-btn" type="button" class="btn custom-btn1">
@@ -37,7 +38,7 @@
             <div class="col-4 col-md-2 order-2 order-md-4 ms-auto">
                 <div class="row justify-content-end flex-nowrap header-icons">
                     <div class="col-auto gx-1">
-                        <a href="login.html"><i class="fa-solid fa-circle-user"></i></a>
+                        <a href="{% url 'login' %}"><i class="fa-solid fa-circle-user"></i></a>
                     </div>
                     <div class="col-auto">
                         <a href="#"><i class="fa-solid fa-cart-shopping"></i></a>
@@ -221,23 +222,23 @@
             <div class="col-auto col-sm-6">
                 <div class="row gap-3 justify-content-center justify-content-sm-end shortcuts">
                     <div class="col-auto">
-                        <a href="terms.html"><h4>Términos y condiciones</h4></a>
+                        <a href="{% url 'terms' %}"><h4>Términos y condiciones</h4></a>
                     </div>
                     <div class="col-auto">
-                        <a href="questions.html"><h4>Preguntas frecuentes</h4></a>
+                        <a href="{% url 'question' %}"><h4>Preguntas frecuentes</h4></a>
                     </div>
                     <div class="col-auto">
-                        <a href="stores.html"><h4>Nuestras tiendas</h4></a>
+                        <a href="{% url 'stores' %}"><h4>Nuestras tiendas</h4></a>
                     </div>
                     <div class="col-auto">
-                        <a href="contact.html"><h4>Contacto</h4></a>
+                        <a href="{% url 'contact' %}"><h4>Contacto</h4></a>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row justify-content-center">
             <div class="col-md-auto gx-0">
-                <img src="../../static/products/img/footer%20galaxy.png" class="img-fluid" alt="galaxy">
+                <img src="{% static 'products/img/footer galaxy.png' %}" class="img-fluid" alt="galaxy">
             </div>
         </div>
     </div>
@@ -250,6 +251,6 @@
 <script src="https://kit.fontawesome.com/777d474a1b.js" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.js"></script>
 <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
-<script src="../../static/products/js/script.js"></script>
+<script src="{% static 'products/js/script.js' %}"></script>
 </body>
 </html>
