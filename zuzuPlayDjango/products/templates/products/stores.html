@@ -1,4 +1,5 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,6 +49,91 @@
         </div>
     </div>
 </header>
+<!--Menu lateral-->
+<section>
+    <div id="sidebar-container" class="container-fluid">
+        <div id="sidebar-bg" class="w-100 h-100"></div>
+        <div id="sidebar" class="w-100 h-100">
+            <div class="row justify-content-between align-items-center m-0 mb-2 sidebar-header">
+                <div class="col-auto">
+                    <p>Tienda</p>
+                </div>
+                <div class="col-auto">
+                    <button id="sidebar-close-btn" type="button" class="btn custom-btn1"><i class="fa-solid fa-x"></i>
+                    </button>
+                </div>
+            </div>
+            <nav class="nav flex-column sidebar-content">
+                <p class="sidebar-subtitle">Categorías</p>
+                <button type="button" id="category-1-btn" class="row gx-0 custom-btn1">
+                    <span class="col-auto">Videojuegos</span>
+                    <span class="col-auto ms-auto">
+                        <i id="show-icon-1" class="show-icon fa-solid fa-angle-down"></i>
+                    </span>
+                </button>
+                <ul id="category-1-sub" class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Playstation 5</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Xbox Series X/S</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Nintendo Switch</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Ver todo</a>
+                    </li>
+                </ul>
+                <button type="button" id="category-2-btn" class="row gx-0 custom-btn1">
+                    <span class="col-auto">Consolas</span>
+                    <span class="col-auto ms-auto">
+                        <i id="show-icon-2" class="show-icon fa-solid fa-angle-down"></i>
+                    </span>
+                </button>
+                <ul id="category-2-sub" class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Playstation 5</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Xbox Series X/S</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Nintendo Switch</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Ver todo</a>
+                    </li>
+                </ul>
+                <button type="button" id="category-3-btn" class="row gx-0 custom-btn1">
+                    <span class="col-auto">Accesorios</span>
+                    <span class="col-auto ms-auto">
+                        <i id="show-icon-3" class="show-icon fa-solid fa-angle-down"></i>
+                    </span>
+                </button>
+                <ul id="category-3-sub" class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Controles</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Audífonos Gamer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Ver todo</a>
+                    </li>
+                </ul>
+                <p class="sidebar-subtitle">Más</p>
+                <a href="#">Próximos lanzamientos</a>
+                <a href="#">Ofertas</a>
+                <hr>
+                <p class="sidebar-subtitle">Soporte</p>
+                <a href="{% url 'contact' %}">Contacto</a>
+                <a href="{% url 'questions' %}">Preguntas frecuentes</a>
+                <a href="{% url 'stores' %}">Nuestras tiendas</a>
+            </nav>
+        </div>
+    </div>
+</section>
 <!--Tiendas-->
 <div class="container-fluid mt-5">
     <div class="row justify-content-center">
@@ -225,7 +311,7 @@
                         <a href="{% url 'terms' %}"><h4>Términos y condiciones</h4></a>
                     </div>
                     <div class="col-auto">
-                        <a href="{% url 'question' %}"><h4>Preguntas frecuentes</h4></a>
+                        <a href="{% url 'questions' %}"><h4>Preguntas frecuentes</h4></a>
                     </div>
                     <div class="col-auto">
                         <a href="{% url 'stores' %}"><h4>Nuestras tiendas</h4></a>
