@@ -8,11 +8,10 @@ from .forms import SuscriptorForm
 # Create your views here.
 def home(request):
     categorias = Categoria.objects.all()
-    filtroCat = ['Juegos', 'Consolas']
     subcategorias = Subcategoria.objects.all()
     for sub in subcategorias:
-        for cat in filtroCat:
-            sub.nombreSubcategoria = sub.nombreSubcategoria.replace(cat, "").strip()
+        for cat in categorias:
+            sub.nombreSubcategoria = sub.nombreSubcategoria.replace(cat.nombreCategoria, "").strip()
     nuevosProductos = Producto.objects.filter(fechaLanProducto__lt=datetime.date.today()).order_by('-fechaLanProducto')[:12]
     productosPreventa = Producto.objects.filter(fechaLanProducto__gt=datetime.date.today()).order_by('fechaLanProducto')[:12]
     datos = {

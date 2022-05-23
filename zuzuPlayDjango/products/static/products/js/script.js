@@ -659,7 +659,9 @@ if (body.classList.contains('admin')) {
     console.log('admin')
 
     $(document).ready(function () {
+        let $newProductForm = $('#new-product-form');
         let $newProductSearch = $('#new-product-search');
+        let $newProductImg = $('#new-product-img');
         let $newProductName = $('#new-product-name');
         let $newProductDate = $('#new-product-date');
         let $newProductPrice = $('#new-product-price');
@@ -667,6 +669,7 @@ if (body.classList.contains('admin')) {
         let $newProductSubcategory = $('#new-product-subcategory');
         let $newProductPlatform = $('#new-product-platform');
 
+        let $editProductForm = $('#edit-product-form');
         let $editProductSearch = $('#edit-product-search');
         let $editProductId = $('#edit-product-id');
         let $editProductName = $('#edit-product-name');
@@ -676,17 +679,59 @@ if (body.classList.contains('admin')) {
         let $editProductSubcategory = $('#edit-product-subcategory');
         let $editProductPlatform = $('#edit-product-platform');
 
+        $newProductForm.on('submit', function (e) {
+            if (checkNewProductInputsOnSubmit($newProductName.get(0), $newProductImg.get(0), $newProductDate.get(0),
+                $newProductPrice.get(0), $newProductBrand.get(0), $newProductSubcategory.get(0),
+                $newProductPlatform.get(0))) {
+            }
+            e.preventDefault();
+        });
+
+        $("#new-product-form input").each(function() {
+            $(this).on('input', function () {
+                resetInput($(this).get(0));
+            });
+        });
+
+        $("#new-product-form select").each(function() {
+            $(this).on('change', function () {
+                resetInput($(this).get(0));
+            });
+        });
 
         $('#reset-new-form-btn').on('click', function () {
             $newProductSearch.val('');
             $('#new-product-form').get(0).reset();
             resetInput($newProductName.get(0));
+            resetInput($newProductImg.get(0));
             resetInput($newProductDate.get(0));
             $newProductDate.css('opacity',  0);
             resetInput($newProductPrice.get(0));
             resetInput($newProductBrand.get(0));
             resetInput($newProductSubcategory.get(0));
             resetInput($newProductPlatform.get(0));
+        });
+
+        $editProductForm.on('submit', function (e) {
+            if ($editProductId.val() !== ''){
+                if (checkEditProductInputsOnSubmit($editProductName.get(0), $editProductDate.get(0),
+                $editProductPrice.get(0), $editProductBrand.get(0))) {
+
+                }
+            }
+            e.preventDefault();
+        });
+
+        $("#edit-product-form input").each(function() {
+            $(this).on('input', function () {
+                resetInput($(this).get(0));
+            });
+        });
+
+        $("#edit-product-form select").each(function() {
+            $(this).on('change', function () {
+                resetInput($(this).get(0));
+            });
         });
 
         $newProductSearch.autocomplete({
@@ -904,6 +949,96 @@ function checkContactInputsOnSubmit(contactEmail, contactMessage, contactSelect)
     }
 
     return checkSuccess(contactEmail) && checkSuccess(contactMessage) && checkSuccess(contactSelect);
+}
+
+function checkNewProductInputsOnSubmit(newName, newImg, newDate, newPrice, newBrand, newSubcategory, newPlatform) {
+    //get values from the inputs
+    const nameValue = newName.value.trim();
+    const imgValue = newImg.value.trim();
+    const dateValue = newDate.value.trim();
+    const priceValue = newPrice.value.trim();
+    const brandValue = newBrand.value.trim();
+    const subcategoryValue = newSubcategory.value.trim();
+    const platformValue = newPlatform.value.trim();
+
+    if (nameValue === '') {
+        setErrorFor(newName, 'Por favor ingrese un nombre');
+    } else {
+        setSuccessFor(newName);
+    }
+
+    if (imgValue === '') {
+        setErrorFor(newImg, 'Por favor seleccione una imagen');
+    } else {
+        setSuccessFor(newImg);
+    }
+
+    if (dateValue === '') {
+        setErrorFor(newDate, 'Por favor seleccione una fecha');
+    } else {
+        setSuccessFor(newDate);
+    }
+
+    if (priceValue === '') {
+        setErrorFor(newPrice, 'Por favor ingrese el precio');
+    } else {
+        setSuccessFor(newPrice);
+    }
+
+    if (brandValue === '') {
+        setErrorFor(newBrand, 'Por favor seleccione una marca');
+    } else {
+        setSuccessFor(newBrand);
+    }
+
+    if (subcategoryValue === '') {
+        setErrorFor(newSubcategory, 'Por favor seleccione una subcategoría');
+    } else {
+        setSuccessFor(newSubcategory);
+    }
+
+    if (platformValue === '') {
+        setErrorFor(newPlatform, 'Por favor seleccione una plataforma');
+    } else {
+        setSuccessFor(newPlatform);
+    }
+
+    return checkSuccess(newName) && checkSuccess(newImg) && checkSuccess(newDate) && checkSuccess(newPrice) &&
+        checkSuccess(newBrand) && checkSuccess(newSubcategory) && checkSuccess(newPlatform);
+}
+
+function checkEditProductInputsOnSubmit(editName, editDate, editPrice, editBrand) {
+    //get values from the inputs
+    const nameValue = editName.value.trim();
+    const dateValue = editDate.value.trim();
+    const priceValue = editPrice.value.trim();
+    const brandValue = editBrand.value.trim();
+
+    if (nameValue === '') {
+        setErrorFor(editName, 'Por favor ingrese un nombre');
+    } else {
+        setSuccessFor(editName);
+    }
+
+    if (dateValue === '') {
+        setErrorFor(editDate, 'Por favor seleccione una fecha');
+    } else {
+        setSuccessFor(editDate);
+    }
+
+    if (priceValue === '') {
+        setErrorFor(editPrice, 'Por favor ingrese el precio');
+    } else {
+        setSuccessFor(editPrice);
+    }
+
+    if (brandValue === '') {
+        setErrorFor(editBrand, 'Por favor seleccione una marca');
+    } else {
+        setSuccessFor(editBrand);
+    }
+
+    return checkSuccess(editName) && checkSuccess(editDate) && checkSuccess(editPrice) && checkSuccess(editBrand);
 }
 
 function checkEmailOnFocusOut(email) {
