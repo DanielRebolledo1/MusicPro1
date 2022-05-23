@@ -1,17 +1,49 @@
-from django.shortcuts import render
+import datetime
 
+from django.http import JsonResponse
+from django.shortcuts import render
+from .models import Producto, Categoria, Subcategoria
+from .forms import SuscriptorForm
 
 # Create your views here.
 def home(request):
-    return render(request, "products/index.html")
+    categorias = Categoria.objects.all()
+    filtroCat = ['Juegos', 'Consolas']
+    subcategorias = Subcategoria.objects.all()
+    for sub in subcategorias:
+        for cat in filtroCat:
+            sub.nombreSubcategoria = sub.nombreSubcategoria.replace(cat, "").strip()
+    nuevosProductos = Producto.objects.filter(fechaLanProducto__lt=datetime.date.today()).order_by('-fechaLanProducto')[:12]
+    productosPreventa = Producto.objects.filter(fechaLanProducto__gt=datetime.date.today()).order_by('fechaLanProducto')[:12]
+    datos = {
+        'categorias': categorias,
+        'subcategorias': subcategorias,
+        'nuevosProductos': nuevosProductos,
+        'productosPreventa': productosPreventa,
+        'form': SuscriptorForm()
+    }
 
+    if(request.method == 'POST'):
+        form = SuscriptorForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False})
 
-def login(request):
-    return render(request, "products/login.html")
+    return render(request, "products/index.html", datos)
 
 
 def product(request):
-    return render(request, "products/product.html")
+    categorias = Categoria.objects.all()
+    subcategorias = Subcategoria.objects.all()
+    recomendados = Producto.objects.filter(fechaLanProducto__lt=datetime.date.today()).order_by('?')[:18]
+    datos = {
+        'categorias': categorias,
+        'subcategorias': subcategorias,
+        'recomendados': recomendados
+    }
+    return render(request, "products/product.html", datos)
 
 
 def catalog(request):
