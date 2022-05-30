@@ -21,7 +21,7 @@ class Categoria(models.Model):
 
 class Subcategoria(models.Model):
     idSubcategoria = models.CharField(primary_key=True, max_length=4, verbose_name='Id')
-    nombreSubcategoria = models.CharField(max_length=50, verbose_name='Nombre')
+    nombreSubcategoria = models.CharField(max_length=50, unique=True, verbose_name='Nombre')
     estadoSubcategoria = models.IntegerField(default=1, verbose_name='Estado')
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, verbose_name='Categoría')
 

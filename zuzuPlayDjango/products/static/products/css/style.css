@@ -123,6 +123,17 @@ h5 {
     color: rgb(128, 131, 255);
 }
 
+.custom-btn2.red, .custom-btn2.red:active {
+    background-color: #FF4655;
+    border: 1px solid #FF4655;
+}
+
+.custom-btn2.red:hover {
+    border: 1px solid #FF4655;
+    background-color: transparent;
+    color: #FF4655;
+}
+
 /*Navbar Header*/
 .navbar-header {
     min-height: 75px;
@@ -1168,6 +1179,19 @@ h5 {
 
 .admin .product-img.visible {
     display: block;
+}
+
+.admin .post {
+    font-weight: bold;
+    color: #595959;
+}
+
+.admin .post.success {
+    color: #66CC33;
+}
+
+.admin .post.error {
+    color: #f93154;
 }
 
 input[type=date][disabled] {

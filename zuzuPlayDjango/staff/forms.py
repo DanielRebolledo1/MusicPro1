@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 from products.models import Producto, Unidad
-from django.forms.widgets import NumberInput
+from django.forms.widgets import NumberInput, HiddenInput
 
 
 class NuevoProductoForm(ModelForm):
@@ -37,7 +37,7 @@ class EditarProductoForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['idProducto'].widget.attrs.update(
-            {'id': 'edit-product-id', 'class': 'form-control form-control-lg custom-input', 'disabled': ''})
+            {'id': 'edit-product-id', 'class': 'form-control form-control-lg custom-input', 'readonly': ''})
         self.fields['nombreProducto'].widget.attrs.update(
             {'id': 'edit-product-name', 'class': 'form-control form-control-lg custom-input', 'disabled': ''})
         self.fields['imagenProducto'].widget.attrs.update(
@@ -49,7 +49,5 @@ class EditarProductoForm(ModelForm):
             {'id': 'edit-product-price', 'class': 'form-control form-control-lg custom-input', 'disabled': ''})
         self.fields['marca'].widget.attrs.update(
             {'id': 'edit-product-brand', 'class': 'form-select form-select-lg custom-select', 'disabled': ''})
-        self.fields['subcategoria'].widget.attrs.update(
-            {'id': 'edit-product-subcategory', 'class': 'form-select form-select-lg custom-select', 'disabled': ''})
-        self.fields['plataforma'].widget.attrs.update(
-            {'id': 'edit-product-platform', 'class': 'form-select form-select-lg custom-select', 'disabled': ''})
+        self.fields['subcategoria'].widget = HiddenInput(attrs=({'id': 'edit-product-subcategory'}))
+        self.fields['plataforma'].widget = HiddenInput(attrs=({'id': 'edit-product-platform'}))

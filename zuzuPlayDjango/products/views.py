@@ -12,8 +12,8 @@ def home(request):
     for sub in subcategorias:
         for cat in categorias:
             sub.nombreSubcategoria = sub.nombreSubcategoria.replace(cat.nombreCategoria, "").strip()
-    nuevosProductos = Producto.objects.filter(fechaLanProducto__lt=datetime.date.today()).order_by('-fechaLanProducto')[:12]
-    productosPreventa = Producto.objects.filter(fechaLanProducto__gt=datetime.date.today()).order_by('fechaLanProducto')[:12]
+    nuevosProductos = Producto.objects.filter(fechaLanProducto__lt=datetime.date.today(), estadoProducto=1).order_by('-fechaLanProducto')[:12]
+    productosPreventa = Producto.objects.filter(fechaLanProducto__gt=datetime.date.today(), estadoProducto=1).order_by('fechaLanProducto')[:12]
     datos = {
         'categorias': categorias,
         'subcategorias': subcategorias,
@@ -36,7 +36,7 @@ def home(request):
 def product(request):
     categorias = Categoria.objects.all()
     subcategorias = Subcategoria.objects.all()
-    recomendados = Producto.objects.filter(fechaLanProducto__lt=datetime.date.today()).order_by('?')[:18]
+    recomendados = Producto.objects.filter(fechaLanProducto__lt=datetime.date.today(), estadoProducto=1).order_by('?')[:18]
     datos = {
         'categorias': categorias,
         'subcategorias': subcategorias,
