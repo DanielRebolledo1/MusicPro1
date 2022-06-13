@@ -1,7 +1,11 @@
-from django.http import JsonResponse, QueryDict
+from django.http import JsonResponse
 from django.shortcuts import render
-from products.models import Producto, Subcategoria, Marca, Plataforma
-from .forms import NuevoProductoForm, EditarProductoForm, NuevaMarcaForm,NuevaSubcategoriaForm, NuevaPlataformaForm
+from rest_framework import status
+from rest_framework.response import Response
+
+from products.models import Producto, Marca
+from .forms import NuevoProductoForm, EditarProductoForm, NuevaMarcaForm, NuevaSubcategoriaForm, NuevaPlataformaForm
+from rest_categoriaPromo.serializers import CategoriaPromoSerializer
 
 
 # Create your views here.
@@ -9,9 +13,9 @@ def administration(request):
     datos = {
         'nuevoProductoForm': NuevoProductoForm(),
         'editarProductoForm': EditarProductoForm(),
-        'nuevaMarcaForm' : NuevaMarcaForm(),
-        'nuevaSubcategoriaForm' : NuevaSubcategoriaForm(),
-        'nuevaPlataformaForm' : NuevaPlataformaForm()
+        'nuevaMarcaForm': NuevaMarcaForm(),
+        'nuevaSubcategoriaForm': NuevaSubcategoriaForm(),
+        'nuevaPlataformaForm': NuevaPlataformaForm()
 
     }
 
@@ -83,7 +87,7 @@ def administration(request):
             if form.is_valid():
                 marca = form.save(commit=False)
                 count = Marca.objects.all().count()
-                idMarca = count + 1 
+                idMarca = count + 1
                 marca.idMarca = idMarca
                 marca.save()
                 return JsonResponse({'success': True})
@@ -96,17 +100,14 @@ def administration(request):
                 return JsonResponse({'exists': True})
             else:
                 return JsonResponse({'exists': False})
-
-
         elif action == 'newSubcategory':
             form = NuevaSubcategoriaForm(request.POST)
             if form.is_valid():
-                Subcategor = form.save(commit=False)
-                Subcategor.save()
+                subcategoria = form.save(commit=False)
+                subcategoria.save()
                 return JsonResponse({'success': True})
             else:
                 return JsonResponse({'success': False, 'errors': form.errors})
-
         elif action == 'SubcategoryExists':
             name = request.POST['name']
             count = Marca.objects.filter(nombreMarca=name).count()
@@ -114,17 +115,14 @@ def administration(request):
                 return JsonResponse({'exists': True})
             else:
                 return JsonResponse({'exists': False})
-
         elif action == 'newPlatform':
             form = NuevaPlataformaForm(request.POST)
             if form.is_valid():
-                plat = form.save(commit=False)
-                plat.save()
+                plataforma = form.save(commit=False)
+                plataforma.save()
                 return JsonResponse({'success': True})
             else:
                 return JsonResponse({'success': False, 'errors': form.errors})
-
-
         elif action == 'platformExists':
             name = request.POST['name']
             count = Marca.objects.filter(nombreMarca=name).count()
@@ -132,6 +130,13 @@ def administration(request):
                 return JsonResponse({'exists': True})
             else:
                 return JsonResponse({'exists': False})
+        elif action == 'newPromoCategory':
+            serializer = CategoriaPromoSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return JsonResponse({'success': True}) and Response(serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                return JsonResponse({'success': False, 'errors': serializer.errors}) and Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
             return JsonResponse({'error': 'Error en POST: Acción no definida'})
 
