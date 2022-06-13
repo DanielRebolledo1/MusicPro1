@@ -669,6 +669,13 @@ if (body.classList.contains('admin')) {
         let $newProductBrand = $('#new-product-brand');
         let $newProductSubcategory = $('#new-product-subcategory');
         let $newProductPlatform = $('#new-product-platform');
+        let $newBrandName = $('#new-brand-name');
+        let $newSubcategoryId = $('#new-subcategory-id');
+        let $newSubcategoryName = $('#new-subcategory-name');
+        let $newSubcategoryCategory = $('#new-subcategory-category');
+        let $newPlatformId = $('#new-platform-id');
+        let $newPlatformName = $('#new-platform-name');
+
 
         let $editProductForm = $('#edit-product-form');
         let $editProductResponse = $('#edit-product-response');
@@ -687,11 +694,119 @@ if (body.classList.contains('admin')) {
 
         let $editProductBtn = $('#edit-product-btn');
         let $deleteProductBtn = $('#delete-product-btn');
+        let $newBrandBtn = $('#new-product-brand-confirm-btn');
+        let $newSubcategoryBtn = $('#new-product-subcategory-confirm-btn');
+        let $newPlatformBtn = $('#new-product-platform-confirm-btn');
+        let $newBrandForm = $('#new-product-brand-form');
+        let $newSubcategoryForm = $('#new-product-subcategory-form');
+        let $newPlatformForm = $('#new-product-platform-form');
+
 
         let product = '';
         let formData = '';
 
         let csrfToken = $("input[name=csrfmiddlewaretoken]").val();
+
+
+
+
+
+        $newBrandBtn.on('click', function(e){
+            if(checkNewBrandSubcategoryOrPlatformInputsOnSubmit($newBrandName.get(0))){
+                if (!brandExists($newBrandName.val())){
+                    formData = new FormData($newBrandForm.get(0));
+                    formData.append('action', 'newBrand');
+                    formData.append('csrfmiddlewaretoken', csrfToken);
+                    $.ajax({
+                        url: '',
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(response){
+                            if(JSON.parse(response['success'])){
+                                $newProductResponse.removeClass('error')
+                                $newProductResponse.html('Marca agregada con éxito.').addClass('success');
+                            }else{
+                                $newProductResponse.removeClass('success')
+                                $newProductResponse.html('No se pudo agregar La marca.').addClass('error');
+                                console.log(response)
+                            }
+                        }
+                    })
+                }else{
+                    $newProductResponse.removeClass('success');
+                    $newProductResponse.html('La Marca que intentas agregar ya existe.').addClass('error');
+                }
+            }
+            e.preventDefault();
+        });
+
+        
+        $newSubcategoryBtn.on('click', function(e){
+            if(checkNewSubcategoryInputsOnSubmit($newSubcategoryId.get(0),$newSubcategoryName.get(0),$newSubcategoryCategory.get(0))){
+                if (!subcategoryExists($newSubcategoryId.val(),$newBrandName.val(),$newSubcategoryCategory.val())){
+                    formData = new FormData($newSubcategoryForm.get(0));
+                    formData.append('action', 'newSubcategory');
+                    formData.append('csrfmiddlewaretoken', csrfToken);
+                    $.ajax({
+                        url: '',
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(response){
+                            if(JSON.parse(response['success'])){
+                                $newProductResponse.removeClass('error')
+                                $newProductResponse.html('subcategoría agregada con éxito.').addClass('success');
+                            }else{
+                                $newProductResponse.removeClass('success')
+                                $newProductResponse.html('No se pudo agregar La subcategoría.').addClass('error');
+                                console.log(response)
+                            }
+                        }
+                    })
+                }else{
+                    $newProductResponse.removeClass('success');
+                    $newProductResponse.html('La subcategoría que intentas agregar ya existe.').addClass('error');
+                }
+            }
+            e.preventDefault();
+        });
+
+
+        
+        $newPlatformBtn.on('click', function(e){
+            if(checkNewPlatformInputsOnSubmit($newPlatformId.get(0),$newPlatformName.get(0))){
+                if (!platformExists($newPlatformId.val(),$newPlatformName.val())){
+                    formData = new FormData($newPlatformForm.get(0));
+                    formData.append('action', 'newPlatform');
+                    formData.append('csrfmiddlewaretoken', csrfToken);
+                    $.ajax({
+                        url: '',
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(response){
+                            if(JSON.parse(response['success'])){
+                                $newProductResponse.removeClass('error')
+                                $newProductResponse.html('Plataforma agregada con éxito.').addClass('success');
+                            }else{
+                                $newProductResponse.removeClass('success')
+                                $newProductResponse.html('No se pudo agregar La plataforma.').addClass('error');
+                                console.log(response)
+                            }
+                        }
+                    })
+                }else{
+                    $newProductResponse.removeClass('success');
+                    $newProductResponse.html('La plataforma que intentas agregar ya existe.').addClass('error');
+                }
+            }
+            e.preventDefault();
+        });
+
 
         $newProductForm.on('submit', function (e) {
             if (checkNewProductInputsOnSubmit($newProductName.get(0), $newProductImg.get(0), $newProductDate.get(0),
@@ -1173,6 +1288,77 @@ function checkEditProductInputsOnSubmit(editName, editDate, editPrice, editBrand
     return checkSuccess(editName) && checkSuccess(editDate) && checkSuccess(editPrice) && checkSuccess(editBrand);
 }
 
+function checkNewBrandSubcategoryOrPlatformInputsOnSubmit(name) {
+    //get values from the inputs
+    const nameValue = name.value.trim();
+
+    if (nameValue === '') {
+        //add error class
+        setErrorFor(name, 'Por favor ingrese un nombre');
+    } else {
+        //add success class
+        setSuccessFor(name);
+    }
+
+    return checkSuccess(name);
+}
+
+function checkNewSubcategoryInputsOnSubmit(id,name,category) {
+    //get values from the inputs
+    const idValue = id.value.trim();
+    const nameValue = name.value.trim();
+    const categoryValue = category.value.trim();
+
+    if (idValue === '') {
+        //add error class
+        setErrorFor(id, 'Por favor ingrese ID');
+    } else {
+        //add success class
+        setSuccessFor(id);
+    }
+    if (nameValue === '') {
+        //add error class
+        setErrorFor(name, 'Por favor ingrese un nombre');
+    } else {
+        //add success class
+        setSuccessFor(name);
+    }
+    
+    if (categoryValue === '') {
+        //add error class
+        setErrorFor(category, 'Por favor ingrese una categoria');
+    } else {
+        //add success class
+        setSuccessFor(category);
+    }
+
+    return checkSuccess(id) && checkSuccess(name) && checkSuccess(category);
+}
+
+function checkNewPlatformInputsOnSubmit(id,name) {
+    //get values from the inputs
+    const idValue = id.value.trim();
+    const nameValue = name.value.trim();
+
+    if (idValue === '') {
+        //add error class
+        setErrorFor(id, 'Por favor ingrese id');
+    } else {
+        //add success class
+        setSuccessFor(id);
+    }
+
+    if (nameValue === '') {
+        //add error class
+        setErrorFor(name, 'Por favor ingrese un nombre');
+    } else {
+        //add success class
+        setSuccessFor(name);
+    }
+
+    return checkSuccess(id) && checkSuccess(name);
+}
+
 function checkEmailOnFocusOut(email) {
     const emailValue = email.value.trim();
 
@@ -1498,3 +1684,73 @@ function productExists(productName, productPlatform) {
     });
     return exists;
 }
+
+
+function brandExists(brandName) {
+    const csrfToken = $("input[name=csrfmiddlewaretoken]").val();
+    let exists = false;
+    $.ajax({
+        url: '',
+        type: 'POST',
+        data: {
+            'action': 'brandExists',
+            'csrfmiddlewaretoken': csrfToken,
+            'name': brandName.trim(),
+        },
+        async: false,
+        success: function (response) {
+            if (JSON.parse(response['exists'])) {
+                exists = true;
+            }
+        },
+    });
+    return exists;
+}
+
+function subcategoryExists(idName,brandName,categoryName) {
+    const csrfToken = $("input[name=csrfmiddlewaretoken]").val();
+    let exists = false;
+    $.ajax({
+        url: '',
+        type: 'POST',
+        data: {
+            'action': 'brandExists',
+            'csrfmiddlewaretoken': csrfToken,
+            'id': idName.trim(),
+            'name': brandName.trim(),
+            'category': categoryName.trim(),
+        },
+        async: false,
+        success: function (response) {
+            if (JSON.parse(response['exists'])) {
+                exists = true;
+            }
+        },
+    });
+    return exists;
+}
+
+
+function platformExists(idName,brandName) {
+    const csrfToken = $("input[name=csrfmiddlewaretoken]").val();
+    let exists = false;
+    $.ajax({
+        url: '',
+        type: 'POST',
+        data: {
+            'action': 'brandExists',
+            'csrfmiddlewaretoken': csrfToken,
+            'id': idName.trim(),
+            'name': brandName.trim(),
+        },
+        async: false,
+        success: function (response) {
+            if (JSON.parse(response['exists'])) {
+                exists = true;
+            }
+        },
+    });
+    return exists;
+}
+
+

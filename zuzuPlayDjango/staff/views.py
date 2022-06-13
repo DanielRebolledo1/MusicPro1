@@ -1,14 +1,18 @@
 from django.http import JsonResponse, QueryDict
 from django.shortcuts import render
-from products.models import Producto, Subcategoria
-from .forms import NuevoProductoForm, EditarProductoForm
+from products.models import Producto, Subcategoria, Marca, Plataforma
+from .forms import NuevoProductoForm, EditarProductoForm, NuevaMarcaForm,NuevaSubcategoriaForm, NuevaPlataformaForm
 
 
 # Create your views here.
 def administration(request):
     datos = {
         'nuevoProductoForm': NuevoProductoForm(),
-        'editarProductoForm': EditarProductoForm()
+        'editarProductoForm': EditarProductoForm(),
+        'nuevaMarcaForm' : NuevaMarcaForm(),
+        'nuevaSubcategoriaForm' : NuevaSubcategoriaForm(),
+        'nuevaPlataformaForm' : NuevaPlataformaForm()
+
     }
 
     if request.method == 'POST':
@@ -71,9 +75,63 @@ def administration(request):
             platform = request.POST['platform']
             count = Producto.objects.filter(nombreProducto=name, plataforma__idPlataforma=platform).count()
             if count != 0:
-                return JsonResponse({'exists': True, 'name': name, 'platform': platform, 'count': count})
+                return JsonResponse({'exists': True})
             else:
-                return JsonResponse({'exists': False, 'name': name, 'platform': platform, 'count': count})
+                return JsonResponse({'exists': False})
+        elif action == 'newBrand':
+            form = NuevaMarcaForm(request.POST)
+            if form.is_valid():
+                marca = form.save(commit=False)
+                count = Marca.objects.all().count()
+                idMarca = count + 1 
+                marca.idMarca = idMarca
+                marca.save()
+                return JsonResponse({'success': True})
+            else:
+                return JsonResponse({'success': False, 'errors': form.errors})
+        elif action == 'brandExists':
+            name = request.POST['name']
+            count = Marca.objects.filter(nombreMarca=name).count()
+            if count != 0:
+                return JsonResponse({'exists': True})
+            else:
+                return JsonResponse({'exists': False})
+
+
+        elif action == 'newSubcategory':
+            form = NuevaSubcategoriaForm(request.POST)
+            if form.is_valid():
+                Subcategor = form.save(commit=False)
+                Subcategor.save()
+                return JsonResponse({'success': True})
+            else:
+                return JsonResponse({'success': False, 'errors': form.errors})
+
+        elif action == 'SubcategoryExists':
+            name = request.POST['name']
+            count = Marca.objects.filter(nombreMarca=name).count()
+            if count != 0:
+                return JsonResponse({'exists': True})
+            else:
+                return JsonResponse({'exists': False})
+
+        elif action == 'newPlatform':
+            form = NuevaPlataformaForm(request.POST)
+            if form.is_valid():
+                plat = form.save(commit=False)
+                plat.save()
+                return JsonResponse({'success': True})
+            else:
+                return JsonResponse({'success': False, 'errors': form.errors})
+
+
+        elif action == 'platformExists':
+            name = request.POST['name']
+            count = Marca.objects.filter(nombreMarca=name).count()
+            if count != 0:
+                return JsonResponse({'exists': True})
+            else:
+                return JsonResponse({'exists': False})
         else:
             return JsonResponse({'error': 'Error en POST: Acción no definida'})
 
