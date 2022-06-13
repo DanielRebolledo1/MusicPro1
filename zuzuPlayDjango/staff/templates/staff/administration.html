@@ -91,6 +91,14 @@
                                             Unidad
                                         </button>
                                     </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="new-promo-category-tab" data-mdb-toggle="tab"
+                                                data-mdb-target="#new-promo-category-content"
+                                                type="button" role="tab" aria-controls="new-promo-category"
+                                                aria-selected="false">
+                                            Categoría promo
+                                        </button>
+                                    </li>
                                 </ul>
                             </div>
                             <div class="col-md">
@@ -113,40 +121,47 @@
                                             <div id="new-product-response" class="post text-center"></div>
                                             {% for field in nuevoProductoForm %}
                                                 <div class="col-12">
-                                                    {% if field.widget_type == 'text' or field.widget_type == 'date' or field.widget_type == 'number' %}
-                                                        <div class="form-outline">
-                                                            {{ field }}
-                                                            <label class="form-label"
-                                                                   for="{{ field.id_for_label }}">{{ field.label }}</label>
-                                                            <div class="invalid-feedback">Error</div>
-                                                            <div class="valid-feedback">Success</div>
-                                                        </div>
-                                                    {% elif field.widget_type == 'select' %}
-                                                        <div class="row align-items-center">
-                                                            <div class="col-auto">{{ field.label }}</div>
-                                                            <div class="col">
-                                                                <div>
-                                                                    {{ field }}
-                                                                    <div class="invalid-feedback">Error</div>
-                                                                    <div class="valid-feedback">Success</div>
+                                                    {% if field.widget_type == 'clearablefile' %}
+                                                        <div class="col-12">
+                                                            <div class="row align-items-center">
+                                                                <div class="col-auto">{{ field.label }}</div>
+                                                                <div class="col">
+                                                                    <div class="form-outline">
+                                                                        {{ field }}
+                                                                        <div class="invalid-feedback">Error</div>
+                                                                        <div class="valid-feedback">Success</div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-auto">
-                                                                <button type="button" id="{{ field.id_for_label }}-btn"
-                                                                        class="btn btn-primary btn-floating"
-                                                                        style="background: #66CC33"><i
-                                                                        class="fa-solid fa-plus"></i></button>
+                                                        </div>
+                                                    {% elif field.widget_type == 'select' %}
+                                                        <div class="col-12">
+                                                            <div class="row align-items-center">
+                                                                <div class="col-auto">{{ field.label }}</div>
+                                                                <div class="col">
+                                                                    <div>
+                                                                        {{ field }}
+                                                                        <div class="invalid-feedback">Error</div>
+                                                                        <div class="valid-feedback">Success</div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-auto">
+                                                                    <button type="button"
+                                                                            id="{{ field.id_for_label }}-btn"
+                                                                            class="btn btn-primary btn-floating"
+                                                                            style="background: #66CC33"><i
+                                                                            class="fa-solid fa-plus"></i></button>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     {% else %}
-                                                        <div class="row align-items-center">
-                                                            <div class="col-auto">{{ field.label }}</div>
-                                                            <div class="col">
-                                                                <div class="form-outline">
-                                                                    {{ field }}
-                                                                    <div class="invalid-feedback">Error</div>
-                                                                    <div class="valid-feedback">Success</div>
-                                                                </div>
+                                                        <div class="col-12">
+                                                            <div class="form-outline">
+                                                                {{ field }}
+                                                                <label class="form-label"
+                                                                       for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                                                <div class="invalid-feedback">Error</div>
+                                                                <div class="valid-feedback">Success</div>
                                                             </div>
                                                         </div>
                                                     {% endif %}
@@ -172,6 +187,59 @@
                                     <div class="tab-pane fade" id="new-unit-content" role="tabpanel"
                                          aria-labelledby="new-unit-tab">
                                         Tab 2 content
+                                    </div>
+                                    <div class="tab-pane fade" id="new-promo-category-content" role="tabpanel"
+                                         aria-labelledby="new-promo-category-tab">
+                                        <form method="post" action="" id="new-promo-category-form"
+                                              class="row gap-3"
+                                              novalidate>
+                                            {% csrf_token %}
+
+                                            <div id="new-promo-category-response" class="post text-center"></div>
+                                            {% for field in nuevaCategoriaPromoSerializer %}
+                                                <div class="col-12">
+                                                    {% if field.widget_type == 'clearablefile' %}
+                                                        <div class="col-12">
+                                                            <div class="row align-items-center">
+                                                                <div class="col-auto">{{ field.label }}</div>
+                                                                <div class="col">
+                                                                    <div class="form-outline">
+                                                                        {{ field }}
+                                                                        <div class="invalid-feedback">Error</div>
+                                                                        <div class="valid-feedback">Success</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    {% else %}
+                                                        <div class="col-12">
+                                                            <div class="form-outline">
+                                                                {{ field }}
+                                                                <label class="form-label"
+                                                                       for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                                                <div class="invalid-feedback">Error</div>
+                                                                <div class="valid-feedback">Success</div>
+                                                            </div>
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            {% endfor %}
+
+                                            <div class="col-12">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <button type="reset" class="btn custom-btn2 w-100">
+                                                            Limpiar
+                                                        </button>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <button type="submit" class="btn custom-btn2 w-100">
+                                                            Agregar
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -356,7 +424,10 @@
                                                     </div>
                                                     <div class="modal-body">
                                                         <div class="row align-items-center ms-5 me-5">
-                                                            <div class="col-auto"><i class="fa-solid fa-trash" style="font-size: 30px; color: #FF4655"></i></div>
+                                                            <div class="col-auto">
+                                                                <i class="fa-solid fa-trash"
+                                                                   style="font-size: 30px; color: #FF4655"></i>
+                                                            </div>
                                                             <div class="col">
                                                                 <div id="delete-product-id"></div>
                                                                 <div id="delete-product-name"></div>
@@ -364,10 +435,13 @@
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" id="delete-product-cancel-btn" class="btn custom-btn2 red"
+                                                        <button type="button" id="delete-product-cancel-btn"
+                                                                class="btn custom-btn2 red"
                                                                 data-mdb-dismiss="modal">Cancelar
                                                         </button>
-                                                        <button type="button" id="delete-product-confirm-btn" class="btn custom-btn2">Confirmar</button>
+                                                        <button type="button" id="delete-product-confirm-btn"
+                                                                class="btn custom-btn2">Confirmar
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
