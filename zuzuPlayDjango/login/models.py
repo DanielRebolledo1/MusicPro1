@@ -1,12 +1,21 @@
 from django.db import models
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.utils import timezone
+from .managers import CustomUserManager
 
 # Create your models here.
-class Usuario(models.Model):
-    idUsuario = models.AutoField(primary_key=True, verbose_name='Id del usuario')
-    emailUsuario = models.CharField(max_length=100, unique=True, verbose_name='Email del usuario')
-    nombreUsuario = models.CharField(max_length=50, verbose_name='Nombre del usuario')
-    apellidoUsuario = models.CharField(max_length=50, verbose_name='Apellido del usuario')
-    contrasenaUsuario = models.CharField(max_length=20, verbose_name='Contraseña del usuario')
+class Usuario(AbstractBaseUser, PermissionsMixin):
+    email = models.CharField(max_length=100, unique=True, verbose_name='Email')
+    nombre = models.CharField(max_length=50, verbose_name='Nombre')
+    apellido = models.CharField(max_length=50, verbose_name='Apellido')
+    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    date_joined = models.DateTimeField(default=timezone.now)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+
+    objects = CustomUserManager()
 
     def __str__(self):
-        return self.nombreUsuario
+        return self.email

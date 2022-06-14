@@ -85,11 +85,7 @@ def administration(request):
         elif action == 'newBrand':
             form = NuevaMarcaForm(request.POST)
             if form.is_valid():
-                marca = form.save(commit=False)
-                count = Marca.objects.all().count()
-                idMarca = count + 1
-                marca.idMarca = idMarca
-                marca.save()
+                form.save()
                 return JsonResponse({'success': True})
             else:
                 return JsonResponse({'success': False, 'errors': form.errors})
@@ -103,8 +99,7 @@ def administration(request):
         elif action == 'newSubcategory':
             form = NuevaSubcategoriaForm(request.POST)
             if form.is_valid():
-                subcategoria = form.save(commit=False)
-                subcategoria.save()
+                form.save()
                 return JsonResponse({'success': True})
             else:
                 return JsonResponse({'success': False, 'errors': form.errors})
@@ -118,8 +113,7 @@ def administration(request):
         elif action == 'newPlatform':
             form = NuevaPlataformaForm(request.POST)
             if form.is_valid():
-                plataforma = form.save(commit=False)
-                plataforma.save()
+                form.save()
                 return JsonResponse({'success': True})
             else:
                 return JsonResponse({'success': False, 'errors': form.errors})

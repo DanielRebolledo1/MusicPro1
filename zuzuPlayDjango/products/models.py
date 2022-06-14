@@ -5,7 +5,7 @@ from django.db import models
 class Suscriptor(models.Model):
     idSuscriptor = models.AutoField(primary_key=True, verbose_name='Id')
     emailSuscriptor = models.CharField(max_length=100, unique=True, verbose_name='Email')
-    estadoSuscriptor = models.IntegerField(default=1, verbose_name='Estado')
+    estadoSuscriptor = models.BooleanField(default=True, verbose_name='Estado')
 
     def __str__(self):
         return self.emailSuscriptor
@@ -22,7 +22,7 @@ class Categoria(models.Model):
 class Subcategoria(models.Model):
     idSubcategoria = models.CharField(primary_key=True, max_length=4, verbose_name='Id')
     nombreSubcategoria = models.CharField(max_length=50, unique=True, verbose_name='Nombre')
-    estadoSubcategoria = models.IntegerField(default=1, verbose_name='Estado')
+    estadoSubcategoria = models.BooleanField(default=True, verbose_name='Estado')
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, verbose_name='Categoría')
 
     def __str__(self):
@@ -30,9 +30,9 @@ class Subcategoria(models.Model):
 
 
 class Marca(models.Model):
-    idMarca = models.IntegerField(primary_key=True, verbose_name='Id')
+    idMarca = models.AutoField(primary_key=True, verbose_name='Id')
     nombreMarca = models.CharField(max_length=50, verbose_name='Nombre')
-    estadoMarca = models.IntegerField(default=1, verbose_name='Estado')
+    estadoMarca = models.BooleanField(default=True, verbose_name='Estado')
 
     def __str__(self):
         return self.nombreMarca
@@ -52,7 +52,7 @@ class Producto(models.Model):
     imagenProducto = models.ImageField(upload_to='products/media', verbose_name='Imagen')
     fechaLanProducto = models.DateField(null=True, blank=True, verbose_name='Fecha de lanzamiento')
     precioProducto = models.IntegerField(verbose_name='Precio')
-    estadoProducto = models.IntegerField(default=1, verbose_name='Estado')
+    estadoProducto = models.BooleanField(default=True, verbose_name='Estado')
     marca = models.ForeignKey(Marca, on_delete=models.CASCADE)
     subcategoria = models.ForeignKey(Subcategoria, on_delete=models.CASCADE, verbose_name='Subcategoría')
     plataforma = models.ForeignKey(Plataforma, on_delete=models.CASCADE)
@@ -64,7 +64,7 @@ class Producto(models.Model):
 class Unidad(models.Model):
     idUnidad = models.CharField(primary_key=True, max_length=12, verbose_name='UPC')
     fechaIngUnidad = models.DateField(verbose_name='Fecha de ingreso')
-    estadoUnidad = models.IntegerField(default=1, verbose_name='Estado')
+    estadoUnidad = models.BooleanField(default=True, verbose_name='Estado')
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
 
     def __str__(self):

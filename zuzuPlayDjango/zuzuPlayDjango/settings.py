@@ -30,6 +30,8 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+AUTH_USER_MODEL = 'login.Usuario'
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -42,6 +44,7 @@ INSTALLED_APPS = [
     'staff',
     'rest_categoriaPromo',
     'rest_framework',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -53,6 +56,12 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
 
 ROOT_URLCONF = 'zuzuPlayDjango.urls'
 
@@ -85,21 +94,6 @@ WSGI_APPLICATION = 'zuzuPlayDjango.wsgi.application'
 #         'ENGINE': 'django.db.backends.sqlite3',
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
-# }
-
-# Local Oracle Connection
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.oracle',
-#         'NAME': '127.0.0.1:1521/xe',
-#         'USER': 'ZUZUADMIN',
-#         'PASSWORD': 'admin',
-#         'TEST': {
-#             'USER':'default_test',
-#             'TBLSPACE':'default_test_tbls',
-#             'TBLSPACE_TMP':'default_test_tbls_tmp',
-#         },
-#     },
 # }
 
 # Cloud Oracle Connection
