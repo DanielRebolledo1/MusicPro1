@@ -2,10 +2,9 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from rest_framework import status
 from rest_framework.response import Response
-
 from products.models import Producto, Marca
 from .forms import NuevoProductoForm, EditarProductoForm, NuevaMarcaForm, NuevaSubcategoriaForm, NuevaPlataformaForm
-from rest_categoriaPromo.serializers import CategoriaPromoSerializer
+from rest_api.serializers import CategoriaPromoSerializer
 
 
 # Create your views here.
@@ -16,7 +15,6 @@ def administration(request):
         'nuevaMarcaForm': NuevaMarcaForm(),
         'nuevaSubcategoriaForm': NuevaSubcategoriaForm(),
         'nuevaPlataformaForm': NuevaPlataformaForm()
-
     }
 
     if request.method == 'POST':

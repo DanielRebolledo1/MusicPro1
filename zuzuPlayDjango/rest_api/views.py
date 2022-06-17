@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from django.views.decorators.csrf import csrf_exempt
 from .models import Categoria_Promocional
 from .serializers import CategoriaPromoSerializer
@@ -10,6 +11,7 @@ from .serializers import CategoriaPromoSerializer
 # Create your views here.
 @csrf_exempt
 @api_view(['GET', 'POST'])
+@permission_classes((IsAuthenticated,))
 def categorias_promo(request):
     if request.method == 'GET':
         categorias = Categoria_Promocional.objects.all()
@@ -26,6 +28,7 @@ def categorias_promo(request):
 
 @csrf_exempt
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes((IsAuthenticated,))
 def modificar_categorias_promo(request, id):
     try:
         categoria = Categoria_Promocional.objects.get(id=id)

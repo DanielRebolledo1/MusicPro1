@@ -107,39 +107,62 @@
     <div class="d-flex flex-column">
         <!--Menu superior-->
         <header class="navbar-header">
-    <div class="container-fluid fixed-top">
-        <div class="row align-items-center pe-3 ps-3 header-container">
-            <div class="col-4 col-md-2 order-2 order-md-1 m-md-0 me-md-auto">
-                <a href="{% url 'home' %}"><img src="{% static 'products/img/logo.png' %}" class="img-fluid header-logo" alt="logo"></a>
-            </div>
-            <div class="col-auto col-md-auto order-1 order-md-2">
-                <button id="sidebar-open-btn" type="button" class="btn custom-btn1">
-                    <i class="fa-solid fa-bars header-icons"></i>
-                </button>
-            </div>
-            <div class="col-12 col-md-5 order-3 order-md-3">
-                <div class="row mb-2 mb-md-0 gx-0 justify-content-center search-bar-container">
-                    <div class="col-auto">
-                        <a href="#" class="search-bar-btn"><i class="fa-solid fa-magnifying-glass"></i></a>
+            <div class="container-fluid fixed-top">
+                <div class="row align-items-center pe-3 ps-3 gap-2 header-container">
+                    <div class="col-4 col-md-2 order-2 order-md-1 m-md-0 me-md-auto">
+                        <a href="{% url 'home' %}"><img src="{% static 'products/img/logo.png' %}"
+                                                        class="img-fluid header-logo" alt="logo"></a>
                     </div>
-                    <div class="col">
-                        <input type="text" class="search-bar-input">
+                    <div class="col-auto col-md-auto order-1 order-md-2">
+                        <button id="sidebar-open-btn" type="button" class="btn custom-btn1">
+                            <i class="fa-solid fa-bars header-icons"></i>
+                        </button>
+                    </div>
+                    <div class="col-12 col-md-5 order-3 order-md-3">
+                        <div class="row mb-2 mb-md-0 gx-0 justify-content-center search-bar-container">
+                            <div class="col-auto">
+                                <a href="#" class="search-bar-btn"><i class="fa-solid fa-magnifying-glass"></i></a>
+                            </div>
+                            <div class="col">
+                                <input type="text" class="search-bar-input">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 col-md-2 order-2 order-md-4 ms-auto">
+                        <div class="row justify-content-end flex-nowrap header-icons">
+                            <div class="col-auto gx-0">
+                                <div class="dropdown">
+                                    <button
+                                            class="btn dropdown-toggle custom-btn1"
+                                            type="button"
+                                            id="dropdownMenuButton"
+                                            data-mdb-toggle="dropdown"
+                                            aria-expanded="false"><i class="fa-solid fa-circle-user"></i>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        {% if user.is_authenticated %}
+                                            {% if user.is_staff %}
+                                                <li><a class="dropdown-item" href="{% url 'administration' %}">Administrar
+                                                    web</a></li>
+                                            {% endif %}
+                                            <li><a class="dropdown-item" href="#">Ajustes</a></li>
+                                            <li><a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesión</a>
+                                            </li>
+                                        {% else %}
+                                            <li><a class="dropdown-item" href="{% url 'login' %}">Iniciar sesión</a>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <a href="#"><i class="fa-solid fa-cart-shopping"></i></a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-4 col-md-2 order-2 order-md-4 ms-auto">
-                <div class="row justify-content-end flex-nowrap header-icons">
-                    <div class="col-auto gx-1">
-                        <a href="{% url 'login' %}"><i class="fa-solid fa-circle-user"></i></a>
-                    </div>
-                    <div class="col-auto">
-                        <a href="#"><i class="fa-solid fa-cart-shopping"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
+        </header>
         <!--Productos-->
         <section>
             <div class="container-fluid mt-4 mb-4">

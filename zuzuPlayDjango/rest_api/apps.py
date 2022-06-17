@@ -3,4 +3,4 @@ from django.apps import AppConfig
 
 class RestCategoriaConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'rest_categoriaPromo'
+    name = 'rest_api'

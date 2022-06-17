@@ -4,17 +4,31 @@ if (body.classList.contains('home')) {
     console.log('home')
 
     $(document).ready(function () {
+        const $subsForm = $('#subs-form');
         const $subsEmail = $('#subs-email');
 
-        $('#subs-form').on('submit', function (e) {
+        let formData = '';
+        const csrfToken = $("input[name=csrfmiddlewaretoken]").val();
+
+        $subsForm.on('submit', function (e) {
             if (checkSubsInputsOnSubmit($subsEmail.get(0))) {
-                $.post('', $(this).serialize(), function (response) {
-                    if (JSON.parse(response['success'])) {
-                        setPostSuccessFor($subsEmail.get(0), 'Te has suscrito con éxito.');
-                    } else {
-                        setErrorFor($subsEmail.get(0), 'Algo salió mal!');
+                formData = new FormData($subsForm.get(0));
+                formData.append('action', 'newSub');
+                formData.append('csrfmiddlewaretoken', csrfToken);
+                $.ajax({
+                    url: '',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        if (JSON.parse(response['success'])) {
+                            setPostSuccessFor($subsEmail.get(0), 'Te has suscrito con éxito.');
+                        } else {
+                            setErrorFor($subsEmail.get(0), 'Algo salió mal!');
+                        }
                     }
-                });
+                })
             }
             e.preventDefault();
         });
@@ -184,22 +198,50 @@ if (body.classList.contains('login-register')) {
     console.log('login/register')
 
     $(document).ready(function () {
+        const $loginForm = $('#login-form');
         const $loginEmail = $('#login-email');
         const $loginPassword = $('#login-pw');
         const $forgotPasswordEmail = $('#forgot-pw-email');
+        const $registerForm = $('#register-form');
         const $registerName = $('#register-name');
         const $registerLastName = $('#register-lastname');
         const $registerEmail = $('#register-email');
         const $registerPassword = $('#register-pw');
+        const $registerResponse = $('#register-response');
         const passwordStrengthIndicator = document.getElementById('pw-strength');
 
-        $('#login-form').on('submit', function (e) {
-            if (!checkLoginInputsOnSubmit($loginEmail.get(0), $loginPassword.get(0))) {
-                e.preventDefault();
+        let formData = '';
+        let csrfToken = $("input[name=csrfmiddlewaretoken]").val();
+
+        $loginForm.on('submit', function (e) {
+            if (checkLoginInputsOnSubmit($loginEmail.get(0), $loginPassword.get(0))) {
+                formData = new FormData($loginForm.get(0));
+                formData.append('action', 'login');
+                formData.append('csrfmiddlewaretoken', csrfToken);
+                $.ajax({
+                    url: '',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        if (JSON.stringify(response).includes('error')) {
+                            let error = JSON.parse(JSON.stringify(response.error));
+                            if (error === 'email') {
+                                setErrorFor($loginEmail.get(0), 'Email no registrado');
+                            } else if (error === 'password') {
+                                setErrorFor($loginPassword.get(0), 'Contraseña incorrecta');
+                            }
+                        } else {
+                            window.location = JSON.parse(JSON.stringify(response.url));
+                        }
+                    }
+                })
             }
+            e.preventDefault();
         });
 
-        $($loginEmail).on({
+        $loginEmail.on({
             focusout: function () {
                 checkEmailOnFocusOut($loginEmail.get(0));
             },
@@ -208,17 +250,18 @@ if (body.classList.contains('login-register')) {
             }
         });
 
-        $($loginPassword).on('input', function () {
+        $loginPassword.on('input', function () {
             resetInput($loginPassword.get(0));
         });
 
         $('#forgot-pw-form').on('submit', function (e) {
-            if (!checkForgotPasswordInputsOnSubmit($forgotPasswordEmail.get(0))) {
-                e.preventDefault();
+            if (checkForgotPasswordInputsOnSubmit($forgotPasswordEmail.get(0))) {
+
             }
+            e.preventDefault();
         });
 
-        $($forgotPasswordEmail).on({
+        $forgotPasswordEmail.on({
             focusout: function () {
                 checkEmailOnFocusOut($forgotPasswordEmail.get(0));
             },
@@ -227,22 +270,54 @@ if (body.classList.contains('login-register')) {
             }
         });
 
-        $('#register-form').on('submit', function (e) {
-            if (!checkRegisterInputsOnSubmit($registerEmail.get(0), $registerPassword.get(0),
+        $registerForm.on('submit', function (e) {
+            if (checkRegisterInputsOnSubmit($registerEmail.get(0), $registerPassword.get(0),
                 passwordStrengthIndicator, $registerName.get(0), $registerLastName.get(0))) {
-                e.preventDefault();
+                formData = new FormData($registerForm.get(0));
+                formData.append('action', 'register');
+                formData.append('csrfmiddlewaretoken', csrfToken);
+                $.ajax({
+                    url: '',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        if (JSON.parse(response['success'])) {
+                            $registerResponse.removeClass('error')
+                            $registerResponse.html('Usuario creado con éxito.').addClass('success');
+                        } else {
+                            $registerResponse.html('');
+                            let error = JSON.parse(JSON.stringify(response['errors']));
+                            if (error === 'email') {
+                                setErrorFor($registerEmail.get(0), 'Email ya registrado');
+                            } else if (error === 'social') {
+                                let social = JSON.stringify(response['name']);
+                                if (social.includes('google')) {
+                                    setErrorFor($registerEmail.get(0), 'Email ya registrado con Google');
+                                } else {
+                                    setErrorFor($registerEmail.get(0), 'Email ya registrado con una red social');
+                                }
+                            } else {
+                                $registerResponse.removeClass('success')
+                                $registerResponse.html('No se pudo crear el usuario.').addClass('error');
+                            }
+                        }
+                    }
+                })
             }
+            e.preventDefault();
         });
 
-        $($registerName).on('input', function () {
+        $registerName.on('input', function () {
             resetInput($registerName.get(0));
         });
 
-        $($registerLastName).on('input', function () {
+        $registerLastName.on('input', function () {
             resetInput($registerLastName.get(0));
         });
 
-        $($registerEmail).on({
+        $registerEmail.on({
             focusout: function () {
                 checkEmailOnFocusOut($registerEmail.get(0));
             },
@@ -251,7 +326,7 @@ if (body.classList.contains('login-register')) {
             }
         });
 
-        $($registerPassword).on('input', function () {
+        $registerPassword.on('input', function () {
             resetInput($registerPassword.get(0));
             checkPasswordStrength($registerPassword.get(0), passwordStrengthIndicator);
         });
@@ -266,8 +341,9 @@ if (body.classList.contains('login-register')) {
 
         $('#forgot-pw-btn').on('click', function () {
             $('#login-register-tabs, #forgot-pw-tab').toggle();
-            $('#login-form').get(0).reset();
-            $('#register-form').get(0).reset();
+            $loginForm.get(0).reset();
+            $registerForm.get(0).reset();
+            $registerResponse.html('');
             resetInput($loginEmail.get(0));
             resetInput($loginPassword.get(0));
             resetInput($registerEmail.get(0));
@@ -287,13 +363,14 @@ if (body.classList.contains('login-register')) {
         });
 
         $('#pills-register-tab').on('click', function () {
-            $('#login-form').get(0).reset();
+            $loginForm.get(0).reset();
             resetInput($loginEmail.get(0));
             resetInput($loginPassword.get(0));
         });
 
         $('#pills-login-tab').on('click', function () {
-            $('#register-form').get(0).reset();
+            $registerForm.get(0).reset();
+            $registerResponse.html('');
             $('#pw-policies').slideUp(400);
             resetPasswordStrength(passwordStrengthIndicator);
             resetInput($registerEmail.get(0));
@@ -676,7 +753,6 @@ if (body.classList.contains('admin')) {
         let $newPlatformId = $('#new-platform-id');
         let $newPlatformName = $('#new-platform-name');
 
-
         let $editProductForm = $('#edit-product-form');
         let $editProductResponse = $('#edit-product-response');
         let $editProductSearch = $('#edit-product-search');
@@ -707,13 +783,9 @@ if (body.classList.contains('admin')) {
 
         let csrfToken = $("input[name=csrfmiddlewaretoken]").val();
 
-
-
-
-
-        $newBrandBtn.on('click', function(e){
-            if(checkNewBrandSubcategoryOrPlatformInputsOnSubmit($newBrandName.get(0))){
-                if (!brandExists($newBrandName.val())){
+        $newBrandBtn.on('click', function (e) {
+            if (checkNewBrandSubcategoryOrPlatformInputsOnSubmit($newBrandName.get(0))) {
+                if (!brandExists($newBrandName.val())) {
                     formData = new FormData($newBrandForm.get(0));
                     formData.append('action', 'newBrand');
                     formData.append('csrfmiddlewaretoken', csrfToken);
@@ -723,18 +795,18 @@ if (body.classList.contains('admin')) {
                         data: formData,
                         processData: false,
                         contentType: false,
-                        success: function(response){
-                            if(JSON.parse(response['success'])){
+                        success: function (response) {
+                            if (JSON.parse(response['success'])) {
                                 $newProductResponse.removeClass('error')
                                 $newProductResponse.html('Marca agregada con éxito.').addClass('success');
-                            }else{
+                            } else {
                                 $newProductResponse.removeClass('success')
                                 $newProductResponse.html('No se pudo agregar La marca.').addClass('error');
                                 console.log(response)
                             }
                         }
                     })
-                }else{
+                } else {
                     $newProductResponse.removeClass('success');
                     $newProductResponse.html('La Marca que intentas agregar ya existe.').addClass('error');
                 }
@@ -742,10 +814,9 @@ if (body.classList.contains('admin')) {
             e.preventDefault();
         });
 
-        
-        $newSubcategoryBtn.on('click', function(e){
-            if(checkNewSubcategoryInputsOnSubmit($newSubcategoryId.get(0),$newSubcategoryName.get(0),$newSubcategoryCategory.get(0))){
-                if (!subcategoryExists($newSubcategoryId.val(),$newBrandName.val(),$newSubcategoryCategory.val())){
+        $newSubcategoryBtn.on('click', function (e) {
+            if (checkNewSubcategoryInputsOnSubmit($newSubcategoryId.get(0), $newSubcategoryName.get(0), $newSubcategoryCategory.get(0))) {
+                if (!subcategoryExists($newSubcategoryId.val(), $newBrandName.val(), $newSubcategoryCategory.val())) {
                     formData = new FormData($newSubcategoryForm.get(0));
                     formData.append('action', 'newSubcategory');
                     formData.append('csrfmiddlewaretoken', csrfToken);
@@ -755,18 +826,18 @@ if (body.classList.contains('admin')) {
                         data: formData,
                         processData: false,
                         contentType: false,
-                        success: function(response){
-                            if(JSON.parse(response['success'])){
+                        success: function (response) {
+                            if (JSON.parse(response['success'])) {
                                 $newProductResponse.removeClass('error')
                                 $newProductResponse.html('subcategoría agregada con éxito.').addClass('success');
-                            }else{
+                            } else {
                                 $newProductResponse.removeClass('success')
                                 $newProductResponse.html('No se pudo agregar La subcategoría.').addClass('error');
                                 console.log(response)
                             }
                         }
                     })
-                }else{
+                } else {
                     $newProductResponse.removeClass('success');
                     $newProductResponse.html('La subcategoría que intentas agregar ya existe.').addClass('error');
                 }
@@ -774,11 +845,9 @@ if (body.classList.contains('admin')) {
             e.preventDefault();
         });
 
-
-        
-        $newPlatformBtn.on('click', function(e){
-            if(checkNewPlatformInputsOnSubmit($newPlatformId.get(0),$newPlatformName.get(0))){
-                if (!platformExists($newPlatformId.val(),$newPlatformName.val())){
+        $newPlatformBtn.on('click', function (e) {
+            if (checkNewPlatformInputsOnSubmit($newPlatformId.get(0), $newPlatformName.get(0))) {
+                if (!platformExists($newPlatformId.val(), $newPlatformName.val())) {
                     formData = new FormData($newPlatformForm.get(0));
                     formData.append('action', 'newPlatform');
                     formData.append('csrfmiddlewaretoken', csrfToken);
@@ -788,18 +857,18 @@ if (body.classList.contains('admin')) {
                         data: formData,
                         processData: false,
                         contentType: false,
-                        success: function(response){
-                            if(JSON.parse(response['success'])){
+                        success: function (response) {
+                            if (JSON.parse(response['success'])) {
                                 $newProductResponse.removeClass('error')
                                 $newProductResponse.html('Plataforma agregada con éxito.').addClass('success');
-                            }else{
+                            } else {
                                 $newProductResponse.removeClass('success')
                                 $newProductResponse.html('No se pudo agregar La plataforma.').addClass('error');
                                 console.log(response)
                             }
                         }
                     })
-                }else{
+                } else {
                     $newProductResponse.removeClass('success');
                     $newProductResponse.html('La plataforma que intentas agregar ya existe.').addClass('error');
                 }
@@ -1303,7 +1372,7 @@ function checkNewBrandSubcategoryOrPlatformInputsOnSubmit(name) {
     return checkSuccess(name);
 }
 
-function checkNewSubcategoryInputsOnSubmit(id,name,category) {
+function checkNewSubcategoryInputsOnSubmit(id, name, category) {
     //get values from the inputs
     const idValue = id.value.trim();
     const nameValue = name.value.trim();
@@ -1323,7 +1392,7 @@ function checkNewSubcategoryInputsOnSubmit(id,name,category) {
         //add success class
         setSuccessFor(name);
     }
-    
+
     if (categoryValue === '') {
         //add error class
         setErrorFor(category, 'Por favor ingrese una categoria');
@@ -1335,7 +1404,7 @@ function checkNewSubcategoryInputsOnSubmit(id,name,category) {
     return checkSuccess(id) && checkSuccess(name) && checkSuccess(category);
 }
 
-function checkNewPlatformInputsOnSubmit(id,name) {
+function checkNewPlatformInputsOnSubmit(id, name) {
     //get values from the inputs
     const idValue = id.value.trim();
     const nameValue = name.value.trim();
@@ -1707,7 +1776,7 @@ function brandExists(brandName) {
     return exists;
 }
 
-function subcategoryExists(idName,brandName,categoryName) {
+function subcategoryExists(idName, brandName, categoryName) {
     const csrfToken = $("input[name=csrfmiddlewaretoken]").val();
     let exists = false;
     $.ajax({
@@ -1730,8 +1799,7 @@ function subcategoryExists(idName,brandName,categoryName) {
     return exists;
 }
 
-
-function platformExists(idName,brandName) {
+function platformExists(idName, brandName) {
     const csrfToken = $("input[name=csrfmiddlewaretoken]").val();
     let exists = false;
     $.ajax({

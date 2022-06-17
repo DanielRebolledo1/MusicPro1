@@ -21,9 +21,10 @@
 <!--Menu superior-->
 <header class="navbar-header">
     <div class="container-fluid fixed-top">
-        <div class="row align-items-center pe-3 ps-3 header-container">
+        <div class="row align-items-center pe-3 ps-3 gap-2 header-container">
             <div class="col-4 col-md-2 order-2 order-md-1 m-md-0 me-md-auto">
-                <a href="{% url 'home' %}"><img src="{% static 'products/img/logo.png' %}" class="img-fluid header-logo" alt="logo"></a>
+                <a href="{% url 'home' %}"><img src="{% static 'products/img/logo.png' %}" class="img-fluid header-logo"
+                                                alt="logo"></a>
             </div>
             <div class="col-auto col-md-auto order-1 order-md-2">
                 <button id="sidebar-open-btn" type="button" class="btn custom-btn1">
@@ -42,8 +43,28 @@
             </div>
             <div class="col-4 col-md-2 order-2 order-md-4 ms-auto">
                 <div class="row justify-content-end flex-nowrap header-icons">
-                    <div class="col-auto gx-1">
-                        <a href="{% url 'login' %}"><i class="fa-solid fa-circle-user"></i></a>
+                    <div class="col-auto gx-0">
+                        <div class="dropdown">
+                            <button
+                                    class="btn dropdown-toggle custom-btn1"
+                                    type="button"
+                                    id="dropdownMenuButton"
+                                    data-mdb-toggle="dropdown"
+                                    aria-expanded="false"><i class="fa-solid fa-circle-user"></i>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                {% if user.is_authenticated %}
+                                    {% if user.is_staff %}
+                                        <li><a class="dropdown-item" href="{% url 'administration' %}">Administrar
+                                            web</a></li>
+                                    {% endif %}
+                                    <li><a class="dropdown-item" href="#">Ajustes</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesión</a></li>
+                                {% else %}
+                                    <li><a class="dropdown-item" href="{% url 'login' %}">Iniciar sesión</a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
                     </div>
                     <div class="col-auto">
                         <a href="#"><i class="fa-solid fa-cart-shopping"></i></a>
@@ -131,7 +152,8 @@
                                         <div class="swiper-wrapper thumbs-wrapper">
                                             <div class="swiper-slide">
                                                 <div class="row thumbs-images h-100 justify-content-center align-items-center">
-                                                    <img src="{% static 'products/img/legoswbigboxps5.png' %}" class="img-fluid" alt="">
+                                                    <img src="{% static 'products/img/legoswbigboxps5.png' %}"
+                                                         class="img-fluid" alt="">
                                                 </div>
                                             </div>
                                             <div class="swiper-slide">
@@ -150,27 +172,32 @@
                                             </div>
                                             <div class="swiper-slide">
                                                 <div class="row thumbs-images h-100 justify-content-center align-items-center">
-                                                    <img src="{% static 'products/img/legoswimg1.jpg' %}" class="img-fluid" alt="">
+                                                    <img src="{% static 'products/img/legoswimg1.jpg' %}"
+                                                         class="img-fluid" alt="">
                                                 </div>
                                             </div>
                                             <div class="swiper-slide">
                                                 <div class="row thumbs-images h-100 justify-content-center align-items-center">
-                                                    <img src="{% static 'products/img/legoswimg2.jpg' %}" class="img-fluid" alt="">
+                                                    <img src="{% static 'products/img/legoswimg2.jpg' %}"
+                                                         class="img-fluid" alt="">
                                                 </div>
                                             </div>
                                             <div class="swiper-slide">
                                                 <div class="row thumbs-images h-100 justify-content-center align-items-center">
-                                                    <img src="{% static 'products/img/legoswimg3.jpg' %}" class="img-fluid" alt="">
+                                                    <img src="{% static 'products/img/legoswimg3.jpg' %}"
+                                                         class="img-fluid" alt="">
                                                 </div>
                                             </div>
                                             <div class="swiper-slide">
                                                 <div class="row thumbs-images h-100 justify-content-center align-items-center">
-                                                    <img src="{% static 'products/img/legoswimg4.jpg' %}" class="img-fluid" alt="">
+                                                    <img src="{% static 'products/img/legoswimg4.jpg' %}"
+                                                         class="img-fluid" alt="">
                                                 </div>
                                             </div>
                                             <div class="swiper-slide">
                                                 <div class="row thumbs-images h-100 justify-content-center align-items-center">
-                                                    <img src="{% static 'products/img/legoswimg5.jpg' %}" class="img-fluid" alt="">
+                                                    <img src="{% static 'products/img/legoswimg5.jpg' %}"
+                                                         class="img-fluid" alt="">
                                                 </div>
                                             </div>
                                         </div>
@@ -189,7 +216,8 @@
                                             <div class="swiper-slide">
                                                 <div class="row main-images gx-0 h-100 justify-content-center align-items-center">
                                                     <a href="{% static 'products/img/legoswbigboxps5.png' %}"><img
-                                                            src="{% static 'products/img/legoswbigboxps5.png' %}" class="img-fluid" alt=""></a>
+                                                            src="{% static 'products/img/legoswbigboxps5.png' %}"
+                                                            class="img-fluid" alt=""></a>
                                                 </div>
                                             </div>
                                             <div class="swiper-slide">
@@ -222,32 +250,37 @@
                                             </div>
                                             <div class="swiper-slide">
                                                 <div class="row main-images gx-0 h-100 justify-content-center align-items-center">
-                                                    <a href="{% static 'products/img/legoswimg1.jpg' %}"><img src="{% static 'products/img/legoswimg1.jpg' %}"
-                                                                                                            class="img-fluid" alt=""></a>
+                                                    <a href="{% static 'products/img/legoswimg1.jpg' %}"><img
+                                                            src="{% static 'products/img/legoswimg1.jpg' %}"
+                                                            class="img-fluid" alt=""></a>
                                                 </div>
                                             </div>
                                             <div class="swiper-slide">
                                                 <div class="row main-images gx-0 h-100 justify-content-center align-items-center">
-                                                    <a href="{% static 'products/img/legoswimg2.jpg' %}"><img src="{% static 'products/img/legoswimg2.jpg' %}"
-                                                                                                            class="img-fluid" alt=""></a>
+                                                    <a href="{% static 'products/img/legoswimg2.jpg' %}"><img
+                                                            src="{% static 'products/img/legoswimg2.jpg' %}"
+                                                            class="img-fluid" alt=""></a>
                                                 </div>
                                             </div>
                                             <div class="swiper-slide">
                                                 <div class="row main-images gx-0 h-100 justify-content-center align-items-center">
-                                                    <a href="{% static 'products/img/legoswimg3.jpg' %}"><img src="{% static 'products/img/legoswimg3.jpg' %}"
-                                                                                                            class="img-fluid" alt=""></a>
+                                                    <a href="{% static 'products/img/legoswimg3.jpg' %}"><img
+                                                            src="{% static 'products/img/legoswimg3.jpg' %}"
+                                                            class="img-fluid" alt=""></a>
                                                 </div>
                                             </div>
                                             <div class="swiper-slide">
                                                 <div class="row main-images gx-0 h-100 justify-content-center align-items-center">
-                                                    <a href="{% static 'products/img/legoswimg4.jpg' %}"><img src="{% static 'products/img/legoswimg4.jpg' %}"
-                                                                                                            class="img-fluid" alt=""></a>
+                                                    <a href="{% static 'products/img/legoswimg4.jpg' %}"><img
+                                                            src="{% static 'products/img/legoswimg4.jpg' %}"
+                                                            class="img-fluid" alt=""></a>
                                                 </div>
                                             </div>
                                             <div class="swiper-slide">
                                                 <div class="row main-images gx-0 h-100 justify-content-center align-items-center">
-                                                    <a href="{% static 'products/img/legoswimg5.jpg' %}"><img src="{% static 'products/img/legoswimg5.jpg' %}"
-                                                                                                            class="img-fluid" alt=""></a>
+                                                    <a href="{% static 'products/img/legoswimg5.jpg' %}"><img
+                                                            src="{% static 'products/img/legoswimg5.jpg' %}"
+                                                            class="img-fluid" alt=""></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -538,14 +571,16 @@
                         <a href="#">
                             <div class="card item-card">
                                 <div class="col-auto align-self-center">
-                                    <img src="../{{ prod.imagenProducto }}" class="card-img-top img-fluid" alt="{{ prod.nombreProducto }}">
+                                    <img src="../{{ prod.imagenProducto }}" class="card-img-top img-fluid"
+                                         alt="{{ prod.nombreProducto }}">
                                 </div>
                                 <div class="col-auto card-body">
                                     <p class="item-platform text-center">{{ prod.plataforma.idPlataforma }}</p>
                                     <div class="item-title-wrapper text-center">
                                         <span>{{ prod.nombreProducto }}</span>
                                     </div>
-                                    <p class="text-center" style="font-size: 18px; font-weight: 600">${{ prod.precioProducto }}</p>
+                                    <p class="text-center" style="font-size: 18px; font-weight: 600">
+                                        ${{ prod.precioProducto }}</p>
                                 </div>
                             </div>
                         </a>
@@ -622,7 +657,9 @@
         integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
         crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
 <script src="https://kit.fontawesome.com/777d474a1b.js" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/simplelightbox@2.10.3/dist/simple-lightbox.jquery.min.js"></script>

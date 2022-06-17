@@ -1,7 +1,9 @@
 import datetime
 
+from django.contrib.auth import logout
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+
 from .models import Producto, Categoria, Subcategoria
 from .forms import SuscriptorForm
 
@@ -23,12 +25,16 @@ def home(request):
     }
 
     if(request.method == 'POST'):
-        form = SuscriptorForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return JsonResponse({'success': True})
-        else:
-            return JsonResponse({'success': False})
+        action = request.POST['action']
+        if action == 'logout':
+            logout(request)
+        elif action == 'newSub':
+            form = SuscriptorForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return JsonResponse({'success': True})
+            else:
+                return JsonResponse({'success': False})
 
     return render(request, "products/index.html", datos)
 
