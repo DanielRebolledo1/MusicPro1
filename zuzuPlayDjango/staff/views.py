@@ -2,8 +2,9 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from rest_framework import status
 from rest_framework.response import Response
-from products.models import Producto, Marca
-from .forms import NuevoProductoForm, EditarProductoForm, NuevaMarcaForm, NuevaSubcategoriaForm, NuevaPlataformaForm
+from products.models import Producto, Marca, Unidad, Subcategoria, Plataforma
+from .forms import NuevoProductoForm, EditarProductoForm, NuevaMarcaForm, NuevaSubcategoriaForm, NuevaPlataformaForm,\
+    NuevaUnidadForm
 from rest_api.serializers import CategoriaPromoSerializer
 
 
@@ -14,7 +15,8 @@ def administration(request):
         'editarProductoForm': EditarProductoForm(),
         'nuevaMarcaForm': NuevaMarcaForm(),
         'nuevaSubcategoriaForm': NuevaSubcategoriaForm(),
-        'nuevaPlataformaForm': NuevaPlataformaForm()
+        'nuevaPlataformaForm': NuevaPlataformaForm(),
+        'nuevaUnidadForm': NuevaUnidadForm(),
     }
 
     if request.method == 'POST':
@@ -75,7 +77,7 @@ def administration(request):
         elif action == 'productExists':
             name = request.POST['name']
             platform = request.POST['platform']
-            count = Producto.objects.filter(nombreProducto=name, plataforma__idPlataforma=platform).count()
+            count = Producto.objects.filter(nombreProducto__iexact=name, plataforma__idPlataforma__iexact=platform).count()
             if count != 0:
                 return JsonResponse({'exists': True})
             else:
@@ -89,7 +91,7 @@ def administration(request):
                 return JsonResponse({'success': False, 'errors': form.errors})
         elif action == 'brandExists':
             name = request.POST['name']
-            count = Marca.objects.filter(nombreMarca=name).count()
+            count = Marca.objects.filter(nombreMarca__iexact=name).count()
             if count != 0:
                 return JsonResponse({'exists': True})
             else:
@@ -101,9 +103,9 @@ def administration(request):
                 return JsonResponse({'success': True})
             else:
                 return JsonResponse({'success': False, 'errors': form.errors})
-        elif action == 'SubcategoryExists':
-            name = request.POST['name']
-            count = Marca.objects.filter(nombreMarca=name).count()
+        elif action == 'subcategoryExists':
+            id = request.POST['id']
+            count = Subcategoria.objects.filter(idSubcategoria__iexact=id).count()
             if count != 0:
                 return JsonResponse({'exists': True})
             else:
@@ -116,8 +118,8 @@ def administration(request):
             else:
                 return JsonResponse({'success': False, 'errors': form.errors})
         elif action == 'platformExists':
-            name = request.POST['name']
-            count = Marca.objects.filter(nombreMarca=name).count()
+            id = request.POST['id']
+            count = Plataforma.objects.filter(idPlataforma__iexact=id).count()
             if count != 0:
                 return JsonResponse({'exists': True})
             else:
@@ -129,6 +131,20 @@ def administration(request):
                 return JsonResponse({'success': True}) and Response(serializer.data, status=status.HTTP_201_CREATED)
             else:
                 return JsonResponse({'success': False, 'errors': serializer.errors}) and Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        elif action == 'newUnit':
+            try:
+                prod = Unidad.objects.create(idUnidad=request.POST['id'], producto_id=request.POST['producto'])
+            except Exception as e:
+                return JsonResponse({'success': False, 'errors': str(e)})
+            prod.save()
+            return JsonResponse({'success': True})
+        elif action == 'unitExists':
+            id = request.POST['id']
+            count = Unidad.objects.filter(idUnidad=id).count()
+            if count != 0:
+                return JsonResponse({'exists': True})
+            else:
+                return JsonResponse({'exists': False})
         else:
             return JsonResponse({'error': 'Error en POST: Acción no definida'})
 

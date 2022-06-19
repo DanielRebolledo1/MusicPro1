@@ -1181,6 +1181,16 @@ h5 {
     display: block;
 }
 
+.admin tfoot tr {
+    background: #ffffff;
+    position:sticky;
+    bottom: 0;
+}
+
+.admin .table-responsive {
+    max-height: 400px;
+}
+
 .post {
     font-weight: bold;
     color: #595959;

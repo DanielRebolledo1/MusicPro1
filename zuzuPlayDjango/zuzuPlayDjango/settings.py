@@ -32,7 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 AUTH_USER_MODEL = 'login.Usuario'
-LOGIN_URL = 'login/'
+LOGIN_URL = 'login'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -169,7 +169,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-SITE_ID = 3
+SITE_ID = 2
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = config('GOOGLE_CLIENT_ID')
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config('GOOGLE_CLIENT_SECRET')

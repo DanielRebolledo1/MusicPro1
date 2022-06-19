@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from django.forms.widgets import PasswordInput, EmailInput
+from django.forms.widgets import PasswordInput
 from .models import Usuario
 
 

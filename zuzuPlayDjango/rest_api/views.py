@@ -11,13 +11,18 @@ from .serializers import CategoriaPromoSerializer
 # Create your views here.
 @csrf_exempt
 @api_view(['GET', 'POST'])
-@permission_classes((IsAuthenticated,))
 def categorias_promo(request):
     if request.method == 'GET':
         categorias = Categoria_Promocional.objects.all()
         serializer = CategoriaPromoSerializer(categorias, many=True)
         return Response(serializer.data)
-    elif request.method == 'POST':
+
+
+@csrf_exempt
+@api_view(['POST'])
+@permission_classes((IsAuthenticated,))
+def agregar_categorias_promo(request):
+    if request.method == 'POST':
         serializer = CategoriaPromoSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()

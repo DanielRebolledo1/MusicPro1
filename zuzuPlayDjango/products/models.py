@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 
 # Create your models here.
@@ -18,6 +19,10 @@ class Categoria(models.Model):
     def __str__(self):
         return self.nombreCategoria
 
+    def save(self, *args, **kwargs):
+        self.idCategoria = self.idCategoria.upper()
+        super(Categoria, self).save(*args, **kwargs)
+
 
 class Subcategoria(models.Model):
     idSubcategoria = models.CharField(primary_key=True, max_length=4, verbose_name='Id')
@@ -27,6 +32,10 @@ class Subcategoria(models.Model):
 
     def __str__(self):
         return self.nombreSubcategoria
+
+    def save(self, *args, **kwargs):
+        self.idSubcategoria = self.idSubcategoria.upper()
+        super(Subcategoria, self).save(*args, **kwargs)
 
 
 class Marca(models.Model):
@@ -41,6 +50,10 @@ class Marca(models.Model):
 class Plataforma(models.Model):
     idPlataforma = models.CharField(primary_key=True, max_length=3, verbose_name='Id')
     nombrePlataforma = models.CharField(max_length=30, verbose_name='Nombre')
+
+    def save(self, *args, **kwargs):
+        self.idPlataforma = self.idPlataforma.upper()
+        super(Plataforma, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.nombrePlataforma
@@ -62,8 +75,8 @@ class Producto(models.Model):
 
 
 class Unidad(models.Model):
-    idUnidad = models.CharField(primary_key=True, max_length=12, verbose_name='UPC')
-    fechaIngUnidad = models.DateField(verbose_name='Fecha de ingreso')
+    idUnidad = models.CharField(primary_key=True, max_length=12 ,verbose_name='UPC')
+    fechaIngUnidad = models.DateField(default=timezone.now, verbose_name='Fecha de ingreso')
     estadoUnidad = models.BooleanField(default=True, verbose_name='Estado')
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
 

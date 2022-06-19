@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from products.models import Producto, Marca, Subcategoria, Plataforma
+from products.models import Producto, Marca, Subcategoria, Plataforma, Unidad
 from django.forms.widgets import NumberInput, HiddenInput
 
 
@@ -52,19 +52,23 @@ class EditarProductoForm(ModelForm):
         self.fields['subcategoria'].widget = HiddenInput(attrs=({'id': 'edit-product-subcategory'}))
         self.fields['plataforma'].widget = HiddenInput(attrs=({'id': 'edit-product-platform'}))
 
+
 class NuevaMarcaForm(ModelForm):
     class Meta:
-        model= Marca
+        model = Marca
         fields = ['nombreMarca']
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['nombreMarca'].widget.attrs.update(
             {'id': 'new-brand-name', 'class': 'form-control form-control-lg custom-input'})
 
+
 class NuevaSubcategoriaForm(ModelForm):
     class Meta:
-        model= Subcategoria
-        fields = ['idSubcategoria','nombreSubcategoria','categoria']
+        model = Subcategoria
+        fields = ['idSubcategoria', 'nombreSubcategoria', 'categoria']
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['idSubcategoria'].widget.attrs.update(
@@ -74,13 +78,26 @@ class NuevaSubcategoriaForm(ModelForm):
         self.fields['categoria'].widget.attrs.update(
             {'id': 'new-subcategory-category', 'class': 'form-select form-select-lg custom-select'})
 
+
 class NuevaPlataformaForm(ModelForm):
     class Meta:
-        model= Plataforma
-        fields = ['idPlataforma','nombrePlataforma']
+        model = Plataforma
+        fields = ['idPlataforma', 'nombrePlataforma']
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['idPlataforma'].widget.attrs.update(
             {'id': 'new-platform-id', 'class': 'form-control form-control-lg custom-input'})
         self.fields['nombrePlataforma'].widget.attrs.update(
             {'id': 'new-platform-name', 'class': 'form-control form-control-lg custom-input'})
+
+
+class NuevaUnidadForm(ModelForm):
+    class Meta:
+        model = Unidad
+        fields = ['idUnidad']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['idUnidad'].widget.attrs.update(
+            {'id': 'new-unit-id', 'class': 'form-control form-control-lg custom-input'})
