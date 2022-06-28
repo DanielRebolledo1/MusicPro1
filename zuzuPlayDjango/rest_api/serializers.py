@@ -1,8 +1,8 @@
 from rest_framework import serializers
-from .models import Categoria_Promocional
+from .models import CategoriaPromocional
 
 
 class CategoriaPromoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Categoria_Promocional
+        model = CategoriaPromocional
         fields = ['id', 'nombre', 'imagen']

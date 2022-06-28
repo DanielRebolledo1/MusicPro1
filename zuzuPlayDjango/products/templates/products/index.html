@@ -7,8 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Inicio : zuzuPlay</title>
 
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'products/favicon/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'products/favicon/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'products/favicon/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'products/favicon/site.webmanifest' %}">
+
     <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="{% static 'products/css/style.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,6 +21,7 @@
           rel="stylesheet">
 </head>
 <body class="home">
+<input id="token-user" type="hidden" value="{{ user.token }}">
 <!--Menu superior-->
 <header class="navbar-header">
     <div class="container-fluid fixed-top">
@@ -98,12 +104,12 @@
                         {% for sub in subcategorias %}
                             {% if sub.categoria.idCategoria == cat.idCategoria %}
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">{{ sub.nombreSubcategoria }}</a>
+                                    <a href="{{ sub.url }}" class="nav-link">{{ sub.nombreSubcategoria }}</a>
                                 </li>
                             {% endif %}
                         {% endfor %}
                         <li class="nav-item">
-                            <a href="#" class="nav-link">Ver todo</a>
+                            <a href="{{ cat.url }}" class="nav-link">Ver todo</a>
                         </li>
                     </ul>
                 {% endfor %}
@@ -124,7 +130,7 @@
     <div class="container-fluid circles-container">
         <div id="promo-categories" class="row justify-content-center">
             <div class="col-4 col-md-auto circle mb-3">
-                <a href="{% url 'catalog' %}">
+                <a href="#">
                     <div class="circle-img mb-1">
                         <img src="{% static 'products/img/xbxs.png' %}" class="img-fluid" alt="xbxs">
                     </div>
@@ -208,7 +214,7 @@
                 </a>
             </div>
             <div class="col-6 col-md-auto card popular-card">
-                <a href="{% url 'product' %}">
+                <a href="#">
                     <img src="{% static 'products/img/legosw card.png' %}" class="img-fluid" alt="ps5">
                     <h3>LEGO Star Wars: The Skywalker Saga</h3>
                 </a>
@@ -265,13 +271,13 @@
                 {% for prod in nuevosProductos %}
                     <div class="swiper-slide">
                         <div class="card item-card">
-                            <a href="#" class="col-5 col-md-auto align-self-center">
-                                <img src="{{ prod.imagenProducto }}" class="card-img-top img-fluid" alt="{{ prod.nombreProducto }}">
+                            <a href="{{ prod.url }}" class="col-5 col-md-auto align-self-center">
+                                <img src="{{ prod.imagenProducto.url }}" class="card-img-top img-fluid" alt="{{ prod.nombreProducto }}">
                             </a>
                             <div class="col-7 col-md-auto card-body">
                                 <p class="item-platform text-center">{{ prod.plataforma.idPlataforma }}</p>
                                 <div class="item-title-wrapper text-center">
-                                    <a href="#">
+                                    <a href="{{ prod.url }}">
                                         <span>{{ prod.nombreProducto }}</span>
                                     </a>
                                 </div>
@@ -316,13 +322,13 @@
                 {% for prod in productosPreventa %}
                     <div class="swiper-slide">
                         <div class="card item-card">
-                            <a href="#" class="col-5 col-md-auto align-self-center">
-                                <img src="{{ prod.imagenProducto }}" class="card-img-top img-fluid" alt="ghostwire ps5">
+                            <a href="{{ prod.url }}" class="col-5 col-md-auto align-self-center">
+                                <img src="{{ prod.imagenProducto.url }}" class="card-img-top img-fluid" alt="ghostwire ps5">
                             </a>
                             <div class="col-7 col-md-auto card-body">
                                 <p class="item-platform text-center">{{ prod.plataforma.idPlataforma }}</p>
                                 <div class="item-title-wrapper text-center">
-                                    <a href="#">
+                                    <a href="{{ prod.url }}">
                                         <span>{{ prod.nombreProducto }}</span>
                                     </a>
                                 </div>
@@ -446,7 +452,7 @@
         crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
 <script src="https://kit.fontawesome.com/777d474a1b.js" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.js"></script>
 <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
 <script src="{% static 'products/js/script.js' %}"></script>
 </body>

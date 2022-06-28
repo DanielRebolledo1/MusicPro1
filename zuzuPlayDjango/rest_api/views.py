@@ -1,19 +1,21 @@
+import requests
 from django.shortcuts import render
 from rest_framework import status
+from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.views.decorators.csrf import csrf_exempt
-from .models import Categoria_Promocional
+from .models import CategoriaPromocional
 from .serializers import CategoriaPromoSerializer
 
 
 # Create your views here.
 @csrf_exempt
-@api_view(['GET', 'POST'])
+@api_view(['GET'])
 def categorias_promo(request):
     if request.method == 'GET':
-        categorias = Categoria_Promocional.objects.all()
+        categorias = CategoriaPromocional.objects.all()
         serializer = CategoriaPromoSerializer(categorias, many=True)
         return Response(serializer.data)
 
@@ -36,8 +38,8 @@ def agregar_categorias_promo(request):
 @permission_classes((IsAuthenticated,))
 def modificar_categorias_promo(request, id):
     try:
-        categoria = Categoria_Promocional.objects.get(id=id)
-    except Categoria_Promocional.DoesNotExist:
+        categoria = CategoriaPromocional.objects.get(id=id)
+    except CategoriaPromocional.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':

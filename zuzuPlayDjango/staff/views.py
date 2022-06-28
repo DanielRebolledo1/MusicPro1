@@ -1,14 +1,17 @@
 from django.http import JsonResponse
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required, user_passes_test
 from rest_framework import status
 from rest_framework.response import Response
 from products.models import Producto, Marca, Unidad, Subcategoria, Plataforma
-from .forms import NuevoProductoForm, EditarProductoForm, NuevaMarcaForm, NuevaSubcategoriaForm, NuevaPlataformaForm,\
-    NuevaUnidadForm
+from .forms import NuevoProductoForm, EditarProductoForm, NuevaMarcaForm, NuevaSubcategoriaForm, NuevaPlataformaForm, \
+    NuevaUnidadForm, EditarUnidadForm
 from rest_api.serializers import CategoriaPromoSerializer
 
 
 # Create your views here.
+@login_required
+@user_passes_test(lambda u: u.is_staff, login_url='denied', redirect_field_name=None)
 def administration(request):
     datos = {
         'nuevoProductoForm': NuevoProductoForm(),
@@ -17,35 +20,36 @@ def administration(request):
         'nuevaSubcategoriaForm': NuevaSubcategoriaForm(),
         'nuevaPlataformaForm': NuevaPlataformaForm(),
         'nuevaUnidadForm': NuevaUnidadForm(),
+        'editarUnidadForm': EditarUnidadForm()
     }
 
     if request.method == 'POST':
         action = request.POST['action']
 
         if action == 'autocomplete':
-            query = Producto.objects.filter(nombreProducto__istartswith=request.POST['term'], estadoProducto=1)
+            query = Producto.objects.filter(nombreProducto__istartswith=request.POST['term'], disponible=True)
             count = query.count()
             if count == 0:
-                query = Producto.objects.filter(nombreProducto__icontains=request.POST['term'], estadoProducto=1)
+                query = Producto.objects.filter(nombreProducto__icontains=request.POST['term'], disponible=True)
             productos = []
             for prod in query:
                 prod = {
                     'buscar': prod.nombreProducto + ' ' + prod.plataforma.idPlataforma,
                     'id': prod.idProducto,
                     'nombre': prod.nombreProducto,
-                    'imagen': prod.imagenProducto.url,
+                    'imagen': prod.imagenProducto.cdn_url,
                     'fechaLan': prod.fechaLanProducto,
                     'precio': prod.precioProducto,
                     'marca': prod.marca.idMarca,
                     'subcategoria': prod.subcategoria.idSubcategoria,
-                    'nombreSubcategoria': prod.subcategoria.nombreSubcategoria,
+                    'nombreSubcategoria': prod.subcategoria.__str__(),
                     'plataforma': prod.plataforma.idPlataforma,
                     'nombrePlataforma': prod.plataforma.nombrePlataforma,
                 }
                 productos.append(prod)
             return JsonResponse(productos, safe=False)
         elif action == 'newProduct':
-            form = NuevoProductoForm(request.POST, request.FILES)
+            form = NuevoProductoForm(request.POST)
             if form.is_valid():
                 prod = form.save(commit=False)
                 count = Producto.objects.filter(subcategoria__idSubcategoria=prod.subcategoria.idSubcategoria).count()
@@ -56,19 +60,24 @@ def administration(request):
             else:
                 return JsonResponse({'success': False, 'errors': form.errors})
         elif action == 'editProduct':
-            id = request.POST.get('idProducto')
+            id = request.POST['idProducto']
             prod = Producto.objects.get(idProducto=id)
-            form = EditarProductoForm(request.POST, request.FILES, instance=prod)
+            img = prod.imagenProducto
+            form = EditarProductoForm(request.POST, instance=prod)
             if form.is_valid():
-                form.save()
+                editProd = form.save(commit=False)
+                print(editProd.imagenProducto)
+                if editProd.imagenProducto == '':
+                    editProd.imagenProducto = img
+                editProd.save()
                 prod = Producto.objects.get(idProducto=id)
-                return JsonResponse({'success': True, 'imagen': prod.imagenProducto.url})
+                return JsonResponse({'success': True, 'imagen': prod.imagenProducto.cdn_url})
             else:
                 return JsonResponse({'errors': form.errors})
         elif action == 'deleteProduct':
             id = request.POST['id']
             prod = Producto.objects.get(idProducto=id)
-            prod.estadoProducto = 0
+            prod.disponible = False
             try:
                 prod.save()
                 return JsonResponse({'success': True})
@@ -77,11 +86,28 @@ def administration(request):
         elif action == 'productExists':
             name = request.POST['name']
             platform = request.POST['platform']
-            count = Producto.objects.filter(nombreProducto__iexact=name, plataforma__idPlataforma__iexact=platform).count()
+            count = Producto.objects.filter(nombreProducto__iexact=name,
+                                            plataforma__idPlataforma__iexact=platform).count()
             if count != 0:
                 return JsonResponse({'exists': True})
             else:
                 return JsonResponse({'exists': False})
+        elif action == 'editProductExists':
+            id = request.POST['id']
+            name = request.POST['name']
+            platform = request.POST['platform']
+            try:
+                Producto.objects.get(idProducto__iexact=id,
+                                     nombreProducto__iexact=name,
+                                     plataforma__idPlataforma__iexact=platform)
+                return JsonResponse({'exists': False})
+            except Producto.DoesNotExist:
+                count = Producto.objects.filter(nombreProducto__iexact=name,
+                                                plataforma__idPlataforma__iexact=platform).count()
+                if count != 0:
+                    return JsonResponse({'exists': True})
+                else:
+                    return JsonResponse({'exists': False})
         elif action == 'newBrand':
             form = NuevaMarcaForm(request.POST)
             if form.is_valid():
@@ -105,11 +131,16 @@ def administration(request):
                 return JsonResponse({'success': False, 'errors': form.errors})
         elif action == 'subcategoryExists':
             id = request.POST['id']
-            count = Subcategoria.objects.filter(idSubcategoria__iexact=id).count()
-            if count != 0:
-                return JsonResponse({'exists': True})
-            else:
-                return JsonResponse({'exists': False})
+            name = request.POST['name']
+            category = request.POST['category']
+            try:
+                Subcategoria.objects.get(idSubcategoria__iexact=id)
+            except Subcategoria.DoesNotExist:
+                try:
+                    Subcategoria.objects.get(nombreSubcategoria__iexact=name, categoria__idCategoria__iexact=category)
+                except Subcategoria.DoesNotExist:
+                    return JsonResponse({'exists': False})
+            return JsonResponse({'exists': True})
         elif action == 'newPlatform':
             form = NuevaPlataformaForm(request.POST)
             if form.is_valid():
@@ -130,13 +161,24 @@ def administration(request):
                 serializer.save()
                 return JsonResponse({'success': True}) and Response(serializer.data, status=status.HTTP_201_CREATED)
             else:
-                return JsonResponse({'success': False, 'errors': serializer.errors}) and Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                return JsonResponse({'success': False, 'errors': serializer.errors}) \
+                       and Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         elif action == 'newUnit':
             try:
-                prod = Unidad.objects.create(idUnidad=request.POST['id'], producto_id=request.POST['producto'])
+                unidad = Unidad.objects.create(idUnidad=request.POST['id'], producto_id=request.POST['producto'])
             except Exception as e:
                 return JsonResponse({'success': False, 'errors': str(e)})
-            prod.save()
+            unidad.save()
+            return JsonResponse({'success': True})
+        elif action == 'editUnit':
+            unidad = Unidad.objects.get(idUnidad=request.POST['currentId'])
+            try:
+                nueva_unidad = Unidad.objects.create(idUnidad=request.POST['newId'], producto_id=unidad.producto_id,
+                                                     fechaIngUnidad=unidad.fechaIngUnidad)
+            except Exception as e:
+                return JsonResponse({'success': False, 'errors': str(e)})
+            unidad.delete()
+            nueva_unidad.save()
             return JsonResponse({'success': True})
         elif action == 'unitExists':
             id = request.POST['id']
@@ -145,7 +187,17 @@ def administration(request):
                 return JsonResponse({'exists': True})
             else:
                 return JsonResponse({'exists': False})
+        elif action == 'getUnits':
+            query = Unidad.objects.filter(producto__idProducto=request.POST['product'],
+                                          disponible=True).order_by('-fechaIngUnidad')
+            unidades = []
+            for unidad in query:
+                unidad = {
+                    'id': unidad.idUnidad,
+                    'fechaIng': unidad.fechaIngUnidad,
+                }
+                unidades.append(unidad)
+            return JsonResponse(unidades, safe=False)
         else:
             return JsonResponse({'error': 'Error en POST: Acción no definida'})
-
     return render(request, "staff/administration.html", datos)

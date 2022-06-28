@@ -8,7 +8,7 @@ if (body.classList.contains('home')) {
         const $subsEmail = $('#subs-email');
 
         let formData = '';
-        const csrfToken = $("input[name=csrfmiddlewaretoken]").val();
+        const csrftoken = getCookie('csrftoken');
 
         $.ajax({
             url: 'api/categorias_promo',
@@ -29,10 +29,11 @@ if (body.classList.contains('home')) {
             if (checkSubsInputsOnSubmit($subsEmail.get(0))) {
                 formData = new FormData($subsForm.get(0));
                 formData.append('action', 'newSub');
-                formData.append('csrfmiddlewaretoken', csrfToken);
                 $.ajax({
                     url: '',
                     type: 'POST',
+                    headers: {'X-CSRFToken': csrftoken},
+                    mode: 'same-origin',
                     data: formData,
                     processData: false,
                     contentType: false,
@@ -226,16 +227,17 @@ if (body.classList.contains('login-register')) {
         const passwordStrengthIndicator = document.getElementById('pw-strength');
 
         let formData = '';
-        let csrfToken = $("input[name=csrfmiddlewaretoken]").val();
+        const csrftoken = getCookie('csrftoken');
 
         $loginForm.on('submit', function (e) {
             if (checkLoginInputsOnSubmit($loginEmail.get(0), $loginPassword.get(0))) {
                 formData = new FormData($loginForm.get(0));
                 formData.append('action', 'login');
-                formData.append('csrfmiddlewaretoken', csrfToken);
                 $.ajax({
                     url: '',
                     type: 'POST',
+                    headers: {'X-CSRFToken': csrftoken},
+                    mode: 'same-origin',
                     data: formData,
                     processData: false,
                     contentType: false,
@@ -290,17 +292,19 @@ if (body.classList.contains('login-register')) {
                 passwordStrengthIndicator, $registerName.get(0), $registerLastName.get(0))) {
                 formData = new FormData($registerForm.get(0));
                 formData.append('action', 'register');
-                formData.append('csrfmiddlewaretoken', csrfToken);
                 $.ajax({
                     url: '',
                     type: 'POST',
+                    headers: {'X-CSRFToken': csrftoken},
+                    mode: 'same-origin',
                     data: formData,
                     processData: false,
                     contentType: false,
                     success: function (response) {
                         if (JSON.parse(response['success'])) {
-                            $registerResponse.removeClass('error')
-                            $registerResponse.html('Usuario creado con éxito.').addClass('success');
+                            $registerResponse.html('');
+                            fillInput($loginEmail, $registerEmail.val());
+                            $('#pills-login-tab').click();
                         } else {
                             $registerResponse.html('');
                             let error = JSON.parse(JSON.stringify(response['errors']));
@@ -568,10 +572,10 @@ if (body.classList.contains('product')) {
     });
 }
 
-if (body.classList.contains('catalog')) {
-    console.log('catalog')
+if (body.classList.contains('category')) {
+    console.log('category')
 
-    $(document).ready(function (node, child) {
+    $(document).ready(function () {
         sidebarMenuFunctions();
 
         const $sidebar = $('#cat-sb');
@@ -639,87 +643,25 @@ if (body.classList.contains('catalog')) {
         // Initial check
         handleViewportChange(mediaQuery);
 
-        // Pagination
-        const productList = Array.from(document.querySelectorAll('#cat-products>a'));
-        const pageButtons = document.getElementsByClassName('page-btn');
-        $firstBtn = $('#first-page');
-        $lastBtn = $('#last-page');
-        let pageCount = pageButtons.length;
-        let productCount = productList.length;
-        let limitPerPage = 10;
-        let pageTotal = Math.ceil(productCount / limitPerPage);
-        let currentPage = parseInt(document.getElementsByClassName('page-item active')[0].innerText);
+        //Pagination
 
-        checkPage(currentPage);
+        //Django Pagination
+        const numPages = $('#numPages').val();
+        const currentPage = parseInt($('#currentPage').val());
+        let $lastPage = $('#lastPage');
 
-        while (pageCount !== pageTotal) {
-            let pageNumber = pageCount + 1;
-            let buttonFormat = '<li class="page-item">' +
-                '<button class="page-link page-btn">' + pageNumber +
-                '</button></li>'
-            $(buttonFormat).insertBefore($($lastBtn).parent(), child);
-
-            pageCount += 1;
-        }
-
-        function checkPage(currentPage) {
-            hideProducts();
-
-            $($firstBtn).parent().toggleClass("disabled", currentPage === 1);
-            $($lastBtn).parent().toggleClass("disabled", currentPage === pageTotal);
-
-            for (let i = 0; i < productList.length; i += limitPerPage) {
-                const pageProducts = productList.slice(i, i + limitPerPage);
-                if (i === (currentPage - 1) * limitPerPage) {
-                    pageProducts.forEach(showProducts);
-                }
+        for (let i = 0; i < numPages; i++) {
+            let pageNumber = (i + 1);
+            let page = '<li class="page-item">' +
+                '<a href="?page=' + pageNumber + '" ' +
+                'class="page-link page-btn">' + pageNumber + '</a></li>';
+            if (pageNumber === currentPage) {
+                page = '<li class="page-item active">' +
+                    '<a href="?page=' + pageNumber + '" ' +
+                    'class="page-link page-btn">' + pageNumber + '</a></li>'
             }
+            $lastPage.before(page)
         }
-
-        function showProducts(item) {
-            for (let i = 0; i < productList.length; i += 1) {
-                if (item === productList[i]) {
-                    $(productList[i]).show('fade', 200);
-                }
-            }
-        }
-
-        function hideProducts() {
-            for (let i = 0; i < productList.length; i += 1) {
-                $(productList[i]).removeAttr('style');
-            }
-        }
-
-        for (let i = 0; i < pageButtons.length; i += 1) {
-            pageButtons[i].addEventListener("click", function () {
-                let previousPage = currentPage;
-
-                document.getElementsByClassName('page-item active')[0].classList.remove('active');
-                pageButtons[i].parentElement.classList.add('active');
-
-                currentPage = parseInt(document.getElementsByClassName('page-item active')[0].innerText);
-
-                if (currentPage !== previousPage) {
-                    checkPage(currentPage);
-                }
-
-                scrollToTop();
-            });
-        }
-
-        $($firstBtn).on("click", function () {
-            currentPage = 1;
-            checkPage(currentPage);
-            document.getElementsByClassName('page-item active')[0].classList.remove('active');
-            pageButtons[0].parentElement.classList.add('active');
-        });
-
-        $($lastBtn).on("click", function () {
-            currentPage = pageTotal;
-            checkPage(currentPage);
-            document.getElementsByClassName('page-item active')[0].classList.remove('active');
-            pageButtons[currentPage - 1].parentElement.classList.add('active');
-        });
     });
 }
 
@@ -747,14 +689,29 @@ if (body.classList.contains('terms')) {
     });
 }
 
+if (body.classList.contains('denied')) {
+    console.log('denied access')
+
+    $(document).ready(function () {
+        sidebarMenuFunctions();
+    });
+}
+
 if (body.classList.contains('admin')) {
     console.log('admin')
+
+    UPLOADCARE_LOCALE = 'es';
+    uploadcare.registerTab('preview', uploadcareTabEffects);
+    UPLOADCARE_TABS = "file gdrive";
+    UPLOADCARE_EFFECTS = "crop, rotate, mirror, sharp, blur, flip, enhance, grayscale, invert";
+    UPLOADCARE_CLEARABLE = 'true';
 
     $(document).ready(function () {
         let product = '';
         let formData = '';
 
-        let csrfToken = $("input[name=csrfmiddlewaretoken]").val();
+        const csrftoken = getCookie('csrftoken');
+        const sessiontoken = getCookie('sessiontoken');
 
         // Nuevo producto
         const $newProductForm = $('#new-product-form');
@@ -762,6 +719,7 @@ if (body.classList.contains('admin')) {
         const $newProductSearch = $('#new-product-search');
         const $newProductName = $('#new-product-name');
         const $newProductImg = $('#new-product-img');
+        const newProductImgWidget = uploadcare.Widget('#new-product-img');
         const $newProductDate = $('#new-product-date');
         const $newProductPrice = $('#new-product-price');
         const $newProductBrand = $('#new-product-brand');
@@ -773,10 +731,11 @@ if (body.classList.contains('admin')) {
                 $.ajax({
                     url: '?search=' + request.term,
                     type: 'POST',
+                    headers: {'X-CSRFToken': csrftoken},
+                    mode: 'same-origin',
                     data: {
                         'action': 'autocomplete',
                         'term': request.term,
-                        'csrfmiddlewaretoken': csrfToken,
                     },
                     success: function (data) {
                         response($.map(data, function (item) {
@@ -810,22 +769,25 @@ if (body.classList.contains('admin')) {
         });
 
         $newProductForm.on('submit', function (e) {
+            e.preventDefault();
             if (checkNewProductInputsOnSubmit($newProductName.get(0), $newProductImg.get(0), $newProductDate.get(0),
                 $newProductPrice.get(0), $newProductBrand.get(0), $newProductSubcategory.get(0),
                 $newProductPlatform.get(0))) {
                 if (!productExists($newProductName.val(), $newProductPlatform.val())) {
                     formData = new FormData($newProductForm.get(0));
                     formData.append('action', 'newProduct');
-                    formData.append('csrfmiddlewaretoken', csrfToken);
                     $.ajax({
                         url: '',
                         type: 'POST',
+                        headers: {'X-CSRFToken': csrftoken},
+                        mode: 'same-origin',
                         data: formData,
                         processData: false,
                         contentType: false,
                         success: function (response) {
                             if (JSON.parse(response['success'])) {
-                                $newProductImg.val('').removeClass('active');
+                                $newProductImg.removeClass('error');
+                                newProductImgWidget.value(null);
                                 $newProductResponse.removeClass('error')
                                 $newProductResponse.html('Producto agregado con éxito.').addClass('success');
                             } else {
@@ -839,14 +801,14 @@ if (body.classList.contains('admin')) {
                     $newProductResponse.html('El producto que intentas agregar ya existe.').addClass('error');
                 }
             }
-            e.preventDefault();
         });
 
         $newProductForm.on('reset', function () {
             $newProductSearch.val('');
             $newProductResponse.html('');
             resetInput($newProductName.get(0));
-            resetInput($newProductImg.get(0));
+            newProductImgWidget.value(null);
+            $newProductImg.removeClass('error');
             resetInput($newProductDate.get(0));
             $newProductDate.css('opacity', 0);
             resetInput($newProductPrice.get(0));
@@ -867,6 +829,12 @@ if (body.classList.contains('admin')) {
             });
         });
 
+        newProductImgWidget.onChange(function(file) {
+          if (file) {
+            $newProductImg.removeClass('error');
+          }
+        });
+
         // Modificar producto
         const $editProductForm = $('#edit-product-form');
         const $editProductResponse = $('#edit-product-response');
@@ -875,6 +843,7 @@ if (body.classList.contains('admin')) {
         const $editProductId = $('#edit-product-id');
         const $editProductName = $('#edit-product-name');
         const $editProductImg = $('#edit-product-img');
+        const editProductImgWidget = uploadcare.Widget('#edit-product-img');
         const $editProductDate = $('#edit-product-date');
         const $editProductPrice = $('#edit-product-price');
         const $editProductBrand = $('#edit-product-brand');
@@ -890,10 +859,11 @@ if (body.classList.contains('admin')) {
                 $.ajax({
                     url: '?search=' + request.term,
                     type: 'POST',
+                    headers: {'X-CSRFToken': csrftoken},
+                    mode: 'same-origin',
                     data: {
                         'action': 'autocomplete',
                         'term': request.term,
-                        'csrfmiddlewaretoken': csrfToken,
                     },
                     success: function (data) {
                         response($.map(data, function (item) {
@@ -918,6 +888,7 @@ if (body.classList.contains('admin')) {
             minLength: 2,
             select: function (event, ui) {
                 product = ui.item;
+                console.log(product)
                 fillInput($editProductSearch, ui.item.value);
                 $editProductCurrentImg.attr('src', ui.item.imagen).addClass('visible');
                 fillInput($editProductId, ui.item.id);
@@ -939,32 +910,33 @@ if (body.classList.contains('admin')) {
         });
 
         $editProductForm.on('submit', function (e) {
+            e.preventDefault();
             if (checkEditProductInputsOnSubmit($editProductName.get(0), $editProductDate.get(0),
                 $editProductPrice.get(0), $editProductBrand.get(0))) {
-                if (productChangesBeenMade(product, $editProductName.val(), $editProductImg.get(0), $editProductDate.val(),
+                if (productChangesBeenMade(product, $editProductName.val(), $editProductImg.val(), $editProductDate.val(),
                     $editProductPrice.val(), $editProductBrand.val())) {
-                    if (!productExists($editProductName.val(), $editProductPlatform.val())) {
+                    if (!editProductExists($editProductId.val(), $editProductName.val(), $editProductPlatform.val())) {
                         formData = new FormData($editProductForm.get(0));
                         formData.append('action', 'editProduct')
-                        formData.append('csrfmiddlewaretoken', csrfToken)
                         $.ajax({
                             url: '',
                             type: 'POST',
+                            headers: {'X-CSRFToken': csrftoken},
+                            mode: 'same-origin',
                             data: formData,
                             processData: false,
                             contentType: false,
                             success: function (response) {
                                 if (JSON.parse(response['success'])) {
-                                    product = {
-                                        'value': $editProductName.val() + ' ' + $editProductPlatform.val(),
-                                        'nombre': $editProductName.val(),
-                                        'imagen': response['imagen'],
-                                        'fechaLan': $editProductDate.val(),
-                                        'precio': $editProductPrice.val(),
-                                        'marca': $editProductBrand.val(),
-                                    }
-                                    $editProductImg.val('').removeClass('active');
+                                    product.value = $editProductName.val() + ' ' + $editProductPlatform.val();
+                                    product.nombre = $editProductName.val();
+                                    product.imagen = response['imagen'];
+                                    product.fechaLan = $editProductDate.val();
+                                    product.precio = $editProductPrice.val();
+                                    product.marca = $editProductBrand.val();
+                                    editProductImgWidget.value(null);
                                     $('#edit-product-current-img').attr('src', product.imagen);
+                                    console.log(product);
                                     $editProductResponse.removeClass('error')
                                     $editProductResponse.html('Producto modificado con éxito.').addClass('success');
                                 } else {
@@ -982,7 +954,6 @@ if (body.classList.contains('admin')) {
                     $editProductResponse.html('No se realizaron cambios.');
                 }
             }
-            e.preventDefault();
         });
 
         $("#edit-product-form input").each(function () {
@@ -1010,10 +981,11 @@ if (body.classList.contains('admin')) {
             $.ajax({
                 url: '',
                 type: 'POST',
+                headers: {'X-CSRFToken': csrftoken},
+                mode: 'same-origin',
                 data: {
                     'action': 'deleteProduct',
                     'id': product.id,
-                    'csrfmiddlewaretoken': csrfToken,
                 },
                 success: function (response) {
                     if (JSON.parse(response['success'])) {
@@ -1022,19 +994,14 @@ if (body.classList.contains('admin')) {
                         $editProductForm.get(0).reset();
                         $editProductCurrentImg.attr('src', '').removeClass('visible');
                         resetInput($editProductId.get(0));
-                        resetInput($editProductName.get(0));
-                        resetInput($editProductImg.get(0));
-                        resetInput($editProductDate.get(0));
+                        resetAndDisableInput($editProductName);
+                        editProductImgWidget.value(null);
+                        resetAndDisableInput($editProductDate);
                         $editProductDate.css('opacity', 0);
-                        resetInput($editProductPrice.get(0));
-                        resetInput($editProductBrand.get(0));
+                        resetAndDisableInput($editProductPrice);
+                        resetAndDisableInput($editProductBrand);
                         resetInput($editVisibleProductSubcategory.get(0));
                         resetInput($editVisibleProductPlatform.get(0));
-                        $editProductName.attr('disabled', '');
-                        $editProductImg.attr('disabled', '');
-                        $editProductDate.attr('disabled', '');
-                        $editProductPrice.attr('disabled', '');
-                        $editProductBrand.attr('disabled', '');
                         $editProductBtn.attr('disabled', '');
                         $deleteProductBtn.attr('disabled', '');
                         $editProductResponse.removeClass('error')
@@ -1053,7 +1020,7 @@ if (body.classList.contains('admin')) {
         const $newUnitId = $('#new-unit-id');
         const $newUnitTableBody = $('#new-unit-table tbody');
         const $addUnitBtn = $('#add-unit-btn');
-        const $removeTableUnitsBtn = $('#remove-table-units-btn');
+        const $removeNewTableUnitsBtn = $('#remove-new-table-units-btn');
         const $newUnitTHeadCbx = $('#new-unit-thead-check');
         const $addTableUnitsBtn = $('#add-table-units-btn');
 
@@ -1062,10 +1029,11 @@ if (body.classList.contains('admin')) {
                 $.ajax({
                     url: '?search=' + request.term,
                     type: 'POST',
+                    headers: {'X-CSRFToken': csrftoken},
+                    mode: 'same-origin',
                     data: {
                         'action': 'autocomplete',
                         'term': request.term,
-                        'csrfmiddlewaretoken': csrfToken,
                     },
                     success: function (data) {
                         response($.map(data, function (item) {
@@ -1094,9 +1062,9 @@ if (body.classList.contains('admin')) {
                         let row = '<tr><th scope="row"><div class="form-check"><input class="form-check-input" ' +
                             'type="checkbox" value=""</div></th>' +
                             '<td>' + $newUnitId.val() + '</td><td>' + product.id + '</td>' +
-                            '<td>' + product.value + '</td></tr>';
+                            '<td>' + product.value + '</td><td></td></tr>';
                         $newUnitTableBody.append(row);
-                        $removeTableUnitsBtn.removeAttr("disabled");
+                        $removeNewTableUnitsBtn.removeAttr("disabled");
                         $addTableUnitsBtn.removeAttr("disabled");
                     } else {
                         setErrorFor($newUnitId.get(0), 'Este UPC ya está registrado')
@@ -1122,21 +1090,31 @@ if (body.classList.contains('admin')) {
                     $.ajax({
                         url: '',
                         type: 'POST',
+                        headers: {'X-CSRFToken': csrftoken},
+                        mode: 'same-origin',
                         data: {
                             'action': 'newUnit',
-                            'csrfmiddlewaretoken': csrfToken,
                             'id': id,
                             'producto': producto,
                         },
                         success: function (response) {
-                            console.log(response);
+                            let status;
+                            if (JSON.parse(response['success'])) {
+                                status = '<i class="fa-solid fa-check" ' +
+                                    'style="font-size: 24px; color: #66CC33"></i>';
+                            } else {
+                                status = '<i class="fa-solid fa-circle-exclamation" ' +
+                                    'style="font-size: 24px; color: #f93154" ' +
+                                    'title="' + JSON.parse(JSON.stringify(response['errors'])) + '"></i>';
+                            }
+                            row.cells[4].innerHTML = status;
                         },
                     });
                 }
             }
         });
 
-        $removeTableUnitsBtn.on('click', function () {
+        $removeNewTableUnitsBtn.on('click', function () {
             if ($newUnitTableBody.get(0).rows.length !== 0) {
                 let rowsCount = $newUnitTableBody.get(0).rows.length;
                 let rowsRemoved = 0;
@@ -1153,8 +1131,104 @@ if (body.classList.contains('admin')) {
                     }
                 })
                 if (rowsCount === rowsRemoved) {
-                    $removeTableUnitsBtn.attr('disabled', 'true');
+                    $removeNewTableUnitsBtn.attr('disabled', 'true');
                     $addTableUnitsBtn.attr('disabled', 'true');
+                }
+            }
+        });
+
+        const $editUnitSearch = $('#edit-unit-search');
+        const $editUnitTableBody = $('#edit-unit-table tbody');
+        const $editUnitForm = $('#edit-unit-form');
+        const $editUnitBtn = $('#edit-unit-btn');
+        const $saveEditedUnitsBtn = $('#save-edited-units-btn');
+        const $editUnitId = $('#edit-unit-id');
+
+        $editUnitSearch.autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: '?search=' + request.term,
+                    type: 'POST',
+                    headers: {'X-CSRFToken': csrftoken},
+                    mode: 'same-origin',
+                    data: {
+                        'action': 'autocomplete',
+                        'term': request.term,
+                    },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return {
+                                value: item.buscar,
+                                'id': item.id,
+                            }
+                        }));
+                    },
+                });
+            },
+            delay: 0,
+            minLength: 2,
+            select: function (event, ui) {
+                fillInput($editUnitSearch, ui.item.value);
+                fillEditUnitsTable($editUnitTableBody, ui.item.id, $saveEditedUnitsBtn, $editUnitBtn, $editUnitId);
+                product = ui.item;
+                return false;
+            }
+        });
+
+        $editUnitForm.on('submit', function (e) {
+            e.preventDefault();
+            if (checkNewUnitInputsOnSubmit($editUnitId.get(0))) {
+                if (!unitExistsInTable($editUnitId.val(), $editUnitTableBody.get(0))) {
+                    if (!unitExists($editUnitId.val())) {
+                        let rowNumber = $('input[name="editUnitRadioBtn"]:checked').val();
+                        let row = $editUnitTableBody.get(0).rows[rowNumber];
+                        row.cells[1].innerText = $editUnitId.val();
+                    } else {
+                        setErrorFor($editUnitId.get(0), 'Este UPC ya está registrado')
+                    }
+                } else {
+                    setErrorFor($editUnitId.get(0), 'Este UPC ya está en la tabla')
+                }
+            }
+        });
+
+        $saveEditedUnitsBtn.on('click', function () {
+            let rowsCount = $editUnitTableBody.get(0).rows.length;
+            if (rowsCount > 0) {
+                for (let i = 0; i < rowsCount; i += 1) {
+                    let row = $editUnitTableBody.get(0).rows[i];
+                    let newId = row.cells[1].innerText;
+                    let status = '<i class="fa-solid fa-equals" ' +
+                        'style="font-size: 24px; color: #2E2E2E" ' +
+                        'title="Sin cambios."></i>';
+                    let currentId = row.cells[4].innerText;
+                    if (newId !== currentId) {
+                        $.ajax({
+                            url: '',
+                            type: 'POST',
+                            headers: {'X-CSRFToken': csrftoken},
+                            mode: 'same-origin',
+                            data: {
+                                'action': 'editUnit',
+                                'newId': newId,
+                                'currentId': currentId,
+                            },
+                            success: function (response) {
+                                if (JSON.parse(response['success'])) {
+                                    status = '<i class="fa-solid fa-check" ' +
+                                        'style="font-size: 24px; color: #66CC33"></i>';
+                                    row.cells[4].innerHTML = newId;
+                                } else {
+                                    status = '<i class="fa-solid fa-circle-exclamation" ' +
+                                        'style="font-size: 24px; color: #f93154" ' +
+                                        'title="' + JSON.parse(JSON.stringify(response['errors'])) + '"></i>';
+                                }
+                                row.cells[3].innerHTML = status;
+                            },
+                        });
+                    } else {
+                        row.cells[3].innerHTML = status;
+                    }
                 }
             }
         });
@@ -1171,10 +1245,11 @@ if (body.classList.contains('admin')) {
                 if (!brandExists($newBrandName.val())) {
                     formData = new FormData($newBrandForm.get(0));
                     formData.append('action', 'newBrand');
-                    formData.append('csrfmiddlewaretoken', csrfToken);
                     $.ajax({
                         url: '',
                         type: 'POST',
+                        headers: {'X-CSRFToken': csrftoken},
+                        mode: 'same-origin',
                         data: formData,
                         processData: false,
                         contentType: false,
@@ -1185,7 +1260,6 @@ if (body.classList.contains('admin')) {
                             } else {
                                 $newBrandResponse.removeClass('success')
                                 $newBrandResponse.html('No se pudo agregar la marca.').addClass('error');
-                                console.log(response)
                             }
                         }
                     })
@@ -1213,13 +1287,15 @@ if (body.classList.contains('admin')) {
 
         $newSubcategoryBtn.on('click', function (e) {
             if (checkNewSubcategoryInputsOnSubmit($newSubcategoryId.get(0), $newSubcategoryName.get(0), $newSubcategoryCategory.get(0))) {
-                if (!subcategoryExists($newSubcategoryId.val())) {
+                if (!subcategoryExists($newSubcategoryId.val(), $newSubcategoryName.val(),
+                    $newSubcategoryCategory.val())) {
                     formData = new FormData($newSubcategoryForm.get(0));
                     formData.append('action', 'newSubcategory');
-                    formData.append('csrfmiddlewaretoken', csrfToken);
                     $.ajax({
                         url: '',
                         type: 'POST',
+                        headers: {'X-CSRFToken': csrftoken},
+                        mode: 'same-origin',
                         data: formData,
                         processData: false,
                         contentType: false,
@@ -1260,10 +1336,11 @@ if (body.classList.contains('admin')) {
                 if (!platformExists($newPlatformId.val())) {
                     formData = new FormData($newPlatformForm.get(0));
                     formData.append('action', 'newPlatform');
-                    formData.append('csrfmiddlewaretoken', csrfToken);
                     $.ajax({
                         url: '',
                         type: 'POST',
+                        headers: {'X-CSRFToken': csrftoken},
+                        mode: 'same-origin',
                         data: formData,
                         processData: false,
                         contentType: false,
@@ -1433,6 +1510,7 @@ function checkNewProductInputsOnSubmit(newName, newImg, newDate, newPrice, newBr
     const brandValue = newBrand.value.trim();
     const subcategoryValue = newSubcategory.value.trim();
     const platformValue = newPlatform.value.trim();
+    let imgSuccess = true;
 
     if (nameValue === '') {
         setErrorFor(newName, 'Por favor ingrese un nombre');
@@ -1440,10 +1518,10 @@ function checkNewProductInputsOnSubmit(newName, newImg, newDate, newPrice, newBr
         setSuccessFor(newName);
     }
 
-    if (imgValue === '') {
-        setErrorFor(newImg, 'Por favor seleccione una imagen');
-    } else {
-        setSuccessFor(newImg);
+    if (imgValue === '' || imgValue === null) {
+        newImg.classList.remove('error');
+        newImg.classList.add('error');
+        imgSuccess = false;
     }
 
     if (dateValue === '') {
@@ -1476,7 +1554,7 @@ function checkNewProductInputsOnSubmit(newName, newImg, newDate, newPrice, newBr
         setSuccessFor(newPlatform);
     }
 
-    return checkSuccess(newName) && checkSuccess(newImg) && checkSuccess(newDate) && checkSuccess(newPrice) &&
+    return checkSuccess(newName) && imgSuccess && checkSuccess(newDate) && checkSuccess(newPrice) &&
         checkSuccess(newBrand) && checkSuccess(newSubcategory) && checkSuccess(newPlatform);
 }
 
@@ -1593,7 +1671,7 @@ function checkNewUnitInputsOnSubmit(id) {
     if (idValue === '') {
         //add error class
         setErrorFor(id, 'Por favor ingrese un UPC');
-    } else if (idValue.length !== 12 || regExp.test(idValue)) {
+    } else if (idValue.length !== 12 || regExp.test(idValue) || idValue.startsWith('0')) {
         setErrorFor(id, 'Por favor ingrese un UPC válido');
     } else {
         //add success class
@@ -1652,6 +1730,25 @@ function resetInput(input) {
 
     input.classList.remove('is-invalid');
     input.classList.remove('is-valid');
+}
+
+function resetAndDisableInput($input) {
+    $input.val('');
+    $input.removeClass('active');
+    $input.removeClass('is-invalid');
+    $input.removeClass('is-valid');
+    $input.attr('disabled', true);
+}
+
+function fillInput($input, value) {
+    $input.val(value);
+    $input.addClass('active');
+}
+
+function fillAndEnableInput($input, value) {
+    $input.val(value);
+    $input.addClass('active');
+    $input.removeAttr('disabled');
 }
 
 function isEmail(email) {
@@ -1887,19 +1984,8 @@ function scrollToTop() {
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 }
 
-function fillInput($input, value) {
-    $input.val(value);
-    $input.addClass('active');
-}
-
-function fillAndEnableInput($input, value) {
-    $input.val(value);
-    $input.addClass('active');
-    $input.removeAttr('disabled');
-}
-
 function productChangesBeenMade(product, productName, productImg, productDate, productPrice, productBrand) {
-    if (productName.trim() !== product.nombre || productImg.classList.contains('active') ||
+    if (productName.trim() !== product.nombre || productImg !== '' ||
         productDate !== product.fechaLan || productPrice !== product.precio.toString() ||
         productBrand !== product.marca.toString()) {
         return true;
@@ -1908,14 +1994,40 @@ function productChangesBeenMade(product, productName, productImg, productDate, p
 }
 
 function productExists(productName, productPlatform) {
-    const csrfToken = $("input[name=csrfmiddlewaretoken]").val();
+    const csrftoken = getCookie('csrftoken');
     let exists = false;
     $.ajax({
         url: '',
         type: 'POST',
+        headers: {'X-CSRFToken': csrftoken},
+        mode: 'same-origin',
         data: {
             'action': 'productExists',
-            'csrfmiddlewaretoken': csrfToken,
+            'name': productName.trim(),
+            'platform': productPlatform.trim(),
+        },
+        async: false,
+        success: function (response) {
+            if (JSON.parse(response['exists'])) {
+                exists = true;
+            }
+        },
+    });
+    return exists;
+}
+
+
+function editProductExists(productId, productName, productPlatform) {
+    const csrftoken = getCookie('csrftoken');
+    let exists = false;
+    $.ajax({
+        url: '',
+        type: 'POST',
+        headers: {'X-CSRFToken': csrftoken},
+        mode: 'same-origin',
+        data: {
+            'action': 'editProductExists',
+            'id': productId.trim(),
             'name': productName.trim(),
             'platform': productPlatform.trim(),
         },
@@ -1931,14 +2043,15 @@ function productExists(productName, productPlatform) {
 
 
 function brandExists(brandName) {
-    const csrfToken = $("input[name=csrfmiddlewaretoken]").val();
+    const csrftoken = getCookie('csrftoken');
     let exists = false;
     $.ajax({
         url: '',
         type: 'POST',
+        headers: {'X-CSRFToken': csrftoken},
+        mode: 'same-origin',
         data: {
             'action': 'brandExists',
-            'csrfmiddlewaretoken': csrfToken,
             'name': brandName.trim(),
         },
         async: false,
@@ -1951,16 +2064,19 @@ function brandExists(brandName) {
     return exists;
 }
 
-function subcategoryExists(subcategoryId) {
-    const csrfToken = $("input[name=csrfmiddlewaretoken]").val();
+function subcategoryExists(subcategoryId, subcategoryName, subcategoryCategory) {
+    const csrftoken = getCookie('csrftoken');
     let exists = false;
     $.ajax({
         url: '',
         type: 'POST',
+        headers: {'X-CSRFToken': csrftoken},
+        mode: 'same-origin',
         data: {
             'action': 'subcategoryExists',
-            'csrfmiddlewaretoken': csrfToken,
             'id': subcategoryId.trim(),
+            'name': subcategoryName.trim(),
+            'category': subcategoryCategory.trim()
         },
         async: false,
         success: function (response) {
@@ -1973,14 +2089,15 @@ function subcategoryExists(subcategoryId) {
 }
 
 function platformExists(platformId) {
-    const csrfToken = $("input[name=csrfmiddlewaretoken]").val();
+    const csrftoken = getCookie('csrftoken');
     let exists = false;
     $.ajax({
         url: '',
         type: 'POST',
+        headers: {'X-CSRFToken': csrftoken},
+        mode: 'same-origin',
         data: {
             'action': 'platformExists',
-            'csrfmiddlewaretoken': csrfToken,
             'id': platformId.trim(),
         },
         async: false,
@@ -1994,14 +2111,15 @@ function platformExists(platformId) {
 }
 
 function unitExists(unitId) {
-    const csrfToken = $("input[name=csrfmiddlewaretoken]").val();
+    const csrftoken = getCookie('csrftoken');
     let exists = false;
     $.ajax({
         url: '',
         type: 'POST',
+        headers: {'X-CSRFToken': csrftoken},
+        mode: 'same-origin',
         data: {
             'action': 'unitExists',
-            'csrfmiddlewaretoken': csrfToken,
             'id': unitId,
         },
         async: false,
@@ -2018,12 +2136,8 @@ function unitExistsInTable(id, tableBody) {
     let rowLength = tableBody.rows.length;
     for (let i = 0; i < rowLength; i += 1) {
         let row = tableBody.rows[i];
-        let cellLength = row.cells.length;
-        for (let y = 0; y < cellLength; y += 1) {
-            let cell = row.cells[y];
-            if (cell.innerHTML === id) {
-                return true;
-            }
+        if (row.cells[1].innerHTML === id) {
+            return true;
         }
     }
     return false;
@@ -2044,3 +2158,62 @@ function checkOrUncheckAllUnitsInTable(tableBody, headerCbx) {
     }
 }
 
+function fillEditUnitsTable($tableBody, productId, $saveEditedUnitsBtn, $editUnitBtn, $unitIdInput) {
+    $tableBody.empty();
+    $saveEditedUnitsBtn.attr('disabled', true);
+    resetAndDisableInput($unitIdInput);
+    $editUnitBtn.attr('disabled', true);
+    const csrftoken = getCookie('csrftoken');
+    $.ajax({
+        url: '',
+        type: 'POST',
+        headers: {'X-CSRFToken': csrftoken},
+        mode: 'same-origin',
+        data: {
+            'action': 'getUnits',
+            'product': productId,
+        },
+        success: function (response) {
+            let count = 0;
+            $.each(response, function () {
+                let id = JSON.parse(this['id']);
+                let fechaIng = JSON.parse(JSON.stringify(this['fechaIng']));
+                let row = '<tr><th scope="row"><div class="form-check"><input class="form-check-input" type="radio"' +
+                    'name="editUnitRadioBtn" id="edit-unit-thead-check" value="' + count + '"/></div></th>' +
+                    '<td>' + id + '</td><td>' + fechaIng + '</td><td></td><td style="display: none">' + id + '</td></tr>';
+                $tableBody.append(row);
+                count += 1;
+            });
+            if (count > 0) {
+                $saveEditedUnitsBtn.removeAttr('disabled');
+                $('input[name="editUnitRadioBtn"]').on('change', function () {
+                    let rowNumber = $(this).val();
+                    if (rowNumber !== '') {
+                        let row = $tableBody.get(0).rows[rowNumber];
+                        fillAndEnableInput($unitIdInput, row.cells[1].innerText);
+                        $editUnitBtn.removeAttr('disabled');
+                    } else {
+                        resetAndDisableInput($unitIdInput);
+                        $editUnitBtn.attr('disabled', true);
+                    }
+                });
+            }
+        },
+    });
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}

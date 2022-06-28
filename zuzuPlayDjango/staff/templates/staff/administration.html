@@ -7,12 +7,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Admin : zuzuPlay</title>
 
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'products/favicon/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'products/favicon/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'products/favicon/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'products/favicon/site.webmanifest' %}">
+
     <link href="https://fonts.googleapis.com" rel="preconnect">
     <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap"
           rel="stylesheet">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="{% static 'products/css/style.css' %}">
 </head>
 <body class="admin">
@@ -126,18 +131,9 @@
 
                                             <div id="new-product-response" class="post text-center"></div>
                                             {% for field in nuevoProductoForm %}
-                                                {% if field.widget_type == 'clearablefile' %}
+                                                {% if field.widget_type == 'file' %}
                                                     <div class="col-12">
-                                                        <div class="row align-items-center">
-                                                            <div class="col-auto">{{ field.label }}</div>
-                                                            <div class="col">
-                                                                <div class="form-outline">
-                                                                    {{ field }}
-                                                                    <div class="invalid-feedback">Error</div>
-                                                                    <div class="valid-feedback">Success</div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                        {{ field }}
                                                     </div>
                                                 {% elif field.widget_type == 'select' %}
                                                     <div class="col-12">
@@ -212,7 +208,8 @@
                                                                               novalidate>
                                                                             {% csrf_token %}
                                                                             {% if field.label == 'Marca' %}
-                                                                                <div id="new-brand-response" class="post text-center"></div>
+                                                                                <div id="new-brand-response"
+                                                                                     class="post text-center"></div>
                                                                                 {% for field in nuevaMarcaForm %}
                                                                                     <div class="col-12">
                                                                                         <div class="form-outline">
@@ -230,7 +227,8 @@
                                                                                 {% endfor %}
 
                                                                             {% elif field.label == 'Subcategoría' %}
-                                                                                <div id="new-subcategory-response" class="post text-center"></div>
+                                                                                <div id="new-subcategory-response"
+                                                                                     class="post text-center"></div>
                                                                                 {% for field in nuevaSubcategoriaForm %}
                                                                                     {% if field.widget_type == 'select' %}
                                                                                         <div class="col-12">
@@ -267,7 +265,8 @@
                                                                                 {% endfor %}
 
                                                                             {% elif field.label == 'Plataforma' %}
-                                                                                <div id="new-platform-response" class="post text-center"></div>
+                                                                                <div id="new-platform-response"
+                                                                                     class="post text-center"></div>
                                                                                 {% for field in nuevaPlataformaForm %}
                                                                                     <div class="col-12">
                                                                                         <div class="form-outline">
@@ -362,21 +361,24 @@
                                                     <th scope="col">UPC</th>
                                                     <th scope="col">SKU</th>
                                                     <th scope="col">Producto</th>
+                                                    <th scope="col"></th>
                                                 </tr>
                                                 </thead>
                                                 <tbody></tbody>
                                                 <tfoot>
                                                 <tr>
-                                                    <th scope="col" colspan="4">
+                                                    <th scope="col" colspan="5">
                                                         <div class="row gap-3">
                                                             <div class="col">
-                                                                <button id="remove-table-units-btn" type="button" class="btn custom-btn2 red w-100"
+                                                                <button id="remove-new-table-units-btn" type="button"
+                                                                        class="btn custom-btn2 red w-100"
                                                                         disabled>
                                                                     Eliminar
                                                                 </button>
                                                             </div>
                                                             <div class="col">
-                                                                <button id="add-table-units-btn" type="button" class="btn custom-btn2 w-100"
+                                                                <button id="add-table-units-btn" type="button"
+                                                                        class="btn custom-btn2 w-100"
                                                                         disabled>
                                                                     Guardar todo
                                                                 </button>
@@ -488,18 +490,9 @@
 
                                             <div id="edit-product-response" class="post text-center"></div>
                                             {% for field in editarProductoForm %}
-                                                {% if field.widget_type == 'clearablefile' %}
+                                                {% if field.widget_type == 'file' %}
                                                     <div class="col-12">
-                                                        <div class="row align-items-center">
-                                                            <div class="col-auto">{{ field.label }}</div>
-                                                            <div class="col">
-                                                                <div class="form-outline">
-                                                                    {{ field }}
-                                                                    <div class="invalid-feedback">Error</div>
-                                                                    <div class="valid-feedback">Success</div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                        {{ field }}
                                                     </div>
                                                 {% elif field.widget_type == 'select' %}
                                                     <div class="col-12">
@@ -638,7 +631,76 @@
                                     </div>
                                     <div class="tab-pane fade" id="edit-unit-content" role="tabpanel"
                                          aria-labelledby="edit-unit-tab">
-                                        Tab 2 content
+                                        <div class="input-group input-group-lg custom-input-group mb-3">
+                                            {% csrf_token %}
+                                            <span class="input-group-text border-0"><i
+                                                    class="fas fa-search"></i></span>
+                                            <input id="edit-unit-search" class="form-control rounded"
+                                                   placeholder="Buscar producto"/>
+                                        </div>
+                                        <hr>
+                                        <form id="edit-unit-form" method="post" action="" class="row gap-3" novalidate>
+                                            {% csrf_token %}
+
+                                            <div id="edit-unit-response" class="post text-center"></div>
+                                            {% for field in editarUnidadForm %}
+                                                <div class="col-12">
+                                                    <div class="form-outline">
+                                                        {{ field }}
+                                                        <label class="form-label"
+                                                               for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                                        <div class="invalid-feedback">Error</div>
+                                                        <div class="valid-feedback">Success</div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+
+                                            <div class="col-12">
+                                                <div class="row justify-content-end">
+                                                    <div class="col-6">
+                                                        <button id="edit-unit-btn" type="submit"
+                                                                class="btn custom-btn2 w-100" disabled>
+                                                            Editar
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <hr>
+                                        <div class="table-responsive">
+                                            <table id="edit-unit-table" class="table table-sm table-bordered">
+                                                <thead>
+                                                <tr>
+                                                    <th scope="col">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio"
+                                                                   name="editUnitRadioBtn" value="" checked/>
+                                                        </div>
+                                                    </th>
+                                                    <th scope="col">UPC</th>
+                                                    <th scope="col">Fecha de ingreso</th>
+                                                    <th scope="col"></th>
+                                                    <th scope="col" style="display: none"></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                                <tfoot>
+                                                <tr>
+                                                    <th scope="col" colspan="4">
+                                                        <div class="row justify-content-end">
+                                                            <div class="col-6">
+                                                                <button id="save-edited-units-btn" type="button"
+                                                                        class="btn custom-btn2 w-100"
+                                                                        disabled>
+                                                                    Aplicar cambios
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </th>
+                                                </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -656,6 +718,8 @@
         crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
 <script src="https://kit.fontawesome.com/777d474a1b.js" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.js"></script>
+<script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.min.js"></script>
+<script src="https://ucarecdn.com/libs/widget-tab-effects/1.x/uploadcare.tab-effects.lang.en.min.js"></script>
 <script src="{% static 'products/js/script.js' %}"></script>
 </html>

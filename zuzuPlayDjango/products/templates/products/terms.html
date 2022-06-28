@@ -6,7 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Términos y condiciones : zuzuPlay</title>
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.css" rel="stylesheet"/>
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'products/favicon/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'products/favicon/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'products/favicon/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'products/favicon/site.webmanifest' %}">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="{% static 'products/css/style.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -83,63 +88,27 @@
             </div>
             <nav class="nav flex-column sidebar-content">
                 <p class="sidebar-subtitle">Categorías</p>
-                <button type="button" id="category-1-btn" class="row gx-0 custom-btn1">
-                    <span class="col-auto">Videojuegos</span>
-                    <span class="col-auto ms-auto">
-                        <i id="show-icon-1" class="show-icon fa-solid fa-angle-down"></i>
-                    </span>
-                </button>
-                <ul id="category-1-sub" class="nav flex-column">
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">Playstation 5</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">Xbox Series X/S</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">Nintendo Switch</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">Ver todo</a>
-                    </li>
-                </ul>
-                <button type="button" id="category-2-btn" class="row gx-0 custom-btn1">
-                    <span class="col-auto">Consolas</span>
-                    <span class="col-auto ms-auto">
-                        <i id="show-icon-2" class="show-icon fa-solid fa-angle-down"></i>
-                    </span>
-                </button>
-                <ul id="category-2-sub" class="nav flex-column">
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">Playstation 5</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">Xbox Series X/S</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">Nintendo Switch</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">Ver todo</a>
-                    </li>
-                </ul>
-                <button type="button" id="category-3-btn" class="row gx-0 custom-btn1">
-                    <span class="col-auto">Accesorios</span>
-                    <span class="col-auto ms-auto">
-                        <i id="show-icon-3" class="show-icon fa-solid fa-angle-down"></i>
-                    </span>
-                </button>
-                <ul id="category-3-sub" class="nav flex-column">
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">Controles</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">Audífonos Gamer</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">Ver todo</a>
-                    </li>
-                </ul>
+                {% for cat in categorias %}
+                    <button type="button" class="row gx-0 custom-btn1 category-btn">
+                        <span class="col-auto">{{ cat.nombreCategoria }}</span>
+                        <span class="col-auto ms-auto">
+                            <i class="show-icon fa-solid fa-angle-down"></i>
+                        </span>
+                    </button>
+
+                    <ul class="nav flex-column subcategories">
+                        {% for sub in subcategorias %}
+                            {% if sub.categoria.idCategoria == cat.idCategoria %}
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">{{ sub.nombreSubcategoria }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">Ver todo</a>
+                        </li>
+                    </ul>
+                {% endfor %}
                 <p class="sidebar-subtitle">Más</p>
                 <a href="#">Próximos lanzamientos</a>
                 <a href="#">Ofertas</a>
@@ -269,7 +238,7 @@
         crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
 <script src="https://kit.fontawesome.com/777d474a1b.js" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.js"></script>
 <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
 <script src="{% static 'products/js/script.js' %}"></script>
 </body>

@@ -1,34 +1,31 @@
 import datetime
 
-from django.contrib.auth import logout
+from django.core.paginator import Paginator
 from django.http import JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render
+from django.urls import reverse
 
 from .models import Producto, Categoria, Subcategoria
 from .forms import SuscriptorForm
 
+
 # Create your views here.
 def home(request):
-    categorias = Categoria.objects.all()
-    subcategorias = Subcategoria.objects.all()
-    for sub in subcategorias:
-        for cat in categorias:
-            sub.nombreSubcategoria = sub.nombreSubcategoria.replace(cat.nombreCategoria, "").strip()
-    nuevosProductos = Producto.objects.filter(fechaLanProducto__lt=datetime.date.today(), estadoProducto=1).order_by('-fechaLanProducto')[:12]
-    productosPreventa = Producto.objects.filter(fechaLanProducto__gt=datetime.date.today(), estadoProducto=1).order_by('fechaLanProducto')[:12]
+    nuevosProductos = Producto.objects.filter(fechaLanProducto__lt=datetime.date.today(),
+                                              disponible=True).order_by('-fechaLanProducto')[:12]
+    productosPreventa = Producto.objects.filter(fechaLanProducto__gt=datetime.date.today(),
+                                                disponible=True).order_by('fechaLanProducto')[:12]
     datos = {
-        'categorias': categorias,
-        'subcategorias': subcategorias,
-        'nuevosProductos': nuevosProductos,
-        'productosPreventa': productosPreventa,
+        'categorias': get_categories_urls(),
+        'subcategorias': get_subcategories_urls(),
+        'nuevosProductos': get_products_urls(nuevosProductos),
+        'productosPreventa': get_products_urls(productosPreventa),
         'form': SuscriptorForm()
     }
 
-    if(request.method == 'POST'):
+    if (request.method == 'POST'):
         action = request.POST['action']
-        if action == 'logout':
-            logout(request)
-        elif action == 'newSub':
+        if action == 'newSub':
             form = SuscriptorForm(request.POST)
             if form.is_valid():
                 form.save()
@@ -39,33 +36,164 @@ def home(request):
     return render(request, "products/index.html", datos)
 
 
-def product(request):
-    categorias = Categoria.objects.all()
-    subcategorias = Subcategoria.objects.all()
-    recomendados = Producto.objects.filter(fechaLanProducto__lt=datetime.date.today(), estadoProducto=1).order_by('?')[:18]
+def product(request, product_name):
+    start = product_name.split('-')
+    nombre = product_name.replace('-', ' ')
+    productos = Producto.objects.filter(nombreProducto__istartswith=start[0])
+    producto = None
+    for prod in productos:
+        prod_nombre = prod.nombreProducto + ' ' + prod.plataforma.nombrePlataforma
+        if prod_nombre.lower() == nombre:
+            producto = prod
+            producto.alias = prod.nombreProducto + ' - ' + prod.plataforma.nombrePlataforma
+    recomendados = Producto.objects.filter(fechaLanProducto__lt=datetime.date.today(),
+                                           disponible=True).order_by('?')[:18]
     datos = {
-        'categorias': categorias,
-        'subcategorias': subcategorias,
-        'recomendados': recomendados
+        'categorias': get_categories_urls(),
+        'subcategorias': get_subcategories_urls(),
+        'producto': producto,
+        'recomendados': get_products_urls(recomendados),
+        'breadcrumb': get_product_breadcrumb_info(producto),
     }
     return render(request, "products/product.html", datos)
 
 
-def catalog(request):
-    return render(request, "products/catalog.html")
+def category(request, category_name):
+    nombreCat = category_name.replace('-', ' ')
+    productos = Producto.objects.filter(subcategoria__categoria__nombreCategoria__iexact=nombreCat,
+                                        fechaLanProducto__lt=datetime.date.today(),
+                                        disponible=True)
+    datos = {
+        'categorias': get_categories_urls(),
+        'subcategorias': get_subcategories_urls(),
+        'productos': get_page(request, get_products_urls(productos)),
+        'breadcrumb': get_breadcrumb_info(category_name),
+    }
+
+    return render(request, "products/category.html", datos)
+
+
+def subcategory(request, category_name, subcategory_name):
+    nombreSub = subcategory_name.replace('-', ' ')
+    nombreCat = category_name.replace('-', ' ')
+    productos = Producto.objects.filter(subcategoria__categoria__nombreCategoria__iexact=nombreCat,
+                                        subcategoria__nombreSubcategoria__iexact=nombreSub,
+                                        fechaLanProducto__lt=datetime.date.today(),
+                                        disponible=True)
+    datos = {
+        'categorias': get_categories_urls(),
+        'subcategorias': get_subcategories_urls(),
+        'productos': get_page(request, get_products_urls(productos)),
+        'breadcrumb': get_breadcrumb_info(category_name, subcategory_name),
+    }
+
+    return render(request, "products/category.html", datos)
 
 
 def contact(request):
-    return render(request, "products/contact.html")
+    datos = {
+        'categorias': get_categories_urls(),
+        'subcategorias': get_subcategories_urls(),
+    }
+    return render(request, "products/contact.html", datos)
 
 
 def questions(request):
-    return render(request, "products/questions.html")
+    datos = {
+        'categorias': get_categories_urls(),
+        'subcategorias': get_subcategories_urls(),
+    }
+    return render(request, "products/questions.html", datos)
 
 
 def stores(request):
-    return render(request, "products/stores.html")
+    datos = {
+        'categorias': get_categories_urls(),
+        'subcategorias': get_subcategories_urls(),
+    }
+    return render(request, "products/stores.html", datos)
 
 
 def terms(request):
-    return render(request, "products/terms.html")
+    datos = {
+        'categorias': get_categories_urls(),
+        'subcategorias': get_subcategories_urls(),
+    }
+    return render(request, "products/terms.html", datos)
+
+
+def denied_access(request):
+    datos = {
+        'categorias': get_categories_urls(),
+        'subcategorias': get_subcategories_urls(),
+    }
+    return render(request, "products/denied_access.html", datos)
+
+
+def get_categories_urls():
+    categorias = Categoria.objects.all()
+    categoriasUrl = []
+    for cat in categorias:
+        catUrl = cat.nombreCategoria.lower().replace(' ', '-')
+        url = reverse('category', args=[catUrl])
+        cat.url = url
+        categoriasUrl.append(cat)
+    return categoriasUrl
+
+
+def get_subcategories_urls():
+    subcategorias = Subcategoria.objects.all()
+    subcategoriasUrl = []
+    for sub in subcategorias:
+        catUrl = sub.categoria.nombreCategoria.lower().replace(' ', '-')
+        subUrl = sub.nombreSubcategoria.lower().replace(' ', '-')
+        url = reverse('subcategory', args=[catUrl, subUrl])
+        sub.url = url
+        subcategoriasUrl.append(sub)
+    return subcategoriasUrl
+
+
+def get_products_urls(query):
+    productosUrl = []
+    for prod in query:
+        prodUrl = prod.nombreProducto.lower().replace(' ', '-') + '-' + \
+                  prod.plataforma.nombrePlataforma.lower().replace(' ', '-')
+        url = reverse('product', args=[prodUrl])
+        prod.url = url
+        productosUrl.append(prod)
+    return productosUrl
+
+
+def get_page(request, query):
+    paginator = Paginator(query, 20)
+    page = request.GET.get('page')
+    return paginator.get_page(page)
+
+
+def get_breadcrumb_info(category_name, subcategory_name=None):
+    bread = {'has_sub': False}
+    nombreCat = category_name.replace('-', ' ')
+    try:
+        bread['cat'] = Categoria.objects.get(nombreCategoria__iexact=nombreCat).nombreCategoria
+    except Categoria.DoesNotExist:
+        return None
+    if subcategory_name is not None:
+        bread['has_sub'] = True
+        nombreSub = subcategory_name.replace('-', ' ')
+        try:
+            bread['sub'] = Subcategoria.objects.get(categoria__nombreCategoria__iexact=nombreCat,
+                                                    nombreSubcategoria__iexact=nombreSub).nombreSubcategoria
+        except Subcategoria.DoesNotExist:
+            return None
+        bread['cat_url'] = reverse('category', args=[category_name])
+        bread['sub_url'] = reverse('subcategory', args=[category_name, subcategory_name])
+    return bread
+
+
+def get_product_breadcrumb_info(product):
+    bread = {'cat': product.subcategoria.categoria.nombreCategoria, 'sub': product.subcategoria.nombreSubcategoria}
+    category_name = bread['cat'].lower().replace(' ', '-')
+    subcategory_name = bread['sub'].lower().replace(' ', '-')
+    bread['cat_url'] = reverse('category', args=[category_name])
+    bread['sub_url'] = reverse('subcategory', args=[category_name, subcategory_name])
+    return bread

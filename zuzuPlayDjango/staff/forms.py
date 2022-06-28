@@ -15,7 +15,7 @@ class NuevoProductoForm(ModelForm):
         self.fields['nombreProducto'].widget.attrs.update(
             {'id': 'new-product-name', 'class': 'form-control form-control-lg custom-input'})
         self.fields['imagenProducto'].widget.attrs.update(
-            {'id': 'new-product-img', 'class': 'form-control form-control-lg custom-input'})
+            {'id': 'new-product-img', 'class': 'image'})
         self.fields['fechaLanProducto'].widget = NumberInput(attrs=(
             {'id': 'new-product-date', 'type': 'date', 'class': 'form-control form-control-lg custom-input'}))
         self.fields['precioProducto'].widget.attrs.update(
@@ -41,7 +41,7 @@ class EditarProductoForm(ModelForm):
         self.fields['nombreProducto'].widget.attrs.update(
             {'id': 'edit-product-name', 'class': 'form-control form-control-lg custom-input', 'disabled': ''})
         self.fields['imagenProducto'].widget.attrs.update(
-            {'id': 'edit-product-img', 'class': 'form-control form-control-lg custom-input', 'disabled': ''})
+            {'id': 'edit-product-img', 'class': 'image'})
         self.fields['fechaLanProducto'].widget = NumberInput(attrs=(
             {'id': 'edit-product-date', 'type': 'date', 'class': 'form-control form-control-lg custom-input',
              'disabled': ''}))
@@ -101,3 +101,14 @@ class NuevaUnidadForm(ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['idUnidad'].widget.attrs.update(
             {'id': 'new-unit-id', 'class': 'form-control form-control-lg custom-input'})
+
+
+class EditarUnidadForm(ModelForm):
+    class Meta:
+        model = Unidad
+        fields = ['idUnidad']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['idUnidad'].widget.attrs.update(
+            {'id': 'edit-unit-id', 'class': 'form-control form-control-lg custom-input', 'disabled': ''})
