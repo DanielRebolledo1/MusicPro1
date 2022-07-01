@@ -1,12 +1,12 @@
 from django.db import models
-from pyuploadcare.dj.models import ImageField
+from products.models import Producto
 
 
 # Create your models here.
-class CategoriaPromocional(models.Model):
+class Video(models.Model):
     id = models.AutoField(primary_key=True, verbose_name='Id')
-    nombre = models.CharField(max_length=50, verbose_name='Nombre')
-    imagen = ImageField(manual_crop="", verbose_name='Imagen')
+    url = models.URLField(verbose_name='URL')
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.nombre
+        return self.url

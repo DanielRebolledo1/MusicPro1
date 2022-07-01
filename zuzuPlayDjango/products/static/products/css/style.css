@@ -682,9 +682,17 @@ input[type=date][disabled] {
     max-height: 440px;
 }
 
+.product .thumbs-images img {
+    max-height: 100px;
+}
+
 .product .main-images,
 .product .main-videos {
     aspect-ratio: 1 / 1;
+}
+
+.product .gallery-thumbs .swiper-slide {
+    min-height: 100px;
 }
 
 .product .gallery-thumbs .swiper-slide-thumb-active {

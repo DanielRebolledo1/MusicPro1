@@ -1,6 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 from products.models import Producto, Marca, Subcategoria, Plataforma, Unidad
+from rest_api.models import Video
 from django.forms.widgets import NumberInput, HiddenInput
 
 
@@ -51,6 +52,27 @@ class EditarProductoForm(ModelForm):
             {'id': 'edit-product-brand', 'class': 'form-select form-select-lg custom-select', 'disabled': ''})
         self.fields['subcategoria'].widget = HiddenInput(attrs=({'id': 'edit-product-subcategory'}))
         self.fields['plataforma'].widget = HiddenInput(attrs=({'id': 'edit-product-platform'}))
+
+
+class DescripcionProductoForm(ModelForm):
+    class Meta:
+        model = Producto
+        fields = ['descripcionProducto']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['descripcionProducto'].widget.attrs.update(
+            {'id': 'edit-product-description', 'class': 'form-control custom-input'})
+
+class VideoForm(ModelForm):
+    class Meta:
+        model = Video
+        fields = ['url']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['url'].widget.attrs.update(
+            {'id': 'edit-product-video', 'class': 'form-control form-control-lg custom-input'})
 
 
 class NuevaMarcaForm(ModelForm):

@@ -1,12 +1,10 @@
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required, user_passes_test
-from rest_framework import status
-from rest_framework.response import Response
 from products.models import Producto, Marca, Unidad, Subcategoria, Plataforma
+from rest_api.models import Video
 from .forms import NuevoProductoForm, EditarProductoForm, NuevaMarcaForm, NuevaSubcategoriaForm, NuevaPlataformaForm, \
-    NuevaUnidadForm, EditarUnidadForm
-from rest_api.serializers import CategoriaPromoSerializer
+    NuevaUnidadForm, EditarUnidadForm, DescripcionProductoForm, VideoForm
 
 
 # Create your views here.
@@ -20,7 +18,9 @@ def administration(request):
         'nuevaSubcategoriaForm': NuevaSubcategoriaForm(),
         'nuevaPlataformaForm': NuevaPlataformaForm(),
         'nuevaUnidadForm': NuevaUnidadForm(),
-        'editarUnidadForm': EditarUnidadForm()
+        'editarUnidadForm': EditarUnidadForm(),
+        'descripcionProductoForm': DescripcionProductoForm(),
+        'videoForm': VideoForm(),
     }
 
     if request.method == 'POST':
@@ -66,7 +66,6 @@ def administration(request):
             form = EditarProductoForm(request.POST, instance=prod)
             if form.is_valid():
                 editProd = form.save(commit=False)
-                print(editProd.imagenProducto)
                 if editProd.imagenProducto == '':
                     editProd.imagenProducto = img
                 editProd.save()
@@ -155,14 +154,6 @@ def administration(request):
                 return JsonResponse({'exists': True})
             else:
                 return JsonResponse({'exists': False})
-        elif action == 'newPromoCategory':
-            serializer = CategoriaPromoSerializer(data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return JsonResponse({'success': True}) and Response(serializer.data, status=status.HTTP_201_CREATED)
-            else:
-                return JsonResponse({'success': False, 'errors': serializer.errors}) \
-                       and Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         elif action == 'newUnit':
             try:
                 unidad = Unidad.objects.create(idUnidad=request.POST['id'], producto_id=request.POST['producto'])

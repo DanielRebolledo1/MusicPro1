@@ -442,133 +442,179 @@ if (body.classList.contains('product')) {
         sidebarMenuFunctions();
         getProductSpecs();
 
-        $(".video-cover").on("click", function () {
-            videoStop();
-            var $poster = $(this);
-            var $wrapper = $poster.closest(".main-videos");
-            videoPlay($wrapper);
+        const csrftoken = getCookie('csrftoken');
+        const $productGallery = $('#product-gallery');
+        const $productThumbsGallery = $('#product-thumbs-gallery');
+        const productId = $('#product-id').html().split(' ')[1];
+
+        $.ajax({
+            url: '/api/videos',
+            type: 'POST',
+            headers: {'X-CSRFToken': csrftoken},
+            data: {
+                'id': productId,
+            },
+            mode: 'same-origin',
+            //async: false,
+            success: function (response) {
+                $.each(response, function () {
+                    let url = JSON.parse(JSON.stringify(this['url']))
+                    let id = url.split('/').at(-1)
+                    let cover = '<button class="video-cover">' +
+                        '<span class="row gx-0 w-100 h-100 justify-content-center align-items-center">' +
+                        '<img src="https://img.youtube.com/vi/' + id + '/maxresdefault.jpg" class="img-fluid" ' +
+                        'alt="https://img.youtube.com/vi/' + id + '/maxresdefault.jpg">' +
+                        '<i class="fa-regular fa-circle-play position-absolute"></i></span></button>'
+                    let video = '<iframe class="video-player" src="data:," allowfullscreen ' +
+                        'data-src="' + url + '?autoplay=1" allow="autoplay;"></iframe>'
+                    let galleryDiv = '<div class="swiper-slide"><div class="row main-videos gx-0 h-100 ' +
+                        'justify-content-center align-items-center">' + cover + video + '</div></div>'
+                    let thumbsDiv = '<div class="swiper-slide">' +
+                        '<div class="row thumbs-images h-100 justify-content-center align-items-center">' +
+                        '<img src="https://img.youtube.com/vi/' + id + '/hqdefault.jpg" ' +
+                        'alt="https://img.youtube.com/vi/' + id + '/hqdefault.jpg">' +
+                        '<i class="fa-regular fa-circle-play position-absolute text-center"></i></div></div>'
+                    $productThumbsGallery.append(thumbsDiv);
+                    $productGallery.append(galleryDiv);
+                });
+            },
+            complete: function () {
+                galleryInitialization();
+            }
         });
+
+        function galleryInitialization() {
+            galleryLightbox = $('.gallery a').simpleLightbox({
+                animationSpeed: 200,
+                disableRightClick: true,
+                fileExt: false,
+            });
+
+            galleryThumbs = new Swiper(".gallery-thumbs", {
+                direction: "vertical",
+                slidesPerView: 4,
+                spaceBetween: 10,
+                freeMode: true,
+                watchSlidesVisibility: true,
+                watchSlidesProgress: true,
+                mousewheel: true,
+
+                navigation: {
+                    nextEl: ".thumbs-next",
+                    prevEl: ".thumbs-prev",
+                },
+            });
+            galleryMain = new Swiper(".gallery-main", {
+                direction: "horizontal",
+                mousewheel: true,
+
+                thumbs: {
+                    swiper: galleryThumbs,
+                },
+
+                pagination: {
+                    el: '.gallery-pagination',
+                    bulletClass: 'gallery-pagination-bullet',
+                    clickable: true
+                },
+
+                on: {
+                    slideChange: function () {
+                        let activeIndex = this.activeIndex + 1;
+
+                        let nextSlide = document.querySelector(`.gallery-thumbs .swiper-slide:nth-child(${activeIndex + 1})`);
+                        let prevSlide = document.querySelector(`.gallery-thumbs .swiper-slide:nth-child(${activeIndex - 1})`);
+
+                        if (nextSlide && !nextSlide.classList.contains('swiper-slide-visible')) {
+                            this.thumbs.swiper.slideNext()
+                        } else if (prevSlide && !prevSlide.classList.contains('swiper-slide-visible')) {
+                            this.thumbs.swiper.slidePrev()
+                        }
+
+                        videoStop();
+                    }
+                },
+
+                breakpoints: {
+                    768: {
+                        direction: "vertical"
+                    }
+                }
+            });
+
+            $(".video-cover").on("click", function () {
+                videoStop();
+                var $poster = $(this);
+                var $wrapper = $poster.closest(".main-videos");
+                videoPlay($wrapper);
+            });
+        }
 
         $('#show-description-btn').on('click', function () {
             let wrapper = document.querySelector(".description-wrapper");
             let button = document.getElementById('show-description-btn');
             toggleViewMore(wrapper, button);
         });
-    });
 
-    galleryLightbox = $('.gallery a').simpleLightbox({
-        animationSpeed: 200,
-        disableRightClick: true,
-    });
-    galleryThumbs = new Swiper(".gallery-thumbs", {
-        direction: "vertical",
-        slidesPerView: 4,
-        spaceBetween: 10,
-        freeMode: true,
-        watchSlidesVisibility: true,
-        watchSlidesProgress: true,
-        mousewheel: true,
+        productList1 = new Swiper('.item-carousel1', {
+            grabCursor: true,
+            slidesPerView: 1,
+            speed: 500,
+            spaceBetween: 30,
+            // Optional parameters
+            direction: 'horizontal',
 
-        navigation: {
-            nextEl: ".thumbs-next",
-            prevEl: ".thumbs-prev",
-        },
-    });
-    galleryMain = new Swiper(".gallery-main", {
-        direction: "horizontal",
-        mousewheel: true,
+            // Navigation arrows
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
 
-        thumbs: {
-            swiper: galleryThumbs,
-        },
+            scrollbar: {
+                el: ".swiper-scrollbar",
+                hide: true,
+            },
 
-        pagination: {
-            el: '.gallery-pagination',
-            bulletClass: 'gallery-pagination-bullet',
-            clickable: true
-        },
-
-        on: {
-            slideChange: function () {
-                let activeIndex = this.activeIndex + 1;
-
-                let nextSlide = document.querySelector(`.gallery-thumbs .swiper-slide:nth-child(${activeIndex + 1})`);
-                let prevSlide = document.querySelector(`.gallery-thumbs .swiper-slide:nth-child(${activeIndex - 1})`);
-
-                if (nextSlide && !nextSlide.classList.contains('swiper-slide-visible')) {
-                    this.thumbs.swiper.slideNext()
-                } else if (prevSlide && !prevSlide.classList.contains('swiper-slide-visible')) {
-                    this.thumbs.swiper.slidePrev()
-                }
-
-                videoStop();
+            breakpoints: {
+                // when window width is >= 1400px
+                1400: {
+                    slidesPerView: 6,
+                    slidesPerGroup: 6,
+                },
+                1200: {
+                    slidesPerView: 5,
+                    slidesPerGroup: 5,
+                },
+                900: {
+                    slidesPerView: 4,
+                    slidesPerGroup: 4,
+                },
+                768: {
+                    slidesPerView: 3,
+                    slidesPerGroup: 3,
+                },
+                620: {
+                    slidesPerView: 2.25,
+                    slidesPerGroup: 2,
+                },
+                560: {
+                    slidesPerView: 2,
+                    slidesPerGroup: 2,
+                },
+                500: {
+                    slidesPerView: 1.75,
+                    slidesPerGroup: 1,
+                },
+                430: {
+                    slidesPerView: 1.5,
+                    slidesPerGroup: 1,
+                },
+                360: {
+                    slidesPerView: 1.25,
+                    slidesPerGroup: 1,
+                },
             }
-        },
-
-        breakpoints: {
-            768: {
-                direction: "vertical"
-            }
-        }
-    });
-    productList1 = new Swiper('.item-carousel1', {
-        grabCursor: true,
-        slidesPerView: 1,
-        speed: 500,
-        spaceBetween: 30,
-        // Optional parameters
-        direction: 'horizontal',
-
-        // Navigation arrows
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-
-        scrollbar: {
-            el: ".swiper-scrollbar",
-            hide: true,
-        },
-
-        breakpoints: {
-            // when window width is >= 1400px
-            1400: {
-                slidesPerView: 6,
-                slidesPerGroup: 6,
-            },
-            1200: {
-                slidesPerView: 5,
-                slidesPerGroup: 5,
-            },
-            900: {
-                slidesPerView: 4,
-                slidesPerGroup: 4,
-            },
-            768: {
-                slidesPerView: 3,
-                slidesPerGroup: 3,
-            },
-            620: {
-                slidesPerView: 2.25,
-                slidesPerGroup: 2,
-            },
-            560: {
-                slidesPerView: 2,
-                slidesPerGroup: 2,
-            },
-            500: {
-                slidesPerView: 1.75,
-                slidesPerGroup: 1,
-            },
-            430: {
-                slidesPerView: 1.5,
-                slidesPerGroup: 1,
-            },
-            360: {
-                slidesPerView: 1.25,
-                slidesPerGroup: 1,
-            },
-        }
+        });
     });
 }
 
@@ -829,10 +875,10 @@ if (body.classList.contains('admin')) {
             });
         });
 
-        newProductImgWidget.onChange(function(file) {
-          if (file) {
-            $newProductImg.removeClass('error');
-          }
+        newProductImgWidget.onChange(function (file) {
+            if (file) {
+                $newProductImg.removeClass('error');
+            }
         });
 
         // Modificar producto
@@ -902,9 +948,11 @@ if (body.classList.contains('admin')) {
                 fillInput($editProductPlatform, ui.item.plataforma);
                 fillInput($editVisibleProductSubcategory, ui.item.nombreSubcategoria);
                 fillInput($editVisibleProductPlatform, ui.item.nombrePlataforma);
+                fillVideosTable($videosTableBody, ui.item.id, $saveVideosChangesBtn, $deleteVideoBtn, $deleteVideoId, $deleteVideoPreview);
                 $deleteProductBtn.removeAttr("disabled");
                 $editProductBtn.removeAttr("disabled");
                 $editProductResponse.html('');
+                $addVideoBtn.removeAttr("disabled");
                 return false;
             }
         });
@@ -936,7 +984,6 @@ if (body.classList.contains('admin')) {
                                     product.marca = $editProductBrand.val();
                                     editProductImgWidget.value(null);
                                     $('#edit-product-current-img').attr('src', product.imagen);
-                                    console.log(product);
                                     $editProductResponse.removeClass('error')
                                     $editProductResponse.html('Producto modificado con éxito.').addClass('success');
                                 } else {
@@ -1013,6 +1060,107 @@ if (body.classList.contains('admin')) {
                 },
             });
         });
+
+        const $videoURL = $('#edit-product-video');
+        const $videoForm = $('#add-video-form');
+        const $videosTableBody = $('#videos-table tbody');
+        const $addVideoBtn = $('#add-video-btn');
+        const $deleteVideoBtn = $('#delete-video-btn');
+        const $deleteVideoId = $('#delete-video-id');
+        const $deleteVideoConfirmBtn = $('#delete-video-confirm-btn');
+        const $deleteVideoCancelBtn = $('#delete-video-cancel-btn');
+        const $deleteVideoPreview = $('#delete-video-preview')
+        const $saveVideosChangesBtn = $('#add-table-videos-btn');
+
+        $videoForm.on('submit', function (e) {
+            e.preventDefault();
+            if (checkNewVideoOnSubmit($videoURL.get(0))) {
+                if (!videoExistsInTable($videoURL.val(), $videosTableBody.get(0))) {
+                    $.ajax({
+                        url: '/api/agregar_video',
+                        type: 'POST',
+                        headers: {'X-CSRFToken': csrftoken, 'Authorization': 'Token ' + sessiontoken},
+                        mode: 'same-origin',
+                        data: {
+                            'url': $videoURL.val(),
+                            'producto': product.id,
+                        },
+                        success: function (response) {
+                            fillVideosTable($videosTableBody, product.id, $saveVideosChangesBtn, $deleteVideoBtn, $deleteVideoId, $deleteVideoPreview);
+                        },
+                        error: function (response) {
+                            if (response.status === 400) {
+                                console.log('sale mal')
+                            }
+                        }
+                    });
+                } else {
+                    setErrorFor($videoURL.get(0), 'Este video ya está en la tabla')
+                }
+            }
+        });
+
+        $saveVideosChangesBtn.on('click', function () {
+            let rowsCount = $videosTableBody.get(0).rows.length;
+            if (rowsCount > 0) {
+                for (let i = 0; i < rowsCount; i += 1) {
+                    let row = $videosTableBody.get(0).rows[i];
+                    let newUrl = row.cells[1].firstElementChild.value;
+                    let status = '<i class="fa-solid fa-equals" ' +
+                        'style="font-size: 24px; color: #2E2E2E" ' +
+                        'title="Sin cambios."></i>';
+                    let currentUrl = row.cells[4].innerHTML;
+                    if (newUrl !== currentUrl) {
+                        if (checkEditVideoOnSubmit(row.cells[1].firstElementChild)) {
+                            $.ajax({
+                                url: '/api/modificar_video/' + row.cells[5].innerHTML,
+                                type: 'PUT',
+                                headers: {'X-CSRFToken': csrftoken, 'Authorization': 'Token ' + sessiontoken},
+                                mode: 'same-origin',
+                                data: {
+                                    'url': newUrl,
+                                    'producto': product.id,
+                                },
+                                success: function (response) {
+                                    status = '<i class="fa-solid fa-check" ' +
+                                        'style="font-size: 24px; color: #66CC33"></i>';
+                                    row.cells[2].firstElementChild.setAttribute('src', newUrl);
+                                    row.cells[4].innerHTML = newUrl;
+                                    row.cells[3].innerHTML = status;
+                                },
+                                error: function (response, textStatus, errorThrown) {
+                                    status = '<i class="fa-solid fa-circle-exclamation" ' +
+                                        'style="font-size: 24px; color: #f93154" ' +
+                                        'title="' + errorThrown + '"></i>';
+                                    row.cells[1].value = currentUrl;
+                                    row.cells[3].innerHTML = status;
+                                }
+                            });
+                        }
+                    } else {
+                        row.cells[3].innerHTML = status;
+                    }
+                }
+            }
+        });
+
+        $deleteVideoConfirmBtn.on('click', function () {
+            $.ajax({
+                url: '/api/modificar_video/' + $deleteVideoId.val(),
+                type: 'DELETE',
+                headers: {'X-CSRFToken': csrftoken, 'Authorization': 'Token ' + sessiontoken},
+                mode: 'same-origin',
+                success: function (response) {
+                    fillVideosTable($videosTableBody, product.id, $saveVideosChangesBtn, $deleteVideoBtn, $deleteVideoId, $deleteVideoPreview);
+                    $deleteVideoCancelBtn.click()
+                },
+                error: function (response) {
+                    if (response.status === 400) {
+                        console.log('sale mal')
+                    }
+                }
+            });
+        })
 
         // Nueva unidad
         const $newUnitSearch = $('#new-unit-search');
@@ -1681,6 +1829,56 @@ function checkNewUnitInputsOnSubmit(id) {
     return checkSuccess(id);
 }
 
+function checkNewVideoOnSubmit(url) {
+    //get values from the inputs
+    const urlValue = url.value.trim();
+    let regExp = /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube(-nocookie)?\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/
+
+    if (urlValue === '') {
+        //add error class
+        const errorMessage = url.querySelector('div.invalid-feedback')
+
+        //add error message inside container
+        errorMessage.innerText = message;
+
+
+        input.classList.remove('is-valid');
+        input.classList.remove('is-invalid');
+        input.classList.add('is-invalid');
+        setErrorFor(url, 'Por favor ingrese un URL de Youtube');
+    } else if (!regExp.test(urlValue)) {
+        setErrorFor(url, 'Por favor ingrese un URL de Youtube válido');
+    } else {
+        //add success class
+        setSuccessFor(url);
+    }
+
+    return checkSuccess(url);
+}
+
+function checkEditVideoOnSubmit(url) {
+    //get values from the inputs
+    const urlValue = url.value.trim();
+    const errorMessage = url.parentElement.querySelector('div.invalid-feedback')
+    let regExp = /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube(-nocookie)?\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/
+    let success = true;
+
+    if (urlValue === '') {
+        errorMessage.innerText = 'Por favor ingrese un URL de Youtube';
+        url.classList.remove('is-invalid');
+        url.classList.add('is-invalid');
+        success = false;
+    } else if (!regExp.test(urlValue)) {
+        errorMessage.innerText = 'Por favor ingrese un URL de Youtube válido';
+        url.classList.remove('is-invalid');
+        url.classList.add('is-invalid');
+        success = false;
+    } else {
+        url.classList.remove('is-invalid');
+    }
+    return success;
+}
+
 function checkEmailOnFocusOut(email) {
     const emailValue = email.value.trim();
 
@@ -1940,7 +2138,6 @@ function toggleViewMore(wrapper, button) {
 
 function getProductSpecs() {
     const gameName = document.getElementById('product-title').innerText;
-    /*document.getElementById('product-title').innerText*/
     let gameAgeRating = 'Sin clasificación';
     let gameMetascore = 'Pendiente';
     let gameReleased = 'Sin determinar';
@@ -2108,6 +2305,64 @@ function platformExists(platformId) {
         },
     });
     return exists;
+}
+
+function videoExistsInTable(id, tableBody) {
+    let rowLength = tableBody.rows.length;
+    for (let i = 0; i < rowLength; i += 1) {
+        let row = tableBody.rows[i];
+        if (row.cells[1].firstElementChild.value === id) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function fillVideosTable($tableBody, productId, $saveChangesBtn, $deleteBtn, $deleteVideoId, $deleteVideoPreview) {
+    $tableBody.empty();
+    $deleteBtn.attr('disabled', true);
+    $saveChangesBtn.attr('disabled', true);
+    const csrftoken = getCookie('csrftoken');
+    $.ajax({
+        url: '/api/videos',
+        type: 'POST',
+        headers: {'X-CSRFToken': csrftoken},
+        data: {
+            'id': productId,
+        },
+        mode: 'same-origin',
+        success: function (response) {
+            let count = 0;
+            $.each(response, function () {
+                let id = JSON.parse(this['id']);
+                let url = JSON.parse(JSON.stringify(this['url']));
+                let row = '<tr><th scope="row"><div class="form-check"><input class="form-check-input" ' +
+                    'type="radio" name="videosRadioBtn" value="' + count + '"/></div></th>' +
+                    '<td><input type="text" class="form-control form-control-lg custom-input" ' +
+                    'value="' + url + '"><div class="invalid-feedback">Error</div></td><td>' +
+                    '<iframe width="200" height="113" src="' + url + '" frameborder="0"' +
+                    ' allow="autoplay; encrypted-media;" allowfullscreen></iframe></td>' +
+                    '<td></td><td style="display: none">' + url + '</td>' +
+                    '<td style="display: none">' + id + '</td></tr>';
+                $tableBody.append(row);
+                count += 1;
+            });
+            if (count > 0) {
+                $saveChangesBtn.removeAttr('disabled');
+                $('input[name="videosRadioBtn"]').on('change', function () {
+                    let rowNumber = $(this).val();
+                    if (rowNumber !== '') {
+                        let row = $tableBody.get(0).rows[rowNumber];
+                        $deleteBtn.removeAttr('disabled');
+                        $deleteVideoId.val(row.cells[5].innerHTML);
+                        $deleteVideoPreview.attr('src', row.cells[4].innerHTML)
+                    } else {
+                        $deleteBtn.attr('disabled', true);
+                    }
+                });
+            }
+        },
+    });
 }
 
 function unitExists(unitId) {

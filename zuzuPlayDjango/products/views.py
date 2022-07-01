@@ -8,7 +8,6 @@ from django.urls import reverse
 from .models import Producto, Categoria, Subcategoria
 from .forms import SuscriptorForm
 
-
 # Create your views here.
 def home(request):
     nuevosProductos = Producto.objects.filter(fechaLanProducto__lt=datetime.date.today(),
@@ -36,16 +35,12 @@ def home(request):
     return render(request, "products/index.html", datos)
 
 
-def product(request, product_name):
-    start = product_name.split('-')
-    nombre = product_name.replace('-', ' ')
-    productos = Producto.objects.filter(nombreProducto__istartswith=start[0])
-    producto = None
-    for prod in productos:
-        prod_nombre = prod.nombreProducto + ' ' + prod.plataforma.nombrePlataforma
-        if prod_nombre.lower() == nombre:
-            producto = prod
-            producto.alias = prod.nombreProducto + ' - ' + prod.plataforma.nombrePlataforma
+def product(request, product_name, product_id):
+    try:
+        producto = Producto.objects.get(idProducto__iexact=product_id)
+        producto.alias = producto.nombreProducto + ' - ' + producto.plataforma.nombrePlataforma
+    except Producto.DoesNotExist:
+        producto = None
     recomendados = Producto.objects.filter(fechaLanProducto__lt=datetime.date.today(),
                                            disponible=True).order_by('?')[:18]
     datos = {
@@ -156,9 +151,11 @@ def get_subcategories_urls():
 def get_products_urls(query):
     productosUrl = []
     for prod in query:
-        prodUrl = prod.nombreProducto.lower().replace(' ', '-') + '-' + \
-                  prod.plataforma.nombrePlataforma.lower().replace(' ', '-')
-        url = reverse('product', args=[prodUrl])
+        prodName = prod.nombreProducto.lower().replace('-', ' ').replace(':', '')\
+                      .replace("'", '').replace('  ', ' ').replace(' ', '-') + '-' + \
+                  prod.plataforma.nombrePlataforma.lower().replace('|', '-').replace(' ', '-')
+        prodId = prod.idProducto
+        url = reverse('product', args=[prodName, prodId])
         prod.url = url
         productosUrl.append(prod)
     return productosUrl

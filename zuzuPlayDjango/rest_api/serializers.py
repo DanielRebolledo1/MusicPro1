@@ -1,8 +1,8 @@
 from rest_framework import serializers
-from .models import CategoriaPromocional
+from .models import Video
 
 
-class CategoriaPromoSerializer(serializers.ModelSerializer):
+class VideoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = CategoriaPromocional
-        fields = ['id', 'nombre', 'imagen']
+        model = Video
+        fields = ['id', 'url', 'producto']

@@ -67,6 +67,7 @@ class Producto(models.Model):
     imagenProducto = ImageField(manual_crop="", blank=True, verbose_name='Imagen')
     fechaLanProducto = models.DateField(null=True, blank=True, verbose_name='Fecha de lanzamiento')
     precioProducto = models.IntegerField(verbose_name='Precio')
+    descripcionProducto = models.TextField(null=True, blank=True, verbose_name='Descripcion')
     disponible = models.BooleanField(default=True, verbose_name='Disponible')
     marca = models.ForeignKey(Marca, on_delete=models.CASCADE)
     subcategoria = models.ForeignKey(Subcategoria, on_delete=models.CASCADE, verbose_name='Subcategoría')
