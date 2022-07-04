@@ -10,21 +10,6 @@ if (body.classList.contains('home')) {
         let formData = '';
         const csrftoken = getCookie('csrftoken');
 
-        $.ajax({
-            url: 'api/categorias_promo',
-            type: 'GET',
-            /* async: false, */
-            success: function (response) {
-                console.log(response)
-                let div = '<div class="col-4 col-md-auto circle mb-3"><a href="{% url \'catalog\' %}">' +
-                    '<div class="circle-img mb-1">' +
-                    '<img src="' + response.imagen + '" class="img-fluid" alt="' + response.nombreCat + '"></div>' +
-                    '<span class="two-line-wrapper">' + response.nombreCat + '</span></a></div>'
-                $('#promo-categories').append(div);
-            }
-            /* JSON.stringify, JSON.parse */
-        });
-
         $subsForm.on('submit', function (e) {
             if (checkSubsInputsOnSubmit($subsEmail.get(0))) {
                 formData = new FormData($subsForm.get(0));
@@ -59,6 +44,7 @@ if (body.classList.contains('home')) {
         });
 
         sidebarMenuFunctions();
+        cartSidebarFunctions();
     });
 
     //Carousels configuration (Swiper)
@@ -2069,9 +2055,8 @@ function sidebarMenuFunctions() {
 
     $('#sidebar-open-btn').on('click', function () {
         $sidebarContainer.show();
-        $sidebar.show("slide", 300);
-        $sidebar.css('overflow', 'auto');
         $('body').css('overflow', 'hidden');
+        $sidebar.show("slide", 300);
     });
 
     $('#sidebar-close-btn').on('click', function () {
@@ -2094,6 +2079,351 @@ function sidebarMenuFunctions() {
         $categoriesBtns.eq(i).on('click', function () {
             toggleCategoryShow($subcategories.eq(i), categoriesShowIcons[i]);
         });
+    }
+}
+
+//Sidebar carrito
+function cartSidebarFunctions() {
+    const $sidebar = $('#cart-sidebar');
+    const $sidebarContainer = $('#cart-sidebar-container');
+    const $cartSidebarScroll = $('#cart-sidebar-scroll');
+
+    $('#cart-sidebar-open-btn').on('click', function () {
+        $sidebarContainer.show();
+        $('body').css('overflow', 'hidden');
+        $sidebar.show("slide", {direction: "right"}, 300);
+    });
+
+    $('#cart-sidebar-close-btn').on('click', function () {
+        $sidebarContainer.hide("fade", 300);
+        $sidebar.hide("slide", {direction: "right"}, 300);
+        $cartSidebarScroll.scrollTop($cartSidebarScroll.prop("scrollHeight"));
+        $('body').css('overflow', 'auto');
+    });
+
+    $('#cart-sidebar-bg').on('click', function () {
+        $('#cart-sidebar-close-btn').click();
+    });
+
+    cartFunctions();
+}
+
+function cartFunctions() {
+    const csrftoken = getCookie('csrftoken');
+    const $cartSidebarScroll = $('#cart-sidebar-scroll');
+    const $cartSidebarBody = $('#cart-sidebar-body');
+    const $cartSidebarOpenBtn = $('#cart-sidebar-open-btn');
+    const $cartProductCount = $('#cart-product-count');
+    const $cartDetailBody = $('#cart-detail-body');
+    const $cartTotal = $('#cart-total');
+
+    let emptyCart = document.createElement("p");
+    emptyCart.className = 'pt-3';
+    emptyCart.setAttribute('name', 'cartEmpty')
+    emptyCart.innerHTML = 'No hay articulos en tu carrito.'
+
+    $.ajax({
+        url: '/api/cart',
+        type: 'GET',
+        headers: {'X-CSRFToken': csrftoken},
+        mode: 'same-origin',
+        success: function (response) {
+            let idCarrito = JSON.parse(response[0]['id'])
+
+            $('input[name="carrito"]').each(function () {
+                let idProducto = $(this).parent().siblings('input[name="idProducto"]').val()
+                $(this).val(idCarrito);
+                $(this).siblings('input[name="producto"]').val(idProducto)
+            });
+
+            let productCount = response[0]['productos'].length;
+
+            if (productCount === 0) {
+                $cartSidebarBody.append(emptyCart);
+                $cartProductCount.html('')
+            } else {
+                $cartProductCount.html(productCount)
+                let subtotal = 0;
+                $(response[0]['productos']).each(function () {
+                    let idProducto = JSON.parse(JSON.stringify(this['producto']))
+                    let idCarrito = JSON.parse(JSON.stringify(this['carrito']))
+                    let url = JSON.parse(JSON.stringify(this['url']))
+                    let nombre = JSON.parse(JSON.stringify(this['nombre']))
+                    let imagen = JSON.parse(JSON.stringify(this['imagen']))
+                    let cantidad = JSON.parse(this['cantidad'])
+                    let total = JSON.parse(this['total']);
+
+                    let card = cartItemGenerator(idProducto, idCarrito, nombre, imagen, total, url, cantidad)
+                    $cartSidebarBody.append(card);
+
+                    subtotal += total;
+                });
+                $cartTotal.html(subtotal)
+            }
+        },
+        error: function (response) {
+            if (response.status === 400) {
+                console.log('sale mal')
+            }
+        }
+    });
+
+    $('form[name="addToCartForm"]').on('submit', function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: '/api/add_to_cart',
+            type: 'POST',
+            headers: {'X-CSRFToken': csrftoken},
+            data: $(this).serialize(),
+            mode: 'same-origin',
+            success: function (response) {
+                let idProducto = JSON.parse(JSON.stringify(response['producto']))
+                let cantidad = JSON.parse(response['cantidad'])
+                let total = JSON.parse(response['total']);
+                let totalActual = 0;
+
+                emptyCart.remove()
+
+                let exists = false;
+                $cartSidebarBody.children('.cart-item').each(function () {
+                    if ($(this).find('p[name="cartProductId"]').html().includes(idProducto)) {
+                        totalActual = $(this).find('h5[name="cartProductTotal"]')
+                            .html().split('$')[1]
+                        $(this).find('h5[name="cartProductTotal"]').html('$' + total);
+                        $(this).find('span[name="cartProductQty"]').html(cantidad);
+                        $cartSidebarOpenBtn.click();
+                        exists = true;
+                    }
+                });
+
+                if (!exists) {
+                    let idCarrito = JSON.parse(JSON.stringify(response['carrito']))
+                    let url = JSON.parse(JSON.stringify(response['url']))
+                    let nombre = JSON.parse(JSON.stringify(response['nombre']))
+                    let imagen = JSON.parse(JSON.stringify(response['imagen']))
+
+                    let card = cartItemGenerator(idProducto, idCarrito, nombre, imagen, total, url, cantidad)
+                    $cartSidebarBody.append(card);
+
+                    let productCount = $cartProductCount.html();
+
+                    if (productCount === '') {
+                        $cartProductCount.html(1)
+                    } else {
+                        $cartProductCount.html(parseInt(productCount) + 1)
+                    }
+                    $cartSidebarOpenBtn.click();
+                    $cartSidebarScroll.animate({scrollTop: $cartSidebarScroll.prop('scrollHeight')}, 1000);
+                }
+
+                $cartTotal.html(parseInt($cartTotal.html()) - totalActual + total)
+            },
+            error: function (response) {
+                if (response.status === 400) {
+                    console.log('sale mal')
+                }
+            }
+        });
+    });
+
+    function cartItemGenerator(id, carrito, nombre, imagen, total, url, cantidad) {
+        let img = document.createElement("img");
+        img.setAttribute('src', imagen);
+        img.setAttribute('alt', nombre);
+        img.className = 'card-img-top img-fluid';
+
+        let col1 = document.createElement("a");
+        col1.setAttribute('href', url)
+        col1.className = 'col-5 align-self-center';
+        col1.appendChild(img);
+
+        let productId = document.createElement("p");
+        productId.className = 'item-platform text-center'
+        productId.setAttribute('name', 'cartProductId');
+        productId.innerHTML = 'SKU: ' + id;
+
+        let title = document.createElement("a");
+        title.setAttribute('href', url);
+        title.innerHTML = nombre;
+
+        let titleWrapper = document.createElement("div");
+        title.className = 'item-title-wrapper text-center';
+        titleWrapper.appendChild(title);
+
+        let price = document.createElement("h5");
+        price.className = 'text-center';
+        price.setAttribute('name', 'cartProductTotal');
+        price.innerHTML = '$' + total;
+
+        let btn1Icon = document.createElement("i");
+        btn1Icon.className = 'fa-solid fa-minus';
+
+        let btn1 = document.createElement("button");
+        btn1.className = 'btn custom-btn2 p-0';
+        btn1.setAttribute('type', 'button');
+        btn1.appendChild(btn1Icon);
+
+        btn1.addEventListener("click", function () {
+            let cantidadActual = parseInt(qtyNumber.innerHTML);
+            if (cantidadActual > 1) {
+                $.ajax({
+                    url: '/api/update_cart/' + carrito + '/' + id,
+                    type: 'PUT',
+                    data: {'carrito': carrito,
+                        'producto': id,
+                        'cantidad': cantidadActual - 1},
+                    headers: {'X-CSRFToken': csrftoken},
+                    mode: 'same-origin',
+                    success: function (response) {
+                        qtyNumber.innerHTML = JSON.parse(response['cantidad']);
+                        let total = JSON.parse(response['total'])
+                        let totalActual = price.innerHTML.split('$')[1];
+                        price.innerHTML = '$' + total
+
+                        $cartTotal.html(parseInt($cartTotal.html()) - totalActual + total)
+                    },
+                    error: function (response) {
+                        if (response.status === 400) {
+                            console.log('sale mal')
+                        }
+                    }
+                });
+            }
+        });
+
+        let qtyNumber = document.createElement("span");
+        qtyNumber.className = 'col';
+        qtyNumber.setAttribute('name', 'cartProductQty');
+        qtyNumber.innerHTML = cantidad;
+
+        $('body').on("DOMSubtreeModified", qtyNumber, function (){
+            if (parseInt(qtyNumber.innerHTML) === 1) {
+                btn1.setAttribute('disabled', true);
+            } else if (parseInt(qtyNumber.innerHTML) === 10) {
+                btn2.setAttribute('disabled', true);
+            } else {
+                btn1.removeAttribute('disabled');
+                btn2.removeAttribute('disabled');
+            }
+        });
+
+        let qty = document.createElement("div");
+        qty.className = 'product-qty row gx-0 align-items-center';
+        qty.appendChild(qtyNumber);
+
+        let btn2Icon = document.createElement("i");
+        btn2Icon.className = 'fa-solid fa-plus';
+
+        let btn2 = document.createElement("button");
+        btn2.className = 'btn custom-btn2 p-0';
+        btn2.setAttribute('type', 'button');
+        btn2.appendChild(btn2Icon);
+
+        btn2.addEventListener("click", function () {
+            let cantidadActual = parseInt(qtyNumber.innerHTML);
+            if (cantidadActual < 10) {
+                $.ajax({
+                    url: '/api/update_cart/' + carrito + '/' + id,
+                    type: 'PUT',
+                    data: {'carrito': carrito,
+                        'producto': id,
+                        'cantidad': cantidadActual + 1},
+                    headers: {'X-CSRFToken': csrftoken},
+                    mode: 'same-origin',
+                    success: function (response) {
+                        qtyNumber.innerHTML = JSON.parse(response['cantidad']);
+                        let total = JSON.parse(response['total'])
+                        let totalActual = price.innerHTML.split('$')[1];
+                        price.innerHTML = '$' + total
+
+                        $cartTotal.html(parseInt($cartTotal.html()) - totalActual + total)
+                    },
+                    error: function (response) {
+                        if (response.status === 400) {
+                            console.log('sale mal')
+                        }
+                    }
+                });
+            }
+        });
+
+        let buttonGroup = document.createElement("div");
+        buttonGroup.className = 'btn-group col-auto';
+        buttonGroup.setAttribute('role', 'group');
+        buttonGroup.setAttribute('aria-label', 'Cantidad');
+        buttonGroup.appendChild(btn1);
+        buttonGroup.appendChild(qty);
+        buttonGroup.appendChild(btn2);
+
+        let delBtnIcon = document.createElement("i");
+        delBtnIcon.className = 'fa-solid fa-trash';
+        delBtnIcon.setAttribute('style', 'font-size: 20px; color: #FF4655;');
+
+        let delBtn = document.createElement("button");
+        delBtn.className = 'btn custom-btn1 p-0 col-auto';
+        delBtn.setAttribute('type', 'button');
+        delBtn.appendChild(delBtnIcon);
+
+        delBtn.addEventListener("click", function () {
+            $.ajax({
+                url: '/api/update_cart/' + carrito + '/' + id,
+                type: 'DELETE',
+                headers: {'X-CSRFToken': csrftoken},
+                mode: 'same-origin',
+                success: function (response) {
+                    card.remove();
+                    let productCount = parseInt($cartProductCount.html())
+                    if (productCount === 1) {
+                        $cartProductCount.html('')
+                    } else {
+                        $cartProductCount.html(productCount - 1)
+                    }
+
+                    let delTotal = price.innerHTML.split('$')[1]
+                    $cartTotal.html(parseInt($cartTotal.html()) - delTotal)
+
+                    if ($cartSidebarBody.children().length === 0) {
+                        $cartSidebarBody.append(emptyCart);
+                    }
+                },
+                error: function (response) {
+                    if (response.status === 400) {
+                        console.log('sale mal')
+                    }
+                }
+            });
+        });
+
+        let delBtnContainer = document.createElement("div");
+        delBtnContainer.className = 'row gx-0 justify-content-center';
+        delBtnContainer.appendChild(delBtn);
+
+        let del = document.createElement("div");
+        del.className = 'col-12 col-sm-auto ms-sm-auto';
+        del.appendChild(delBtnContainer);
+
+        let buttons = document.createElement("div");
+        buttons.className = 'row gx-0 justify-content-center align-items-center gap-3 gap-sm-0';
+        buttons.appendChild(buttonGroup);
+        buttons.appendChild(del);
+
+        let col2 = document.createElement("div");
+        col2.className = "col-7 card-body ps-3";
+        col2.appendChild(productId);
+        col2.appendChild(titleWrapper);
+        col2.appendChild(price);
+        col2.appendChild(buttons);
+
+        let row = document.createElement("div");
+        row.className = "row gx-0";
+        row.appendChild(col1);
+        row.appendChild(col2);
+
+        let card = document.createElement("div");
+        card.className = "card cart-item";
+        card.appendChild(row);
+
+        return card;
     }
 }
 

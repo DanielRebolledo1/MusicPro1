@@ -2,7 +2,6 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required, user_passes_test
 from products.models import Producto, Marca, Unidad, Subcategoria, Plataforma
-from rest_api.models import Video
 from .forms import NuevoProductoForm, EditarProductoForm, NuevaMarcaForm, NuevaSubcategoriaForm, NuevaPlataformaForm, \
     NuevaUnidadForm, EditarUnidadForm, DescripcionProductoForm, VideoForm
 

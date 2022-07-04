@@ -22,6 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('products.urls')),
     path('staff/', include('staff.urls')),
-    path('api/', include('rest_api.urls')),
+    path('api/', include('rest_videos.urls')),
+    path('api/', include('rest_cart.urls')),
     path('social/', include('social_django.urls', namespace='social')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

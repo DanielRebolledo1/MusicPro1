@@ -7,6 +7,7 @@ from django.urls import reverse
 
 from .models import Producto, Categoria, Subcategoria
 from .forms import SuscriptorForm
+from rest_cart.forms import CarritoProductoForm
 
 # Create your views here.
 def home(request):
@@ -19,7 +20,8 @@ def home(request):
         'subcategorias': get_subcategories_urls(),
         'nuevosProductos': get_products_urls(nuevosProductos),
         'productosPreventa': get_products_urls(productosPreventa),
-        'form': SuscriptorForm()
+        'form': SuscriptorForm(),
+        'carritoProductoForm': CarritoProductoForm(auto_id=False),
     }
 
     if (request.method == 'POST'):

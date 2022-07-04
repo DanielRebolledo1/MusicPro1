@@ -43,7 +43,9 @@ INSTALLED_APPS = [
     'products',
     'login',
     'staff',
-    'rest_api',
+    'orders',
+    'rest_videos',
+    'rest_cart',
     'rest_framework',
     'rest_framework.authtoken',
     'social_django',
@@ -79,6 +81,7 @@ MIDDLEWARE = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ]
 }

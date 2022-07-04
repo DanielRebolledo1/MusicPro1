@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 from products.models import Producto, Marca, Subcategoria, Plataforma, Unidad
-from rest_api.models import Video
+from rest_videos.models import Video
 from django.forms.widgets import NumberInput, HiddenInput
 
 

@@ -2,4 +2,6 @@
 /zuzuPlayDjango/.env
 /zuzuPlayDjango/products/migrations/0001_initial.py
 /zuzuPlayDjango/login/migrations/0001_initial.py
-/zuzuPlayDjango/rest_api/migrations/0001_initial.py
+/zuzuPlayDjango/rest_videos/migrations/0001_initial.py
+/zuzuPlayDjango/rest_cart/migrations/0001_initial.py
+/zuzuPlayDjango/orders/migrations/0001_initial.py
