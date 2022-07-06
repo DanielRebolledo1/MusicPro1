@@ -1,6 +1,11 @@
+from dateutil.relativedelta import relativedelta
 from django.db import models
+from django.db.models.signals import post_save
+from django.utils import timezone
+
 from login.models import Usuario
 from products.models import Unidad, Suscriptor
+from pyuploadcare.dj.models import ImageField
 
 
 # Create your models here.
@@ -16,36 +21,53 @@ class Descuento(models.Model):
 
 class Cupon(models.Model):
     id = models.CharField(primary_key=True, max_length=32, verbose_name='Id')
-    fechaCreacion = models.DateField(verbose_name='Fecha de creacion')
+    fechaCreacion = models.DateField(default=timezone.now, verbose_name='Fecha de creacion')
     fechaExpiracion = models.DateField(verbose_name='Fecha de expiracion')
-    usado = models.BooleanField(default=True, verbose_name='Usado')
+    usado = models.BooleanField(default=False, verbose_name='Usado')
     descuento = models.ForeignKey(Descuento, on_delete=models.CASCADE)
     suscriptor = models.ForeignKey(Suscriptor, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.id, self.fechaExpiracion
+        return self.id + " | " + str(self.fechaExpiracion)
+
+    def suscriptor_post_save(sender, instance, *args, **kwargs):
+        desc = Descuento.objects.get(nombre__iexact='primera compra')
+        fechaExp = timezone.now() + relativedelta(years=1)
+        id = 'PRIMERACOMPRA' + str(instance.idSuscriptor)
+        Cupon.objects.create(id=id, fechaExpiracion=fechaExp, descuento=desc, suscriptor=instance)
+
+    post_save.connect(suscriptor_post_save, sender=Suscriptor)
 
 
 class Orden(models.Model):
     id = models.AutoField(primary_key=True, verbose_name='Id')
-    fecha = models.DateTimeField(verbose_name='Fecha')
+    fecha = models.DateTimeField(default=timezone.now, verbose_name='Fecha')
     subtotal = models.IntegerField(verbose_name='Subtotal')
     total = models.IntegerField(verbose_name='Total')
     estado = models.CharField(max_length=50, verbose_name='Estado')
     unidades = models.ManyToManyField(Unidad)
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    cupon = models.ForeignKey(Cupon, on_delete=models.CASCADE, null=True, blank=True)
+    cupon = models.OneToOneField(Cupon, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
-        return self.fecha
+        return self.usuario.email + " / " + str(self.fecha)
+
+
+class Proveedor(models.Model):
+    id = models.AutoField(primary_key=True, verbose_name='Id')
+    nombre = models.CharField(max_length=50, verbose_name='Nombre')
+    logo = ImageField(manual_crop="", blank=True, verbose_name='Imagen')
+
+    def __str__(self):
+        return self.nombre
 
 
 class Pago(models.Model):
     id = models.AutoField(primary_key=True, verbose_name='Id')
-    fecha = models.DateTimeField(verbose_name='Fecha')
+    fecha = models.DateTimeField(default=timezone.now, verbose_name='Fecha')
     monto = models.IntegerField(verbose_name='Monto')
-    proveedor = models.CharField(max_length=100, verbose_name='Proveedor')
     estado = models.CharField(max_length=50, verbose_name='Estado')
+    proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE)
     orden = models.OneToOneField(Orden, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -71,11 +93,14 @@ class Comuna(models.Model):
 
 class Direccion(models.Model):
     id = models.AutoField(primary_key=True, verbose_name='Id')
+    direccion = models.CharField(max_length=100, verbose_name='Direccion')
+    codigoPostal = models.IntegerField(default=0, verbose_name='Código postal')
+    principal = models.BooleanField(default=False, verbose_name='Principal')
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     comuna = models.ForeignKey(Comuna, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.usuario, self.comuna
+        return self.direccion
 
 
 class Despacho(models.Model):

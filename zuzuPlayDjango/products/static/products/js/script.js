@@ -1504,6 +1504,14 @@ if (body.classList.contains('admin')) {
     });
 }
 
+if (body.classList.contains('checkout')) {
+    console.log('checkout')
+
+    $(document).ready(function () {
+        checkoutCartFunctions()
+    });
+}
+
 //Validaciones de formularios
 
 function checkLoginInputsOnSubmit(loginEmail, loginPassword) {
@@ -2084,11 +2092,16 @@ function sidebarMenuFunctions() {
 
 //Sidebar carrito
 function cartSidebarFunctions() {
+    const csrftoken = getCookie('csrftoken');
+    const $cartSidebarBody = $('#cart-sidebar-body');
+    const $cartSidebarOpenBtn = $('#cart-sidebar-open-btn');
+    const $cartProductCount = $('#cart-product-count');
+    const $cartTotal = $('#cart-total');
     const $sidebar = $('#cart-sidebar');
     const $sidebarContainer = $('#cart-sidebar-container');
     const $cartSidebarScroll = $('#cart-sidebar-scroll');
 
-    $('#cart-sidebar-open-btn').on('click', function () {
+    $cartSidebarOpenBtn.on('click', function () {
         $sidebarContainer.show();
         $('body').css('overflow', 'hidden');
         $sidebar.show("slide", {direction: "right"}, 300);
@@ -2105,18 +2118,6 @@ function cartSidebarFunctions() {
         $('#cart-sidebar-close-btn').click();
     });
 
-    cartFunctions();
-}
-
-function cartFunctions() {
-    const csrftoken = getCookie('csrftoken');
-    const $cartSidebarScroll = $('#cart-sidebar-scroll');
-    const $cartSidebarBody = $('#cart-sidebar-body');
-    const $cartSidebarOpenBtn = $('#cart-sidebar-open-btn');
-    const $cartProductCount = $('#cart-product-count');
-    const $cartDetailBody = $('#cart-detail-body');
-    const $cartTotal = $('#cart-total');
-
     let emptyCart = document.createElement("p");
     emptyCart.className = 'pt-3';
     emptyCart.setAttribute('name', 'cartEmpty')
@@ -2129,6 +2130,7 @@ function cartFunctions() {
         mode: 'same-origin',
         success: function (response) {
             let idCarrito = JSON.parse(response[0]['id'])
+            let subtotal = JSON.parse(response[0]['subtotal'])
 
             $('input[name="carrito"]').each(function () {
                 let idProducto = $(this).parent().siblings('input[name="idProducto"]').val()
@@ -2143,7 +2145,6 @@ function cartFunctions() {
                 $cartProductCount.html('')
             } else {
                 $cartProductCount.html(productCount)
-                let subtotal = 0;
                 $(response[0]['productos']).each(function () {
                     let idProducto = JSON.parse(JSON.stringify(this['producto']))
                     let idCarrito = JSON.parse(JSON.stringify(this['carrito']))
@@ -2155,8 +2156,6 @@ function cartFunctions() {
 
                     let card = cartItemGenerator(idProducto, idCarrito, nombre, imagen, total, url, cantidad)
                     $cartSidebarBody.append(card);
-
-                    subtotal += total;
                 });
                 $cartTotal.html(subtotal)
             }
@@ -2170,6 +2169,10 @@ function cartFunctions() {
 
     $('form[name="addToCartForm"]').on('submit', function (e) {
         e.preventDefault();
+        const $addToCartBtnMsg = $(this).children('button[type="submit"]').children('span')
+        message = $addToCartBtnMsg.html()
+        $addToCartBtnMsg.html('')
+        $addToCartBtnMsg.addClass('spinner-border spinner-border-sm')
         $.ajax({
             url: '/api/add_to_cart',
             type: 'POST',
@@ -2180,15 +2183,14 @@ function cartFunctions() {
                 let idProducto = JSON.parse(JSON.stringify(response['producto']))
                 let cantidad = JSON.parse(response['cantidad'])
                 let total = JSON.parse(response['total']);
-                let totalActual = 0;
+                let carritoSubtotal = JSON.parse(response['subtotalCarrito'])
+                let carritoTotal = JSON.parse(response['totalCarrito'])
 
                 emptyCart.remove()
 
                 let exists = false;
                 $cartSidebarBody.children('.cart-item').each(function () {
                     if ($(this).find('p[name="cartProductId"]').html().includes(idProducto)) {
-                        totalActual = $(this).find('h5[name="cartProductTotal"]')
-                            .html().split('$')[1]
                         $(this).find('h5[name="cartProductTotal"]').html('$' + total);
                         $(this).find('span[name="cartProductQty"]').html(cantidad);
                         $cartSidebarOpenBtn.click();
@@ -2216,12 +2218,15 @@ function cartFunctions() {
                     $cartSidebarScroll.animate({scrollTop: $cartSidebarScroll.prop('scrollHeight')}, 1000);
                 }
 
-                $cartTotal.html(parseInt($cartTotal.html()) - totalActual + total)
+                $cartTotal.html(carritoSubtotal)
+                $addToCartBtnMsg.removeClass('spinner-border spinner-border-sm')
+                $addToCartBtnMsg.html(message)
             },
             error: function (response) {
                 if (response.status === 400) {
                     console.log('sale mal')
                 }
+                $addToCartBtnMsg.removeClass('spinner-border spinner-border-sm')
             }
         });
     });
@@ -2265,27 +2270,32 @@ function cartFunctions() {
 
         btn1.addEventListener("click", function () {
             let cantidadActual = parseInt(qtyNumber.innerHTML);
+            btn1Icon.className = 'spinner-border spinner-border-sm';
             if (cantidadActual > 1) {
                 $.ajax({
                     url: '/api/update_cart/' + carrito + '/' + id,
                     type: 'PUT',
-                    data: {'carrito': carrito,
+                    data: {
+                        'carrito': carrito,
                         'producto': id,
-                        'cantidad': cantidadActual - 1},
+                        'cantidad': cantidadActual - 1
+                    },
                     headers: {'X-CSRFToken': csrftoken},
                     mode: 'same-origin',
                     success: function (response) {
                         qtyNumber.innerHTML = JSON.parse(response['cantidad']);
                         let total = JSON.parse(response['total'])
-                        let totalActual = price.innerHTML.split('$')[1];
+                        let carritoSubtotal = JSON.parse(response['subtotalCarrito'])
                         price.innerHTML = '$' + total
 
-                        $cartTotal.html(parseInt($cartTotal.html()) - totalActual + total)
+                        $cartTotal.html(carritoSubtotal)
+                        btn1Icon.className = 'fa-solid fa-minus';
                     },
                     error: function (response) {
                         if (response.status === 400) {
                             console.log('sale mal')
                         }
+                        btn1Icon.className = 'fa-solid fa-minus';
                     }
                 });
             }
@@ -2296,7 +2306,7 @@ function cartFunctions() {
         qtyNumber.setAttribute('name', 'cartProductQty');
         qtyNumber.innerHTML = cantidad;
 
-        $('body').on("DOMSubtreeModified", qtyNumber, function (){
+        $('body').on("DOMSubtreeModified", qtyNumber, function () {
             if (parseInt(qtyNumber.innerHTML) === 1) {
                 btn1.setAttribute('disabled', true);
             } else if (parseInt(qtyNumber.innerHTML) === 10) {
@@ -2321,27 +2331,32 @@ function cartFunctions() {
 
         btn2.addEventListener("click", function () {
             let cantidadActual = parseInt(qtyNumber.innerHTML);
+            btn2Icon.className = 'spinner-border spinner-border-sm';
             if (cantidadActual < 10) {
                 $.ajax({
                     url: '/api/update_cart/' + carrito + '/' + id,
                     type: 'PUT',
-                    data: {'carrito': carrito,
+                    data: {
+                        'carrito': carrito,
                         'producto': id,
-                        'cantidad': cantidadActual + 1},
+                        'cantidad': cantidadActual + 1
+                    },
                     headers: {'X-CSRFToken': csrftoken},
                     mode: 'same-origin',
                     success: function (response) {
                         qtyNumber.innerHTML = JSON.parse(response['cantidad']);
                         let total = JSON.parse(response['total'])
-                        let totalActual = price.innerHTML.split('$')[1];
+                        let carritoSubtotal = JSON.parse(response['subtotalCarrito'])
                         price.innerHTML = '$' + total
 
-                        $cartTotal.html(parseInt($cartTotal.html()) - totalActual + total)
+                        $cartTotal.html(carritoSubtotal)
+                        btn2Icon.className = 'fa-solid fa-plus';
                     },
                     error: function (response) {
                         if (response.status === 400) {
                             console.log('sale mal')
                         }
+                        btn2Icon.className = 'fa-solid fa-plus';
                     }
                 });
             }
@@ -2365,6 +2380,7 @@ function cartFunctions() {
         delBtn.appendChild(delBtnIcon);
 
         delBtn.addEventListener("click", function () {
+            delBtnIcon.className = 'spinner-border spinner-border-sm';
             $.ajax({
                 url: '/api/update_cart/' + carrito + '/' + id,
                 type: 'DELETE',
@@ -2385,11 +2401,13 @@ function cartFunctions() {
                     if ($cartSidebarBody.children().length === 0) {
                         $cartSidebarBody.append(emptyCart);
                     }
+                    delBtnIcon.className = 'fa-solid fa-trash';
                 },
                 error: function (response) {
                     if (response.status === 400) {
                         console.log('sale mal')
                     }
+                    delBtnIcon.className = 'fa-solid fa-trash';
                 }
             });
         });
@@ -2421,6 +2439,109 @@ function cartFunctions() {
 
         let card = document.createElement("div");
         card.className = "card cart-item";
+        card.appendChild(row);
+
+        return card;
+    }
+}
+
+function checkoutCartFunctions() {
+    const csrftoken = getCookie('csrftoken');
+    const $cartItems = $('#cartItems');
+    const $cartProductCount = $('#cart-product-count');
+    const $cartSubtotal = $('#cart-subtotal');
+    const $cartTotal = $('#cart-total');
+    const $continueBtn = $('#continueBtn')
+
+    emptyCart = document.createElement("p");
+    emptyCart.setAttribute('id', 'cartEmpty')
+    emptyCart.innerHTML = 'No hay artículos en tu carrito.'
+
+    $.ajax({
+        url: '/api/cart',
+        type: 'GET',
+        headers: {'X-CSRFToken': csrftoken},
+        mode: 'same-origin',
+        success: function (response) {
+            let idCarrito = JSON.parse(response[0]['id'])
+            let subtotal = JSON.parse(response[0]['subtotal'])
+            let total = JSON.parse(response[0]['total'])
+
+            let productCount = response[0]['productos'].length;
+            let unitCount = 0;
+
+            if (productCount === 0) {
+                $cartItems.append(emptyCart)
+                $continueBtn.addClass('disabled');
+            } else {
+                $(response[0]['productos']).each(function () {
+                    let idProducto = JSON.parse(JSON.stringify(this['producto']))
+                    let idCarrito = JSON.parse(JSON.stringify(this['carrito']))
+                    let nombre = JSON.parse(JSON.stringify(this['nombre']))
+                    let imagen = JSON.parse(JSON.stringify(this['imagen']))
+                    let cantidad = JSON.parse(this['cantidad'])
+                    let precio = JSON.parse(this['precio']);
+
+                    let card = cartItemGenerator(idProducto, idCarrito, nombre, imagen, precio, cantidad)
+                    $cartItems.append(card)
+                    unitCount += cantidad;
+                });
+            }
+
+            $cartProductCount.html('Productos (' + unitCount + ')');
+            $cartSubtotal.html('$' + subtotal)
+            $cartTotal.html('$' + total)
+        },
+        error: function (response) {
+            if (response.status === 400) {
+                console.log('sale mal')
+            }
+        }
+    });
+
+    function cartItemGenerator(id, carrito, nombre, imagen, precio, cantidad) {
+        let img = document.createElement("img");
+        img.setAttribute('src', imagen + '-/preview/150x150/-/stretch/fill/-/resize/150x/' +
+            '-/scale_crop/150x150/center/-/sharp/-/format/webp/');
+        img.setAttribute('alt', nombre);
+        img.className = 'card-img-top img-fluid';
+
+        let col1 = document.createElement("div");
+        col1.className = 'col-auto flex-shrink-1 align-self-center';
+        col1.appendChild(img);
+
+        let productId = document.createElement("p");
+        productId.className = 'item-subtitle'
+        productId.setAttribute('name', 'cartProductId');
+        productId.innerHTML = 'SKU: ' + id;
+
+        let title = document.createElement("p");
+        title.innerHTML = nombre;
+
+        let price = document.createElement("h5");
+        price.setAttribute('name', 'cartProductTotal');
+        price.className = 'fw-bold';
+        price.innerHTML = '$' + precio + ' c/u';
+
+        let qty = document.createElement("p");
+        qty.className = 'item-subtitle'
+        qty.setAttribute('name', 'cartProductQty');
+        qty.innerHTML = 'Cantidad: ' + cantidad;
+
+        let col2 = document.createElement("div");
+        col2.className = "col card-body";
+        col2.appendChild(productId);
+        col2.appendChild(title);
+        col2.appendChild(qty);
+        col2.appendChild(price);
+
+        let row = document.createElement("div");
+        row.className = "row flex-nowrap gx-0";
+        row.appendChild(col1);
+        row.appendChild(col2);
+
+        let card = document.createElement("div");
+        card.className = "card cart-item p-3";
         card.appendChild(row);
 
         return card;

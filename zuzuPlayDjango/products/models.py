@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils import timezone
+from dateutil.relativedelta import relativedelta
 from pyuploadcare.dj.models import ImageField
+
 
 # Create your models here.
 class Suscriptor(models.Model):
@@ -78,7 +80,7 @@ class Producto(models.Model):
 
 
 class Unidad(models.Model):
-    idUnidad = models.CharField(primary_key=True, max_length=12 ,verbose_name='UPC')
+    idUnidad = models.CharField(primary_key=True, max_length=12, verbose_name='UPC')
     fechaIngUnidad = models.DateField(default=timezone.now, verbose_name='Fecha de ingreso')
     disponible = models.BooleanField(default=True, verbose_name='Disponible')
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)

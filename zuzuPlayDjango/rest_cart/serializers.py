@@ -11,11 +11,13 @@ class CarritoProductoSerializer(serializers.ModelSerializer):
     precio = serializers.ReadOnlyField(source="producto.precioProducto")
     imagen = serializers.ReadOnlyField(source="producto.imagenProducto.cdn_url")
     url = serializers.SerializerMethodField('get_product_url')
+    subtotalCarrito = serializers.SerializerMethodField('get_cart_subtotal')
+    totalCarrito = serializers.SerializerMethodField('get_cart_total')
 
     class Meta:
         model = CarritoProducto
         fields = ['id', 'carrito', 'producto', 'nombre', 'plataforma',
-                  'precio', 'imagen', 'cantidad', 'url', 'total']
+                  'precio', 'imagen', 'cantidad', 'url', 'total', 'subtotalCarrito', 'totalCarrito']
 
     def get_product_url(self, carritoProducto):
         try:
@@ -29,9 +31,24 @@ class CarritoProductoSerializer(serializers.ModelSerializer):
         url = reverse('product', args=[prodName, prodId])
         return url
 
+    def get_cart_subtotal(self, carritoProducto):
+        try:
+            carrito = Carrito.objects.get(id=carritoProducto.carrito_id)
+        except Carrito.DoesNotExist:
+            return None
+        return carrito.subtotal
+
+    def get_cart_total(self, carritoProducto):
+        try:
+            carrito = Carrito.objects.get(id=carritoProducto.carrito_id)
+        except Carrito.DoesNotExist:
+            return None
+        return carrito.total
+
+
 class CarritoSerializer(serializers.ModelSerializer):
     productos = CarritoProductoSerializer(read_only=True, source='carritoproducto_set', many=True)
 
     class Meta:
         model = Carrito
-        fields = ['id', 'usuario', 'sesion', 'productos']
+        fields = ['id', 'usuario', 'sesion', 'productos', 'subtotal', 'total', 'cupon', 'direccion']

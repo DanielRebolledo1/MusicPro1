@@ -7,7 +7,8 @@ from django.urls import reverse
 
 from .models import Producto, Categoria, Subcategoria
 from .forms import SuscriptorForm
-from rest_cart.forms import CarritoProductoForm
+from rest_cart.forms import CarritoProductoForm, CuponForm
+
 
 # Create your views here.
 def home(request):
@@ -22,9 +23,10 @@ def home(request):
         'productosPreventa': get_products_urls(productosPreventa),
         'form': SuscriptorForm(),
         'carritoProductoForm': CarritoProductoForm(auto_id=False),
+        'cuponForm': CuponForm(),
     }
 
-    if (request.method == 'POST'):
+    if request.method == 'POST':
         action = request.POST['action']
         if action == 'newSub':
             form = SuscriptorForm(request.POST)
@@ -32,7 +34,7 @@ def home(request):
                 form.save()
                 return JsonResponse({'success': True})
             else:
-                return JsonResponse({'success': False})
+                return JsonResponse({'success': False, 'errors': form.errors})
 
     return render(request, "products/index.html", datos)
 
@@ -153,9 +155,9 @@ def get_subcategories_urls():
 def get_products_urls(query):
     productosUrl = []
     for prod in query:
-        prodName = prod.nombreProducto.lower().replace('-', ' ').replace(':', '')\
-                      .replace("'", '').replace('  ', ' ').replace(' ', '-') + '-' + \
-                  prod.plataforma.nombrePlataforma.lower().replace('|', '-').replace(' ', '-')
+        prodName = prod.nombreProducto.lower().replace('-', ' ').replace(':', '') \
+                       .replace("'", '').replace('  ', ' ').replace(' ', '-') + '-' + \
+                   prod.plataforma.nombrePlataforma.lower().replace('|', '-').replace(' ', '-')
         prodId = prod.idProducto
         url = reverse('product', args=[prodName, prodId])
         prod.url = url
