@@ -86,27 +86,12 @@ def confirmation(request, idOrden):
 
     return render(request, "orders/confirmation.html", datos)
 
-def confirmationEx(request):
-    orden = Orden.objects.filter(usuario=request.user).first()
-    carrito = Carrito.objects.get(usuario=request.user)
-    productos = CarritoProducto.objects.filter(carrito=carrito)
-    productos.cantidad = productos.count()
-    datos = {
-        'orden': orden,
-        'productos': productos,
-    }
-    return render(request, "orders/confirmation.html", datos)
-
 
 @login_required
 def orders(request):
     ordenes = Orden.objects.filter(usuario=request.user)
-    estado =  Orden.objects.filter(estado='confirmado')
-    orden = Orden.objects.all()
     datos = {
         'ordenes': ordenes,
-        'orden': orden,
-        'estado' : estado,
     }
     return render(request, "orders/orders.html", datos)
 

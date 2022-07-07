@@ -391,6 +391,7 @@ if (body.classList.contains('contact')) {
 
     $(document).ready(function () {
         sidebarMenuFunctions();
+        cartSidebarFunctions();
 
         const contactForm = document.getElementById('contact-form');
         const contactEmail = document.getElementById('contact-email');
@@ -426,6 +427,7 @@ if (body.classList.contains('product')) {
 
     $(document).ready(function () {
         sidebarMenuFunctions();
+        cartSidebarFunctions();
         getProductSpecs();
 
         const csrftoken = getCookie('csrftoken');
@@ -609,6 +611,7 @@ if (body.classList.contains('category')) {
 
     $(document).ready(function () {
         sidebarMenuFunctions();
+        cartSidebarFunctions();
 
         const $sidebar = $('#cat-sb');
         const $sidebarContainer = $('#cat-sb-container');
@@ -702,6 +705,7 @@ if (body.classList.contains('questions')) {
 
     $(document).ready(function () {
         sidebarMenuFunctions();
+        cartSidebarFunctions();
     });
 }
 
@@ -710,6 +714,7 @@ if (body.classList.contains('stores')) {
 
     $(document).ready(function () {
         sidebarMenuFunctions();
+        cartSidebarFunctions();
     });
 }
 
@@ -718,6 +723,7 @@ if (body.classList.contains('terms')) {
 
     $(document).ready(function () {
         sidebarMenuFunctions();
+        cartSidebarFunctions();
     });
 }
 
@@ -726,6 +732,7 @@ if (body.classList.contains('denied')) {
 
     $(document).ready(function () {
         sidebarMenuFunctions();
+        cartSidebarFunctions();
     });
 }
 

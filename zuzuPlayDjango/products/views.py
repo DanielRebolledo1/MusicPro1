@@ -51,6 +51,7 @@ def product(request, product_name, product_id):
         'categorias': get_categories_urls(),
         'subcategorias': get_subcategories_urls(),
         'producto': producto,
+        'carritoProductoForm': CarritoProductoForm(auto_id=False),
         'recomendados': get_products_urls(recomendados),
         'breadcrumb': get_product_breadcrumb_info(producto),
     }
@@ -66,6 +67,7 @@ def category(request, category_name):
         'categorias': get_categories_urls(),
         'subcategorias': get_subcategories_urls(),
         'productos': get_page(request, get_products_urls(productos)),
+        'carritoProductoForm': CarritoProductoForm(auto_id=False),
         'breadcrumb': get_breadcrumb_info(category_name),
     }
 
@@ -83,6 +85,7 @@ def subcategory(request, category_name, subcategory_name):
         'categorias': get_categories_urls(),
         'subcategorias': get_subcategories_urls(),
         'productos': get_page(request, get_products_urls(productos)),
+        'carritoProductoForm': CarritoProductoForm(auto_id=False),
         'breadcrumb': get_breadcrumb_info(category_name, subcategory_name),
     }
 
