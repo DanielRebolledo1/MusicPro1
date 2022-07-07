@@ -4,11 +4,19 @@ from django.db.models.signals import post_save
 from django.utils import timezone
 
 from login.models import Usuario
-from products.models import Unidad, Suscriptor
 from pyuploadcare.dj.models import ImageField
 
 
 # Create your models here.
+class Suscriptor(models.Model):
+    idSuscriptor = models.AutoField(primary_key=True, verbose_name='Id')
+    emailSuscriptor = models.CharField(max_length=100, unique=True, verbose_name='Email')
+    activo = models.BooleanField(default=True, verbose_name='Activo')
+
+    def __str__(self):
+        return self.emailSuscriptor
+
+
 class Descuento(models.Model):
     id = models.AutoField(primary_key=True, verbose_name='Id')
     nombre = models.CharField(max_length=100, verbose_name='Nombre')
@@ -39,20 +47,6 @@ class Cupon(models.Model):
     post_save.connect(suscriptor_post_save, sender=Suscriptor)
 
 
-class Orden(models.Model):
-    id = models.AutoField(primary_key=True, verbose_name='Id')
-    fecha = models.DateTimeField(default=timezone.now, verbose_name='Fecha')
-    subtotal = models.IntegerField(verbose_name='Subtotal')
-    total = models.IntegerField(verbose_name='Total')
-    estado = models.CharField(max_length=50, verbose_name='Estado')
-    unidades = models.ManyToManyField(Unidad)
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    cupon = models.OneToOneField(Cupon, on_delete=models.CASCADE, null=True, blank=True)
-
-    def __str__(self):
-        return self.usuario.email + " / " + str(self.fecha)
-
-
 class Proveedor(models.Model):
     id = models.AutoField(primary_key=True, verbose_name='Id')
     nombre = models.CharField(max_length=50, verbose_name='Nombre')
@@ -68,10 +62,9 @@ class Pago(models.Model):
     monto = models.IntegerField(verbose_name='Monto')
     estado = models.CharField(max_length=50, verbose_name='Estado')
     proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE)
-    orden = models.OneToOneField(Orden, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.fecha
+        return self.proveedor.nombre + ' / ' + str(self.monto)
 
 
 class Region(models.Model):
@@ -110,7 +103,21 @@ class Despacho(models.Model):
     total = models.IntegerField(verbose_name='Total')
     estado = models.CharField(max_length=50, verbose_name='Estado')
     direccion = models.ForeignKey(Direccion, on_delete=models.CASCADE)
-    orden = models.OneToOneField(Orden, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.fechaEntrega
+        return self.direccion.direccion + ' / ' + str(self.fechaEntrega)
+
+
+class Orden(models.Model):
+    id = models.AutoField(primary_key=True, verbose_name='Id')
+    fecha = models.DateTimeField(default=timezone.now, verbose_name='Fecha')
+    subtotal = models.IntegerField(verbose_name='Subtotal')
+    total = models.IntegerField(verbose_name='Total')
+    estado = models.CharField(max_length=50, verbose_name='Estado')
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    cupon = models.OneToOneField(Cupon, on_delete=models.CASCADE, null=True, blank=True)
+    pago = models.OneToOneField(Pago, on_delete=models.CASCADE)
+    despacho = models.OneToOneField(Despacho, on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+        return self.usuario.email + " / " + str(self.fecha)
