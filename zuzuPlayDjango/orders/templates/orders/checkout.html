@@ -84,7 +84,7 @@
                                                 <div class="col card-body">
                                                     <div class="row align-items-center gap-2">
                                                         <div class="col-12 col-md-auto">
-                                                            {% if direcciones.count > 0 %}
+                                                            {% if direccionCarrito is not None %}
                                                                 <p>{{ direccionCarrito.direccion }}</p>
                                                                 <p>{{ direccionCarrito.comuna }},
                                                                     {{ direccionCarrito.comuna.region }}</p>
