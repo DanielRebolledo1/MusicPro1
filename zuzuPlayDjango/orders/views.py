@@ -35,8 +35,12 @@ def payment(request):
 @login_required
 def orders(request):
     ordenes = Orden.objects.filter(usuario=request.user)
+    estado =  Orden.objects.filter(estado='confirmado')
+    orden = Orden.objects.all()
     datos = {
         'ordenes': ordenes,
+        'orden': orden,
+        'estado' : estado,
     }
     return render(request, "orders/orders.html", datos)
 
