@@ -1465,22 +1465,26 @@ input[type=date][disabled] {
 
 /* Carrito Checkout */
 .checkout,
-.payment {
+.payment,
+.confirmation {
     font-family: 'Noto Sans', sans-serif;
 }
 
 .checkout .content-box,
-.payment .content-box {
+.payment .content-box,
+.confirmation .content-box {
     max-width: 1200px;
 }
 
 .checkout .cart-item .item-subtitle,
-.payment .cart-item .item-subtitle {
+.payment .cart-item .item-subtitle,
+.confirmation .cart-item .item-subtitle {
     font-size: 14px;
 }
 
 .checkout .cart-detail-container,
-.payment .cart-detail-container {
+.payment .cart-detail-container,
+.confirmation .cart-detail-container {
     position: sticky;
     position: -webkit-sticky;
     top: 12vh;
@@ -1488,33 +1492,39 @@ input[type=date][disabled] {
 }
 
 .checkout .cart-detail .custom-btn2,
-.payment .cart-detail .custom-btn2 {
+.payment .cart-detail .custom-btn2,
+.confirmation .cart-detail .custom-btn2 {
     width: 100%;
 }
 
 .checkout .cart-detail .accordion-button,
-.payment .cart-detail .accordion-button {
+.payment .cart-detail .accordion-button,
+.confirmation .cart-detail .accordion-button {
     color: unset;
 }
 
 .checkout .accordion-button:not(.collapsed),
-.payment .accordion-button:not(.collapsed) {
+.payment .accordion-button:not(.collapsed),
+.confirmation .accordion-button:not(.collapsed) {
     box-shadow: none;
 }
 
 .checkout .accordion-button:not(.collapsed):after,
-.payment .accordion-button:not(.collapsed):after {
+.payment .accordion-button:not(.collapsed):after,
+.confirmation .accordion-button:not(.collapsed):after {
     background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%234f4f4f'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 01.708 0L8 10.293l5.646-5.647a.5.5 0 01.708.708l-6 6a.5.5 0 01-.708 0l-6-6a.5.5 0 010-.708z'/%3E%3C/svg%3E");
 }
 
 .checkout .modal-body .custom-btn1,
-.payment .modal-body .custom-btn1 {
+.payment .modal-body .custom-btn1,
+.confirmation .modal-body .custom-btn1 {
     font-size: unset;
 }
 
 @media (max-width: 767.98px) {
     .checkout .navbar-header,
-    .payment .navbar-header {
+    .payment .navbar-header,
+    .confirmation .navbar-header {
         min-height: 75px;
     }
 

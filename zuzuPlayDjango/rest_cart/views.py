@@ -2,6 +2,8 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
+
+from products.models import Unidad
 from .models import Carrito, CarritoProducto
 from orders.models import Direccion
 from .serializers import CarritoSerializer, CarritoProductoSerializer
@@ -13,8 +15,9 @@ from .serializers import CarritoSerializer, CarritoProductoSerializer
 def carrito(request):
     if request.method == 'GET':
         if request.user.is_authenticated:
-            carrito = Carrito.objects.filter(usuario=request.user)
-            if carrito.count() == 0:
+            try:
+                carrito = Carrito.objects.get(usuario=request.user)
+            except Carrito.DoesNotExist:
                 try:
                     direccion = Direccion.objects.get(usuario=request.user, principal=True)
                 except Direccion.DoesNotExist:
@@ -23,8 +26,8 @@ def carrito(request):
         else:
             if not request.session or not request.session.session_key:
                 request.session.save()
-            carrito = Carrito.objects.get_or_create(sesion_id=request.session.session_key)
-        serializer = CarritoSerializer(carrito, many=True)
+            carrito, created = Carrito.objects.get_or_create(sesion_id=request.session.session_key)
+        serializer = CarritoSerializer(carrito)
         return Response(serializer.data)
 
 
@@ -48,13 +51,16 @@ def agregar_al_carrito(request):
                 oldTotal = producto.total
             serializer.validated_data['total'] = \
                 serializer.validated_data['producto'].precioProducto * serializer.validated_data['cantidad']
-            subtotal = update_cart_subtotal(request, serializer.validated_data['carrito'].id,
-                                            serializer.validated_data['total'], oldTotal)
-            if subtotal:
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            if stockAvailability(serializer):
+                subtotal = update_cart_subtotal(request, serializer.validated_data['carrito'].id,
+                                                serializer.validated_data['total'], oldTotal)
+                if subtotal:
+                    serializer.save()
+                    return Response(serializer.data)
+                else:
+                    return Response(status=status.HTTP_400_BAD_REQUEST)
             else:
-                return Response(status=status.HTTP_400_BAD_REQUEST)
+                return Response(status=status.HTTP_409_CONFLICT)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -75,12 +81,15 @@ def modificar_carrito(request, id_carrito, id_producto):
         if serializer.is_valid():
             serializer.validated_data['total'] = \
                 serializer.validated_data['producto'].precioProducto * serializer.validated_data['cantidad']
-            if update_cart_subtotal(request, producto.carrito_id,
-                                    serializer.validated_data['total'], producto.total):
-                serializer.save()
-                return Response(serializer.data)
+            if stockAvailability(serializer):
+                if update_cart_subtotal(request, producto.carrito_id,
+                                        serializer.validated_data['total'], producto.total):
+                    serializer.save()
+                    return Response(serializer.data)
+                else:
+                    return Response(status=status.HTTP_400_BAD_REQUEST)
             else:
-                return Response(status=status.HTTP_400_BAD_REQUEST)
+                return Response(status=status.HTTP_409_CONFLICT)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     elif request.method == 'DELETE':
@@ -107,3 +116,11 @@ def update_cart_subtotal(request, cartId, total, oldTotal=0):
         return True
     else:
         return False
+
+
+def stockAvailability(carritoProductoSerializer):
+    stock = Unidad.objects.filter(producto=carritoProductoSerializer.validated_data['producto'],
+                                  disponible=True).count()
+    if stock < carritoProductoSerializer.validated_data['cantidad']:
+        return False
+    return True

@@ -1512,6 +1512,21 @@ if (body.classList.contains('checkout')) {
     });
 }
 
+if (body.classList.contains('payment')) {
+    console.log('payment')
+
+    $(document).ready(function () {
+        checkoutPaymentFunctions();
+    });
+}
+
+if (body.classList.contains('confirmation')) {
+    console.log('confirmation')
+
+    $(document).ready(function () {
+    });
+}
+
 //Validaciones de formularios
 
 function checkLoginInputsOnSubmit(loginEmail, loginPassword) {
@@ -2129,8 +2144,8 @@ function cartSidebarFunctions() {
         headers: {'X-CSRFToken': csrftoken},
         mode: 'same-origin',
         success: function (response) {
-            let idCarrito = JSON.parse(response[0]['id'])
-            let subtotal = JSON.parse(response[0]['subtotal'])
+            let idCarrito = JSON.parse(response['id'])
+            let subtotal = JSON.parse(response['subtotal'])
 
             $('input[name="carrito"]').each(function () {
                 let idProducto = $(this).parent().siblings('input[name="idProducto"]').val()
@@ -2138,14 +2153,14 @@ function cartSidebarFunctions() {
                 $(this).siblings('input[name="producto"]').val(idProducto)
             });
 
-            let productCount = response[0]['productos'].length;
+            let productCount = response['productos'].length;
 
             if (productCount === 0) {
                 $cartSidebarBody.append(emptyCart);
                 $cartProductCount.html('')
             } else {
                 $cartProductCount.html(productCount)
-                $(response[0]['productos']).each(function () {
+                $(response['productos']).each(function () {
                     let idProducto = JSON.parse(JSON.stringify(this['producto']))
                     let idCarrito = JSON.parse(JSON.stringify(this['carrito']))
                     let url = JSON.parse(JSON.stringify(this['url']))
@@ -2227,6 +2242,7 @@ function cartSidebarFunctions() {
                     console.log('sale mal')
                 }
                 $addToCartBtnMsg.removeClass('spinner-border spinner-border-sm')
+                $addToCartBtnMsg.html(message)
             }
         });
     });
@@ -2463,18 +2479,18 @@ function checkoutCartFunctions() {
         headers: {'X-CSRFToken': csrftoken},
         mode: 'same-origin',
         success: function (response) {
-            let idCarrito = JSON.parse(response[0]['id'])
-            let subtotal = JSON.parse(response[0]['subtotal'])
-            let total = JSON.parse(response[0]['total'])
+            let idCarrito = JSON.parse(response['id'])
+            let subtotal = JSON.parse(response['subtotal'])
+            let total = JSON.parse(response['total'])
 
-            let productCount = response[0]['productos'].length;
+            let productCount = response['productos'].length;
             let unitCount = 0;
 
             if (productCount === 0) {
                 $cartItems.append(emptyCart)
                 $continueBtn.addClass('disabled');
             } else {
-                $(response[0]['productos']).each(function () {
+                $(response['productos']).each(function () {
                     let idProducto = JSON.parse(JSON.stringify(this['producto']))
                     let idCarrito = JSON.parse(JSON.stringify(this['carrito']))
                     let nombre = JSON.parse(JSON.stringify(this['nombre']))
@@ -2546,6 +2562,65 @@ function checkoutCartFunctions() {
 
         return card;
     }
+}
+
+function checkoutPaymentFunctions() {
+    const csrftoken = getCookie('csrftoken');
+    const $cartProductCount = $('#cart-product-count');
+    const $cartSubtotal = $('#cart-subtotal');
+    const $cartTotal = $('#cart-total');
+    const $continueBtn = $('#continueBtn')
+
+    $.ajax({
+        url: '/api/cart',
+        type: 'GET',
+        headers: {'X-CSRFToken': csrftoken},
+        mode: 'same-origin',
+        success: function (response) {
+            let idCarrito = JSON.parse(response['id'])
+            let subtotal = JSON.parse(response['subtotal'])
+            let total = JSON.parse(response['total'])
+
+            let productCount = response['productos'].length;
+            let unitCount = 0;
+
+            if (productCount === 0) {
+                $continueBtn.addClass('disabled');
+            } else {
+                $(response['productos']).each(function () {
+                    let cantidad = JSON.parse(this['cantidad'])
+
+                    unitCount += cantidad;
+                });
+            }
+
+            $cartProductCount.html('Productos (' + unitCount + ')');
+            $cartSubtotal.html('$' + subtotal)
+            $cartTotal.html('$' + total)
+        },
+        error: function (response) {
+            if (response.status === 400) {
+                console.log('sale mal')
+            }
+        }
+    });
+
+    $continueBtn.on('click', function () {
+        let proveedor = $('input[name="providerRadio"]:checked').val();
+        if (proveedor !== undefined) {
+            $.ajax({
+                url: '',
+                type: 'POST',
+                headers: {'X-CSRFToken': csrftoken},
+                data: {'proveedor': proveedor},
+                mode: 'same-origin',
+                success: function (response) {
+                    let url = JSON.parse(JSON.stringify(response['url']))
+                    window.location = url;
+                }
+            });
+        }
+    });
 }
 
 //Funciones de videos

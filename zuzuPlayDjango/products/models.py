@@ -1,19 +1,10 @@
 from django.db import models
 from django.utils import timezone
-from dateutil.relativedelta import relativedelta
+from orders.models import Orden
 from pyuploadcare.dj.models import ImageField
 
 
 # Create your models here.
-class Suscriptor(models.Model):
-    idSuscriptor = models.AutoField(primary_key=True, verbose_name='Id')
-    emailSuscriptor = models.CharField(max_length=100, unique=True, verbose_name='Email')
-    activo = models.BooleanField(default=True, verbose_name='Activo')
-
-    def __str__(self):
-        return self.emailSuscriptor
-
-
 class Categoria(models.Model):
     idCategoria = models.CharField(primary_key=True, max_length=1, verbose_name='Id')
     nombreCategoria = models.CharField(max_length=50, verbose_name='Nombre')
@@ -84,6 +75,7 @@ class Unidad(models.Model):
     fechaIngUnidad = models.DateField(default=timezone.now, verbose_name='Fecha de ingreso')
     disponible = models.BooleanField(default=True, verbose_name='Disponible')
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    orden = models.ForeignKey(Orden, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.idUnidad
