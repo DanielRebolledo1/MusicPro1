@@ -1,0 +1,344 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Preguntas frecuentes : zuzuPlay</title>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'products/favicon/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'products/favicon/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'products/favicon/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'products/favicon/site.webmanifest' %}">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="{% static 'products/css/style.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap"
+          rel="stylesheet">
+</head>
+<body class="questions">
+<!--Menu superior-->
+<header class="navbar-header">
+    <div class="container-fluid fixed-top">
+        <div class="row align-items-center pe-3 ps-3 gap-2 header-container">
+            <div class="col-4 col-md-2 order-2 order-md-1 m-md-0 me-md-auto">
+                <a href="{% url 'home' %}"><img src="{% static 'products/img/logo.png' %}" class="img-fluid header-logo"
+                                                alt="logo"></a>
+            </div>
+            <div class="col-auto col-md-auto order-1 order-md-2">
+                <button id="sidebar-open-btn" type="button" class="btn custom-btn1">
+                    <i class="fa-solid fa-bars header-icons"></i>
+                </button>
+            </div>
+            <div class="col-12 col-md-5 order-3 order-md-3">
+                <div class="row mb-2 mb-md-0 gx-0 justify-content-center search-bar-container">
+                    <div class="col-auto">
+                        <a href="#" class="search-bar-btn"><i class="fa-solid fa-magnifying-glass"></i></a>
+                    </div>
+                    <div class="col">
+                        <input type="text" class="search-bar-input">
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 col-md-2 order-2 order-md-4 ms-auto">
+                <div class="row justify-content-end flex-nowrap header-icons">
+                    <div class="col-auto gx-0">
+                        <div class="dropdown">
+
+                            <button
+                                    class="btn dropdown-toggle custom-btn1"
+                                    type="button"
+                                    id="dropdownMenuButton"
+                                    data-mdb-toggle="dropdown"
+                                    aria-expanded="false">
+                                {% if user.is_authenticated %}
+                                    Bienvenido/a <i class="fa-solid fa-circle-user"></i>
+                                {% else %}
+                                    <i class="fa-solid fa-circle-user"></i>
+                                {% endif %}
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                {% if user.is_authenticated %}
+                                    {% if user.is_staff %}
+                                        <li><a class="dropdown-item" href="{% url 'administration' %}">Administrar
+                                            web</a></li>
+                                    {% endif %}
+                                    <li><a class="dropdown-item" href="{% url 'orders' %}">Mis compras</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesión</a></li>
+                                {% else %}
+                                    <li><a class="dropdown-item" href="{% url 'login' %}">Iniciar sesión</a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <button id="cart-sidebar-open-btn" class="btn custom-btn1"><i
+                                class="fa-solid fa-cart-shopping"></i>
+                            <span id="cart-product-count"
+                                  class="badge rounded-pill badge-notification bg-success"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!--Menu lateral - Menu -->
+<section>
+    <div id="sidebar-container" class="container-fluid">
+        <div id="sidebar-bg" class="w-100 h-100"></div>
+        <div id="sidebar" class="w-100 h-100">
+            <div class="sidebar-content">
+                <div class="sb-fixed">
+                    <div class="row justify-content-between align-items-center m-0 sidebar-header">
+                        <div class="col-auto">
+                            <p>Tienda</p>
+                        </div>
+                        <div class="col-auto">
+                            <button id="sidebar-close-btn" type="button" class="btn custom-btn1"><i
+                                    class="fa-solid fa-x"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="sb-default">
+                    <nav class="nav flex-column sidebar-body">
+                        <p class="sidebar-subtitle mt-2">Categorías</p>
+                        {% for cat in categorias %}
+                            <button type="button" class="row gx-0 custom-btn1 category-btn">
+                                <span class="col-auto">{{ cat.nombreCategoria }}</span>
+                                <span class="col-auto ms-auto">
+                            <i class="show-icon fa-solid fa-angle-down"></i>
+                        </span>
+                            </button>
+
+                            <ul class="nav flex-column subcategories">
+                                {% for sub in subcategorias %}
+                                    {% if sub.categoria.idCategoria == cat.idCategoria %}
+                                        <li class="nav-item">
+                                            <a href="{{ sub.url }}" class="nav-link">{{ sub.nombreSubcategoria }}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                                <li class="nav-item">
+                                    <a href="{{ cat.url }}" class="nav-link">Ver todo</a>
+                                </li>
+                            </ul>
+                        {% endfor %}
+                        <p class="sidebar-subtitle">Más</p>
+                        <a href="#">Próximos lanzamientos</a>
+                        <a href="#">Ofertas</a>
+                        <hr>
+                        <p class="sidebar-subtitle">Soporte</p>
+                        <a href="{% url 'contact' %}">Contacto</a>
+                        <a href="{% url 'questions' %}">Preguntas frecuentes</a>
+                        <a href="{% url 'stores' %}">Nuestras tiendas</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--Menu lateral - Carro -->
+<section>
+    <div id="cart-sidebar-container" class="container-fluid">
+        <div id="cart-sidebar-bg" class="w-100 h-100"></div>
+        <div id="cart-sidebar" class="w-100 h-100 p-0">
+            <div class="sidebar-content">
+                <div class="sb-fixed">
+                    <div class="row justify-content-between align-items-center m-0 w-100 sidebar-header">
+                        <div class="col-auto">
+                            <p>Carrito</p>
+                        </div>
+                        <div class="col-auto">
+                            <button id="cart-sidebar-close-btn" type="button" class="btn custom-btn1"><i
+                                    class="fa-solid fa-x"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div id="cart-sidebar-scroll" class="sb-default">
+                    <nav id="cart-sidebar-body" class="nav flex-column sidebar-body">
+                    </nav>
+                </div>
+                <div class="sb-fixed">
+                    <div class="row align-items-center m-0 w-100 sidebar-footer">
+                        <div class="col-12">
+                            <div class="accordion" id="cart-detail">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="cart-detail-header">
+                                        <button class="accordion-button fw-bold ps-0 pe-0" type="button"
+                                                data-mdb-toggle="collapse" data-mdb-target="#cart-detail-content"
+                                                aria-expanded="true" aria-controls="cart-detail-content">
+                                            <span>Total: $</span><span id="cart-total">0</span>
+                                        </button>
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <a href="{% url 'checkout' %}" class="btn custom-btn2">Continuar compra</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--Preguntas frecuentes-->
+<div class="container-fluid mt-5">
+    <div class="row justify-content-center">
+        <div class="col questions-box">
+            <h1 class="title">Preguntas frecuentes</h1>
+            <hr>
+            <h4>¿Dónde tienen stock de un producto?</h4>
+            <p>Entra a ZuZuPlay.cl/, busca el producto que necesitas, ingresa a la ficha, haz clic en el botón VER STOCK
+                EN TIENDA y podrás ver dónde encontrar tu producto. También puedes llamar al (+56) 222150900.</p>
+
+            <h4>¿Dónde están ubicadas las tiendas?</h4>
+            <p>Estamos ubicados en los principales malls de nuestro país.
+                Para ver las direcciones de nuestras tiendas, ingresa aquí: <a
+                        href="{% url 'stores' %}">zuzuPlay.cl/Tiendas.</a></p>
+
+            <h4>¿Cuál es el horario de atención?</h4>
+            <p>Atendemos de lunes a domingo, en horario de mall. Para ver el horario de cada tienda, ingresa aquí: <a
+                    href="{% url 'stores' %}">zuzuPlay.cl/Tiendas.</a></p>
+
+            <h4>¿Cuáles son los medios de pago en tienda?</h4>
+            <p>Puedes pagar con efectivo, tarjeta débito o tarjetas de crédito bancarias.</p>
+
+            <h4>¿Puedo pagar con efectivo y la diferencia con tarjeta?</h4>
+            <p>Si, puedes combinar ambas formas de pago.</p>
+
+            <h4>¿Cuáles son los medios de pago en la página web?</h4>
+            <p>Puedes pagar con tarjeta de débito, tarjetas de crédito bancarias, por Webpay o con tarjetas de casas
+                comerciales a través de servipag.com.</p>
+
+            <h4>¿Puedo pedir factura en vez de boleta?</h4>
+            <p>Si, debes presentar el rut vigente de la empresa y tu carnet de identidad.</p>
+
+            <h4>¿Cuál es la garantía de los productos?</h4>
+            <p>La garantía es de 6 meses (Por compras realizadas a partir del 24 de marzo del 2022) desde la fecha de
+                compra. En caso de falla de producto, debes presentar la boleta o factura en la sucursal que más te
+                acomode.</p>
+
+            <h4>¿Qué puedo hacer si mi producto falla?</h4>
+            <p>Si estás dentro del plazo de 6 meses (por compras realizadas a partir del 24 de marzo de 2022) desde la
+                fecha de compra, debes presentar el producto en cualquier sucursal Microplay. Para ejercer la garantía,
+                debes presentar boleta, factura o documento que acredite la compra en Microplay, y derivaremos tu
+                producto al servicio técnico correspondiente.</p>
+
+            <h4>¿Puedo pedir cambio o devolución de dinero si mi producto falla?</h4>
+            <p>Sí se puede, previa evaluación del servicio Técnico del producto.</p>
+
+            <h4>¿Puedo pedir copia de boleta?</h4>
+            <p>No, el Servicio de Impuestos Internos (SII) no autoriza a emitir copias de boletas fiscales.</p>
+
+            <h4>¿Puedo cambiar un producto si no me gustó?</h4>
+            <p>Los cambios se realizan solo por falla de fabricación del producto o si este se encuentra sellado,
+                presentando la boleta o factura correspondiente.</p>
+
+            <h4>¿Cómo realizo una preventa en tienda?</h4>
+            <p>Debes abonar $5.000 para realizar la reserva y pagar la diferencia al momento de retirar el juego.</p>
+
+            <h4>¿Puedo comprar por Internet?</h4>
+            <p>Sí, pero debes estar registrado en nuestro sitio.</p>
+
+            <h4>¿Puede retirar un tercero una compra realizada por Internet?</h4>
+            <p>Sí, para ello debes enviar un poder simple a través de nuestro sitio web<a href="{% url 'contact' %}">zuzuPlay.cl/contacto.</a>con
+                los datos de quién retira.</p>
+
+            <h4>¿Realizan despachos a domicilio?</h4>
+            <p>Sí, despachamos a todo Chile vía Blue Express</p>
+
+            <h4>¿Se puede pagar contra entrega o depósito bancario?</h4>
+            <p>No, el pago se realiza online, si no se realiza, la compra no es válida.</p>
+
+            <h4>¿Cuál es el valor del despacho?</h4>
+            <p>Esto depende del destino final, el tamaño y el peso de los productos comprados. Al momento de realizar la
+                compra, podrás ver el valor del despacho.</p>
+
+            <h4>El retiro de una compra online en sucursal zuzuPlay, ¿es gratuito?</h4>
+            <p>Sí, esta modalidad de entrega no tiene costo para ti.</p>
+
+            <h4>¿Cuánto tiempo demora el despacho? </h4>
+            <p>Al momento de comprar el sistema te indica el tiempo que demorará tu pedido en llegar, dependiendo del
+                lugar de despacho.</p>
+
+            <h4>Si compro ahora por Internet, ¿puedo ir a retirar mi producto hoy a la tienda?</h4>
+            <p>Sólo en los casos que el sistema lo indique.</p>
+
+            <h4>¿Cuál es el plazo para una devolución de dinero?</h4>
+            <p>El plazo es de 15 días hábiles.</p>
+
+            <h4>¿Puede un menor de edad comprar productos en la tienda?</h4>
+            <p>Sí, pero debe ir acompañado por un adulto.</p>
+        </div>
+    </div>
+</div>
+<!--Pie de pagina-->
+<footer>
+    <div class="container-fluid">
+        <div class="row justify-content-center justify-content-sm-start align-items-center ps-3 pe-3 pt-3 pb-3 gap-3 gap-sm-0 footer-content-container">
+            <div class="col-auto col-sm-6">
+                <div class="row gap-2 justify-content-center justify-content-sm-start align-items-center">
+                    <div class="col-12 col-md-auto text-center text-sm-start">
+                        <h4>Síguenos en</h4>
+                    </div>
+                    <div class="col-auto">
+                        <a class="btn btn-primary btn-lg btn-floating" style="background-color: #8083ff;" href="#"
+                           role="button">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                    <div class="col-auto">
+                        <a class="btn btn-primary btn-lg btn-floating" style="background-color: #8083ff;" href="#"
+                           role="button">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                    </div>
+                    <div class="col-auto">
+                        <a class="btn btn-primary btn-lg btn-floating" style="background-color: #8083ff;" href="#"
+                           role="button">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-auto col-sm-6">
+                <div class="row gap-3 justify-content-center justify-content-sm-end shortcuts">
+                    <div class="col-auto">
+                        <a href="{% url 'terms' %}"><h4>Términos y condiciones</h4></a>
+                    </div>
+                    <div class="col-auto">
+                        <a href="{% url 'questions' %}"><h4>Preguntas frecuentes</h4></a>
+                    </div>
+                    <div class="col-auto">
+                        <a href="{% url 'stores' %}"><h4>Nuestras tiendas</h4></a>
+                    </div>
+                    <div class="col-auto">
+                        <a href="{% url 'contact' %}"><h4>Contacto</h4></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-auto gx-0">
+                <img src="{% static 'products/img/footer galaxy.png' %}" class="img-fluid" alt="galaxy">
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
+<script src="https://kit.fontawesome.com/777d474a1b.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.js"></script>
+<script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+<script src="{% static 'products/js/script.js' %}"></script>
+</body>
+</html>
