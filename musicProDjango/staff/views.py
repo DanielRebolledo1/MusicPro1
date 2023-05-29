@@ -36,7 +36,7 @@ def administration(request):
                 else:
                     imagen = ""
                 prod = {
-                    'buscar': prod.nombreProducto + prod.modeloProducto,
+                    'buscar': prod.nombreProducto + ' ' + prod.modeloProducto,
                     'id': prod.idProducto,
                     'nombre': prod.nombreProducto,
                     'imagen': imagen,

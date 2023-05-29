@@ -1,14 +1,16 @@
-import hmac
-import hashlib
-import base64
-import requests
-
 from dateutil.relativedelta import relativedelta
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.utils import timezone
+from rest_framework.authtoken.models import Token
+
+from transbank.webpay.webpay_plus.transaction import Transaction
+from transbank.common.integration_api_keys import IntegrationApiKeys
+from transbank.common.integration_commerce_codes import IntegrationCommerceCodes
+from transbank.common.integration_type import IntegrationType
+from transbank.common.options import WebpayOptions
 
 from products.models import Unidad
 from .models import Direccion, Proveedor, Orden, Despacho, Pago
@@ -41,7 +43,7 @@ def payment(request):
     if request.method == 'POST':
         carrito = Carrito.objects.get(usuario=request.user)
         productos = CarritoProducto.objects.filter(carrito=carrito)
-        pago = Pago.objects.create(monto=carrito.total, estado='En proceso', proveedor_id=request.POST['proveedor'])
+        pago = Pago.objects.create(monto=carrito.total, estado='Pendiente', proveedor_id=request.POST['proveedor'])
         orden = Orden.objects.create(subtotal=carrito.subtotal, total=carrito.total, pago=pago,
                                      usuario=carrito.usuario, estado='En proceso')
         for prod in productos:
@@ -51,73 +53,66 @@ def payment(request):
             if unidades.count() < cantidad:
                 return JsonResponse({'error': 'stock'})
 
-        api_key = "4CB9F47C-6553-4705-A76B-59CE0L731D11"
-        string_to_sign = "amount" + pago.monto.__str__() + "apiKey" + api_key + "currencyCLP"
-        secret_key = "0712b9f9de5c7bfae5d98c01e5d37cac40c3a801"
-        signature = hmac.new(secret_key.encode('utf-8'), string_to_sign.encode('utf-8'), hashlib.sha256).hexdigest()
-
-        # Add the HMAC value to the HTTP request headers
-        headers = {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'apiKey': api_key,
-            's': signature
-        }
-
-        request_body = {
-            'apiKey': api_key,
-            'commerceOrder': orden.id.__str__(),
-            'subject': "MusicPro Orden ID: " + orden.id.__str__(),
-            'amount': pago.monto,
-            'email': request.user.email,
-            'urlConfirmation': "https://www.google.com/search?q=confirmation",
-            #'urlConfirmation': reverse('confirmation', args=[orden.id]),
-            'urlReturn': "https://www.google.com/search?q=return",
-            #'urlReturn': reverse('payment'),
-            's': signature
-        }
-
-        # Send the HTTP request with the authenticated headers
-        response = requests.post("https://www.flow.cl/api/payment/create", headers=headers, data=request_body)
-        print(response.text)
-        print(response.request.body)
-
-        return JsonResponse({'url': 'https://www.flow.cl/btn.php?token=owdtll6'})
-        # return JsonResponse({'url': reverse('confirmation', args=[orden.id])})
+        url = 'http://127.0.0.1:8000' + reverse('confirmation', args=[orden.id])
+        tx = Transaction(
+            WebpayOptions(IntegrationCommerceCodes.WEBPAY_PLUS, IntegrationApiKeys.WEBPAY, IntegrationType.TEST))
+        response = tx.create(orden.id.__str__(), request.session.session_key, pago.monto, url)
+        return JsonResponse(response)
     return render(request, "orders/payment.html", datos)
 
 
 @login_required
 def confirmation(request, idOrden):
     try:
-        orden = Orden.objects.get(id=idOrden, estado__iexact='En proceso')
+        orden = Orden.objects.get(id=idOrden, estado__iexact='En proceso', pago__estado__iexact='Pendiente')
     except Orden.DoesNotExist:
         return redirect('home')
     if orden.usuario != request.user:
         return redirect('denied')
+
+    token = request.GET.get('token_ws')
+    if not token:
+        return redirect('home')
+
+    tx = Transaction(
+        WebpayOptions(IntegrationCommerceCodes.WEBPAY_PLUS, IntegrationApiKeys.WEBPAY, IntegrationType.TEST))
+    resp = tx.status(token)
+
     carrito = Carrito.objects.get(usuario=request.user)
     productos = CarritoProducto.objects.filter(carrito=carrito)
     productos.cantidad = productos.count()
-    fechaEntrega = timezone.now() + relativedelta(weeks=1)
-    horaEntrega = timezone.now()
-    despacho = Despacho.objects.create(fechaEntrega=fechaEntrega, horaEntrega=horaEntrega, total=0,
-                                       estado='Ingresado', direccion=carrito.direccion)
-    orden.despacho = despacho
-    orden.estado = 'Procesada'
-    orden.save()
-    orden.pago.estado = 'Aprobado'
-    orden.pago.save()
-    for prod in productos:
-        cantidad = prod.cantidad
-        unidades = Unidad.objects.filter(producto__idProducto=prod.producto.idProducto,
-                                         disponible=True).order_by('fechaIngUnidad')[:cantidad]
-        for uni in unidades:
-            uni.orden = orden
-            uni.disponible = False
-            uni.save()
-    carrito.delete()
+
+    if resp['vci'] == 'TSY':
+        exito = True
+        fechaEntrega = timezone.now() + relativedelta(weeks=1)
+        horaEntrega = timezone.now()
+        despacho = Despacho.objects.create(fechaEntrega=fechaEntrega, horaEntrega=horaEntrega, total=0,
+                                           estado='Ingresado', direccion=carrito.direccion)
+        orden.despacho = despacho
+        orden.estado = 'Procesada'
+        orden.save()
+        orden.pago.estado = 'Aprobado'
+        orden.pago.save()
+        for prod in productos:
+            cantidad = prod.cantidad
+            unidades = Unidad.objects.filter(producto__idProducto=prod.producto.idProducto,
+                                             disponible=True).order_by('fechaIngUnidad')[:cantidad]
+            for uni in unidades:
+                uni.orden = orden
+                uni.disponible = False
+                uni.save()
+        carrito.delete()
+    else:
+        exito = False
+        orden.estado = 'Cancelada'
+        orden.save()
+        orden.pago.estado = 'Rechazado'
+        orden.pago.save()
+
     datos = {
         'orden': orden,
         'productos': productos,
+        'exito': exito
     }
 
     return render(request, "orders/confirmation.html", datos)

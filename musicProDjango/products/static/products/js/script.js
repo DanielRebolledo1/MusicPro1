@@ -2543,6 +2543,8 @@ function checkoutPaymentFunctions() {
                 mode: 'same-origin',
                 success: function (response) {
                     let url = JSON.parse(JSON.stringify(response['url']))
+                    let token = JSON.parse(JSON.stringify(response['token']))
+                    url = url + '?token_ws=' + token;
                     window.location = url;
                 }
             });

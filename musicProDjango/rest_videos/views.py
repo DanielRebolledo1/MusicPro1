@@ -18,7 +18,9 @@ def videos(request):
         return Response(serializer.data)
     if request.method == 'POST':
         idProducto = request.POST['id']
+        print(idProducto)
         videos = Video.objects.filter(producto__idProducto__iexact=idProducto).order_by('id')
+        print(videos)
         serializer = VideoSerializer(videos, many=True)
         return Response(serializer.data)
 
