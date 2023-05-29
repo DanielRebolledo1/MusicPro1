@@ -38,16 +38,6 @@ h5 {
     color: #2E2E2E;
 }
 
-header .logo{
-    color: #fff;
-    font-weight: 700;
-    font-size: 2em;
-    text-decoration: none;
-}
-header .logo span {
-    color: #ff0157;
-}
-
 .invalid-feedback,
 .valid-feedback {
     font-size: 12px;
