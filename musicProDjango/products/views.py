@@ -22,7 +22,6 @@ def home(request):
         'productosPreventa': get_products_urls(productosPreventa),
         'carritoProductoForm': CarritoProductoForm(auto_id=False),
     }
-    print(datos)
 
     return render(request, "products/index.html", datos)
 
@@ -30,7 +29,7 @@ def home(request):
 def product(request, product_name, product_id):
     try:
         producto = Producto.objects.get(idProducto__iexact=product_id)
-        producto.alias = producto.nombreProducto
+        producto.alias = producto.nombreProducto + ' ' + producto.marca.nombreMarca + ' ' + producto.modeloProducto
     except Producto.DoesNotExist:
         producto = None
     recomendados = Producto.objects.filter(fechaLanProducto__lte=datetime.date.today(),
@@ -153,6 +152,7 @@ def get_products_urls(query):
         prodId = prod.idProducto
         url = reverse('product', args=[prodName, prodId])
         prod.url = url
+        prod.nombreProducto = prod.nombreProducto + ' ' + prod.marca.nombreMarca + ' ' + prod.modeloProducto
         productosUrl.append(prod)
     return productosUrl
 

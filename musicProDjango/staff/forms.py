@@ -1,5 +1,6 @@
 from django import forms
 from django.forms import ModelForm
+
 from products.models import Producto, Marca, Subcategoria, Unidad
 from rest_videos.models import Video
 from django.forms.widgets import NumberInput, HiddenInput
@@ -127,3 +128,4 @@ class EditarUnidadForm(ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['idUnidad'].widget.attrs.update(
             {'id': 'edit-unit-id', 'class': 'form-control form-control-lg custom-input', 'disabled': ''})
+

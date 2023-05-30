@@ -45,10 +45,12 @@
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         {% if user.is_authenticated %}
                                             {% if user.is_staff %}
-                                                <li><a class="dropdown-item" href="{% url 'administration' %}">Administrar
+                                                <li><a class="dropdown-item" href="{% url 'web_admin' %}">Administrar
                                                     web</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'orders_admin' %}">Administrar
+                                                    órdenes</a></li>
                                             {% endif %}
-                                            <li><a class="dropdown-item" href="#">Ajustes</a></li>
+                                            <li><a class="dropdown-item" href="{% url 'orders' %}">Mis compras</a></li>
                                             <li><a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesión</a>
                                             </li>
                                         {% else %}
@@ -80,29 +82,29 @@
                                     </div>
                                     {% if exito %}
                                         <div class="col-12 fw-bold fs-5">
-                                        Despacho
-                                    </div>
-                                    <div class="col-12 gx-0">
-                                        <div class="card p-3">
-                                            <div class="row flex-nowrap gx-0">
-                                                <div class="col-auto ps-3 flex-shrink-1 align-self-center">
-                                                    <i class="fa-solid fa-location-dot fa-2x"
-                                                       style="color: #8083ff"></i>
-                                                </div>
-                                                <div class="col card-body">
-                                                    <div class="row align-items-center gap-2">
-                                                        <div class="col-12 col-md-auto">
-                                                            <p>{{ orden.despacho.direccion }}</p>
-                                                            <p>{{ orden.despacho.direccion.comuna }},
-                                                                {{ orden.despacho.direccion.comuna.region }}</p>
-                                                            <p>Entrega estimada:
-                                                                {{ orden.despacho.fechaEntrega|date:'d/m/Y' }}</p>
+                                            Despacho
+                                        </div>
+                                        <div class="col-12 gx-0">
+                                            <div class="card p-3">
+                                                <div class="row flex-nowrap gx-0">
+                                                    <div class="col-auto ps-3 flex-shrink-1 align-self-center">
+                                                        <i class="fa-solid fa-location-dot fa-2x"
+                                                           style="color: #8083ff"></i>
+                                                    </div>
+                                                    <div class="col card-body">
+                                                        <div class="row align-items-center gap-2">
+                                                            <div class="col-12 col-md-auto">
+                                                                <p>{{ orden.despacho.direccion }}</p>
+                                                                <p>{{ orden.despacho.direccion.comuna }},
+                                                                    {{ orden.despacho.direccion.comuna.region }}</p>
+                                                                <p>Entrega estimada:
+                                                                    {{ orden.despacho.fechaEntrega|date:'d/m/Y' }}</p>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
                                     {% endif %}
 
                                     <div class="col-12 fw-bold fs-5">
@@ -119,10 +121,12 @@
                                                                  alt="{{ prod.producto.nombreProducto }}">
                                                         </div>
                                                         <div class="col card-body">
-                                                            <p class="item-subtitle">SKU: {{ prod.producto.idProducto }}</p>
+                                                            <p class="item-subtitle">
+                                                                SKU: {{ prod.producto.idProducto }}</p>
                                                             <p>{{ prod.producto.nombreProducto }}</p>
                                                             <p class="item-subtitle">Cantidad: {{ prod.cantidad }}</p>
-                                                            <p class="fw-bold">${{ prod.producto.precioProducto }} c/u</p>
+                                                            <p class="fw-bold">${{ prod.producto.precioProducto }}
+                                                                c/u</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -149,9 +153,11 @@
                                                     <div class="row gap-1 cart-detail">
                                                         <div class="col-12">
                                                             <div class="row">
-                                                                <p id="cart-product-count" class="col-auto">Productos ({{ productos.cantidad }})</p>
+                                                                <p id="cart-product-count" class="col-auto">Productos
+                                                                    ({{ productos.cantidad }})</p>
                                                                 <p id="cart-subtotal"
-                                                                   class="col-auto fw-bold ms-auto">${{ orden.subtotal }}</p>
+                                                                   class="col-auto fw-bold ms-auto">
+                                                                    ${{ orden.subtotal }}</p>
                                                             </div>
                                                         </div>
                                                         <div class="col-12">
@@ -174,7 +180,8 @@
                                             </div>
                                             <div class="row p-4 pt-0">
                                                 <div class="col-12">
-                                                    <a href="{% url 'home' %}" class="btn custom-btn2">Volver a la tienda</a>
+                                                    <a href="{% url 'home' %}" class="btn custom-btn2">Volver a la
+                                                        tienda</a>
                                                 </div>
                                             </div>
                                         </div>

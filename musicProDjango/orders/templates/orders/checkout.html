@@ -45,10 +45,12 @@
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         {% if user.is_authenticated %}
                                             {% if user.is_staff %}
-                                                <li><a class="dropdown-item" href="{% url 'administration' %}">Administrar
+                                                <li><a class="dropdown-item" href="{% url 'web_admin' %}">Administrar
                                                     web</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'orders_admin' %}">Administrar
+                                                    órdenes</a></li>
                                             {% endif %}
-                                            <li><a class="dropdown-item" href="#">Ajustes</a></li>
+                                            <li><a class="dropdown-item" href="{% url 'orders' %}">Mis compras</a></li>
                                             <li><a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesión</a>
                                             </li>
                                         {% else %}
@@ -78,8 +80,18 @@
                                         <div class="card p-3">
                                             <div class="row flex-nowrap gx-0">
                                                 <div class="col-auto ps-3 flex-shrink-1 align-self-center">
-                                                    <i class="fa-solid fa-location-dot fa-2x"
-                                                       style="color: #8083ff"></i>
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio"
+                                                                       name="videosRadioBtn" value=""/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <i class="fa-solid fa-location-dot fa-2x"
+                                                               style="color: #8083ff"></i>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div class="col card-body">
                                                     <div class="row align-items-center gap-2">
@@ -97,6 +109,39 @@
                                                                     data-mdb-toggle="modal"
                                                                     data-mdb-target="#changeAddressModal">
                                                                 Modificar
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card p-3" style="margin-top: 10px">
+                                            <div class="row flex-nowrap gx-0">
+                                                <div class="col-auto ps-3 flex-shrink-1 align-self-center">
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio"
+                                                                       name="videosRadioBtn" value=""/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <i class="fa-solid fa-store fa-2x"
+                                                               style="color: #8083ff"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col card-body">
+                                                    <div class="row align-items-center gap-2">
+                                                        <div class="col-12 col-md-auto">
+                                                            <p>Retiro en Tienda</p>
+                                                            <p>{{ tienda.direccion }}</p>
+                                                        </div>
+                                                        <div class="col-12 col-md-auto ms-auto">
+                                                            <button type="button" class="btn custom-btn2"
+                                                                    data-mdb-toggle="modal"
+                                                                    data-mdb-target="#changeStoreModal">
+                                                                Seleccionar
                                                             </button>
                                                         </div>
                                                     </div>
@@ -140,6 +185,26 @@
                                                                     </div>
                                                                 </button>
                                                             {% endfor %}
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn custom-btn2"
+                                                                    data-mdb-dismiss="modal">Confirmar
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal fade" id="changeStoreModal" tabindex="-1"
+                                             aria-labelledby="changeStoreModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="changeAddressModalLabel">Seleccionar
+                                                            tienda</h5>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="row gap-3 ps-3 pe-3">
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn custom-btn2"
@@ -203,7 +268,8 @@
                                             </div>
                                             <div class="row p-4 pt-0">
                                                 <div class="col-12">
-                                                    <a id="continueBtn" href="{% url 'payment' %}" class="btn custom-btn2">Continuar</a>
+                                                    <a id="continueBtn" href="{% url 'payment' %}"
+                                                       class="btn custom-btn2">Continuar</a>
                                                 </div>
                                             </div>
                                         </div>

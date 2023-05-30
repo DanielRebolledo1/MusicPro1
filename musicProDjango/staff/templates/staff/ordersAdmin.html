@@ -1,0 +1,211 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin : zuzuPlay</title>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'products/favicon/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'products/favicon/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'products/favicon/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'products/favicon/site.webmanifest' %}">
+
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="{% static 'products/css/style.css' %}">
+</head>
+<body class="admin">
+<header class="navbar-header">
+    <div class="container-fluid fixed-top">
+        <div class="row align-items-center pe-3 ps-3 gap-2 header-container">
+            <div class="col-auto col-md-2">
+                <a href="{% url 'home' %}">
+                    <div class="row align-items-center">
+                        <div class="col-auto header-icons"><i class="fa-solid fa-circle-chevron-left"></i>
+                        </div>
+                        <div class="col-auto gx-0">Inicio</div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-auto ms-auto">
+                <div class="row justify-content-end flex-nowrap header-icons">
+                    <div class="col-auto">
+                        <div class="dropdown">
+                            <button
+                                    class="btn dropdown-toggle custom-btn1"
+                                    type="button"
+                                    id="dropdownMenuButton"
+                                    data-mdb-toggle="dropdown"
+                                    aria-expanded="false"><i class="fa-solid fa-circle-user"></i>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                {% if user.is_authenticated %}
+                                    {% if user.is_staff %}
+                                        <li><a class="dropdown-item" href="{% url 'web_admin' %}">Administrar
+                                            web</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'orders_admin' %}">Administrar
+                                            órdenes</a></li>
+                                    {% endif %}
+                                    <li><a class="dropdown-item" href="#">Ajustes</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesión</a></li>
+                                {% else %}
+                                    <li><a class="dropdown-item" href="{% url 'login' %}">Iniciar sesión</a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<section>
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col content-container" style="max-width: 1200px;">
+                <h2>Ordenes</h2>
+                <div class="table-responsive" style="max-height: 600px">
+                    <table class="table table-sm table-bordered">
+                        <thead>
+                        <tr>
+                            <th scope="col">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value=""
+                                           id="new-unit-thead-check"/>
+                                </div>
+                            </th>
+                            <th scope="col">ID</th>
+                            <th scope="col">Fecha</th>
+                            <th scope="col">Usuario</th>
+                            <th scope="col">Productos</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Pago</th>
+                            <th scope="col">Despacho</th>
+                            <th scope="col">Estado</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for orden in ordenes %}
+                            <tr>
+                                <th scope="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value=""
+                                               id="new-unit-tbody-check"/>
+                                    </div>
+                                </th>
+                                <th scope="col">{{ orden.id }}</th>
+                                <th scope="col">{{ orden.fecha }}</th>
+                                <th scope="col">{{ orden.usuario }}</th>
+                                <th scope="col">
+                                    <ul>
+                                        {% for unidad in orden.unidades %}
+                                            <li>
+                                                {{ unidad.producto }}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </th>
+                                <th scope="col">${{ orden.total }}</th>
+                                <th scope="col">
+                                    <ul>
+                                        <li>
+                                            ID: {{ orden.pago.id }}
+                                        </li>
+                                        <li>
+                                            Metodo: {{ orden.pago.proveedor }}
+                                        </li>
+                                        <li>
+                                            Monto: ${{ orden.pago.monto }}
+                                        </li>
+                                        <li>
+                                            Estado: {{ orden.pago.estado }}
+                                        </li>
+                                    </ul>
+                                </th>
+                                <th scope="col">
+                                    <ul>
+                                        <li>
+                                            ID: {{ orden.despacho.id }}
+                                        </li>
+                                        <li>
+                                            Direccion: {{ orden.despacho.direccion }}
+                                        </li>
+                                    </ul>
+                                </th>
+                                <th scope="col">{{ orden.estado }}</th>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th scope="col" colspan="9">
+                                <div class="row">
+                                    <div class="col-12" >
+                                        {% if rol == "vendedor" %}
+                                            <button id="save-edited-units-btn" type="button"
+                                                class="btn custom-btn2 w-100" style="margin-bottom: 10px"
+                                                disabled>
+                                                Rechazar ordenes
+                                            </button>
+                                            <button id="save-edited-units-btn" type="button"
+                                                    class="btn custom-btn2 w-100"
+                                                    disabled>
+                                                Aprobar ordenes
+                                            </button>
+                                        {% elif rol == "bodeguero" %}
+                                            <button id="save-edited-units-btn" type="button"
+                                                class="btn custom-btn2 w-100" style="margin-bottom: 10px"
+                                                disabled>
+                                                Rechazar despacho
+                                            </button>
+                                            <button id="save-edited-units-btn" type="button"
+                                                    class="btn custom-btn2 w-100" style="margin-bottom: 10px"
+                                                    disabled>
+                                                Aprobar despacho
+                                            </button>
+                                            <button id="save-edited-units-btn" type="button"
+                                                    class="btn custom-btn2 w-100"
+                                                    disabled>
+                                                Marcar como "En Despacho"
+                                            </button>
+                                        {% elif rol == "contador" %}
+                                            <button id="save-edited-units-btn" type="button"
+                                                class="btn custom-btn2 w-100" style="margin-bottom: 10px"
+                                                disabled>
+                                                Confirmar pago
+                                            </button>
+                                            <button id="save-edited-units-btn" type="button"
+                                                    class="btn custom-btn2 w-100"
+                                                    disabled>
+                                                Confirmar entrega
+                                            </button>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
+<script src="https://kit.fontawesome.com/777d474a1b.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.js"></script>
+<script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.min.js"></script>
+<script src="https://ucarecdn.com/libs/widget-tab-effects/1.x/uploadcare.tab-effects.lang.en.min.js"></script>
+<script src="{% static 'products/js/script.js' %}"></script>
+</html>

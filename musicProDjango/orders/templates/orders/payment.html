@@ -45,10 +45,12 @@
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         {% if user.is_authenticated %}
                                             {% if user.is_staff %}
-                                                <li><a class="dropdown-item" href="{% url 'administration' %}">Administrar
+                                                <li><a class="dropdown-item" href="{% url 'web_admin' %}">Administrar
                                                     web</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'orders_admin' %}">Administrar
+                                                    órdenes</a></li>
                                             {% endif %}
-                                            <li><a class="dropdown-item" href="#">Ajustes</a></li>
+                                            <li><a class="dropdown-item" href="{% url 'orders' %}">Mis compras</a></li>
                                             <li><a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesión</a>
                                             </li>
                                         {% else %}
@@ -142,7 +144,9 @@
                                             </div>
                                             <div class="row p-4 pt-0">
                                                 <div class="col-12">
-                                                    <button id="continueBtn" type="button" class="btn custom-btn2">Continuar</button>
+                                                    <button id="continueBtn" type="button" class="btn custom-btn2">
+                                                        Continuar
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>

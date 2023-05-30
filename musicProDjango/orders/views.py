@@ -4,7 +4,6 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.utils import timezone
-from rest_framework.authtoken.models import Token
 
 from transbank.webpay.webpay_plus.transaction import Transaction
 from transbank.common.integration_api_keys import IntegrationApiKeys

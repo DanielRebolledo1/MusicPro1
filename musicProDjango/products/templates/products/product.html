@@ -28,7 +28,8 @@
     <div class="container-fluid fixed-top">
         <div class="row align-items-center pe-3 ps-3 gap-2 header-container">
             <div class="col-4 col-md-2 order-2 order-md-1 m-md-0 me-md-auto">
-                <a href="{% url 'home' %}"><img src="{% static 'products/img/MusicPro.png' %}" class="img-fluid header-logo"
+                <a href="{% url 'home' %}"><img src="{% static 'products/img/MusicPro.png' %}"
+                                                class="img-fluid header-logo"
                                                 alt="logo"></a>
             </div>
             <div class="col-auto col-md-auto order-1 order-md-2">
@@ -66,13 +67,17 @@
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 {% if user.is_authenticated %}
                                     {% if user.is_staff %}
-                                        <li><a class="dropdown-item" href="{% url 'administration' %}">Administrar
+                                        <li><a class="dropdown-item" href="{% url 'web_admin' %}">Administrar
                                             web</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'orders_admin' %}">Administrar
+                                            órdenes</a></li>
                                     {% endif %}
                                     <li><a class="dropdown-item" href="{% url 'orders' %}">Mis compras</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesión</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesión</a>
+                                    </li>
                                 {% else %}
-                                    <li><a class="dropdown-item" href="{% url 'login' %}">Iniciar sesión</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'login' %}">Iniciar sesión</a>
+                                    </li>
                                 {% endif %}
                             </ul>
                         </div>
@@ -226,12 +231,6 @@
                                                          class="img-fluid" alt="{{ producto.alias }}">
                                                 </div>
                                             </div>
-                                            <div class="swiper-slide">
-                                                <div class="row thumbs-images h-100 justify-content-center align-items-center">
-                                                    <img src="{% static 'products/img/gnegraswing1.webp' %}"
-                                                         class="img-fluid" alt="">
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -252,13 +251,6 @@
                                                             class="img-fluid" alt="{{ producto.alias }}"></a>
                                                 </div>
                                             </div>
-                                            <div class="swiper-slide">
-                                                <div class="row main-images gx-0 h-100 justify-content-center align-items-center">
-                                                    <a href="{% static 'products/img/gnegraswing1.webp' %}"><img
-                                                            src="{% static 'products/img/gnegraswing1.webp' %}"
-                                                            class="img-fluid" alt=""></a>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -273,7 +265,8 @@
                     <div class="row flex-column gap-3 gx-0">
                         <div class="row gx-0 justify-content-between">
                             <p class="col-auto" style="font-size: 12px">Precio Web</p>
-                            <p id="product-id" class="col-auto" style="font-size: 12px">SKU: {{ producto.idProducto }}</p>
+                            <p id="product-id" class="col-auto" style="font-size: 12px">
+                                SKU: {{ producto.idProducto }}</p>
                             <p class="col-12 price">${{ producto.precioProducto }}</p>
                             <div class="col-auto row gx-0 gap-1" style="font-size: 14px">
                                 <p class="col-auto">Normal</p>
@@ -358,126 +351,11 @@
                                         <div class="col-12 description-wrapper">
                                             <ul class="list-unstyled">
                                                 <li>
-                                                    <h3 id="product-title">Guitarra acústica ARFG94</h3>
+                                                    <h3 id="product-title">{{ producto.alias }}</h3>
                                                     <p>
-                                                        La guitarra ARFG94 de Vizcaya  es una guitarra acústica con cuerdas de metal ofreciendo una brillante sonoridad propia de este material, de tamaño estandar 4/4 para guitarristas que estén pasando de un modelo de tamaño 3/4 o buscando una primera guitarra clásica, la ARFG94 te sorprenderá.
-                                                        Con un cuerpo y mástil de tilo, que ayuda a obtener un sonido estandar para adaptar el oido al sonido y entonación clásica de la guitarra acústica. El mástil es ideal para entrenar la digitación de la mano, justo lo que necesita para desarrollar un método de interpretación adecuado.
-                                                        este modelo presenta un interesante acabado con pickguard y cuerpo en color negro.
+                                                        {{ producto.descripcionProducto }}
                                                     </p>
                                                     <br>
-                                                </li>
-                                                <li>
-                                                    <ul>
-                                                        <li>Explora las trilogías en cualquier orden</li>
-                                                    </ul>
-                                                </li>
-                                                <li>
-                                                    <p>
-                                                        Los jugadores revivirán la historia épica de las nueve
-                                                        películas de la Saga Skywalker, y todo comienza con la
-                                                        elección de la trilogía de tu preferencia para comenzar
-                                                        el viaje.
-                                                    </p>
-                                                    <br>
-                                                </li>
-                                                <li>
-                                                    <ul>
-                                                        <li>Juega como los héroes y villanos icónicos</li>
-                                                    </ul>
-                                                </li>
-                                                <li>
-                                                    <p>
-                                                        Hay más de 300 personajes jugables de toda la galaxia.
-                                                        Los jugadores pueden elegir entre una legión de héroes
-                                                        como Luke Skywalker, Qui-Gon Jinn, Chewbacca, Leia Organa
-                                                        y Poe Dameron o pasarse al lado oscuro como Darth Vader,
-                                                        Kylo Ren, Darth Maul, el Emperador Palpatine y más.
-                                                    </p>
-                                                    <br>
-                                                </li>
-                                                <li>
-                                                    <ul>
-                                                        <li>Descubre lugares legendarios</li>
-                                                    </ul>
-                                                </li>
-                                                <li>
-                                                    <p>
-                                                        Los jugadores pueden visitar lugares conocidos de sus
-                                                        películas favoritas de Star Wars, como las mesas de
-                                                        Geonosis, los pantanos de Dagobah y las salinas de Crait.
-                                                        Pueden desbloquear y tener la libertad de viajar sin
-                                                        problemas a 23 planetas mientras juegan a través de la saga
-                                                        o exploran y descubren emocionantes misiones.
-                                                    </p>
-                                                    <br>
-                                                </li>
-                                                <li>
-                                                    <ul>
-                                                        <li>Comanda vehículos poderosos</li>
-                                                    </ul>
-                                                </li>
-                                                <li>
-                                                    <p>
-                                                        Hay más de 100 vehículos de toda la galaxia para comandar.
-                                                        Los jugadores pueden saltar a la velocidad de la luz en el
-                                                        Millennium Falcon para escapar de las naves estelares
-                                                        imperiales, luchar contra los cazas TIE de la Primera Orden
-                                                        en Alas-X de la Resistencia o competir en vainas en
-                                                        Tatooine. También pueden unirse a combates aéreos y
-                                                        derrotar naves capitales como el Super Star Destroyer que
-                                                        se puede abordar y explorar.
-                                                    </p>
-                                                    <br>
-                                                </li>
-                                                <li>
-                                                    <ul>
-                                                        <li>Experiencias de juego inmersivas</li>
-                                                    </ul>
-                                                </li>
-                                                <li>
-                                                    <p>
-                                                        Los jugadores pueden experimentar batallas como nunca
-                                                        antes en un juego de LEGO al unir diferentes ataques para
-                                                        formar cadenas combinadas y defenderse de los ataques que
-                                                        se aproximan. Los nuevos controles y mecánicas de los
-                                                        blaster permite a los jugadores apuntar con precisión y
-                                                        ponerse a cubierto para planear su próximo movimiento o
-                                                        utilizar las habilidades de un Jedi empuñando un sable de
-                                                        luz usando el poder de La Fuerza.
-                                                    </p>
-                                                    <br>
-                                                </li>
-                                                <li>
-                                                    <ul>
-                                                        <li>Habilidades de personajes actualizables</li>
-                                                    </ul>
-                                                </li>
-                                                <li>
-                                                    <p>
-                                                        La exploración recompensa a los jugadores a medida que
-                                                        descubren Kyber Bricks que desbloquean nuevas funciones y
-                                                        habilidades mejoradas en una variedad de clases de
-                                                        personajes, incluidos Jedi, Hero, Dark Side, Villain,
-                                                        Scavenger, Scoundrel, Bounty Hunter, Astromech Droid y
-                                                        Protocol Droid.
-                                                    </p>
-                                                    <br>
-                                                </li>
-                                                <li>
-                                                    <ul>
-                                                        <li>Siempre apto para toda la familia</li>
-                                                    </ul>
-                                                </li>
-                                                <li>
-                                                    <p>
-                                                        Los fanáticos de todas las generaciones pueden jugar juntos
-                                                        y experimentar la saga completa contada con el nuevo y
-                                                        divertido humor de LEGO. El juego es un punto de entrada
-                                                        accesible a la galaxia de Star Wars que es fácil de
-                                                        aprender y jugar para una audiencia más joven mientras aún
-                                                        es lo suficientemente profundo para que cualquiera lo
-                                                        disfrute.
-                                                    </p>
                                                 </li>
                                             </ul>
                                         </div>
@@ -494,31 +372,25 @@
                                         <li class="list-group-item">
                                             <div class="row align-items-center">
                                                 <p class="col-auto" style="font-weight: 600">Modelo:</p>
-                                                <p class="col-auto p-0">ARFG94</p>
+                                                <p class="col-auto p-0">{{ producto.modeloProducto }}</p>
                                             </div>
                                         </li>
                                         <li class="list-group-item">
                                             <div class="row align-items-center">
                                                 <p class="col-auto" style="font-weight: 600">Color:</p>
-                                                <p class="col-auto p-0"> Negro(BK)</p>
-                                            </div>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <div class="row align-items-center">
-                                                <p class="col-auto" style="font-weight: 600">Escala:</p>
-                                                <p class="col-auto p-0">4/4</p>
-                                            </div>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <div class="row align-items-center">
-                                                <p class="col-auto" style="font-weight: 600">Tipo:</p>
-                                                <p class="col-auto p-0">Clasica</p>
+                                                <p class="col-auto p-0">{{ producto.colorProducto }}</p>
                                             </div>
                                         </li>
                                         <li class="list-group-item">
                                             <div class="row align-items-center">
                                                 <p class="col-auto" style="font-weight: 600">Marca:</p>
-                                                <p class="col-auto p-0">Vizcaya</p>
+                                                <p class="col-auto p-0">{{ producto.marca }}</p>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <p class="col-auto" style="font-weight: 600">Fecha de lanzamiento:</p>
+                                                <p class="col-auto p-0">{{ producto.fechaLanProducto }}</p>
                                             </div>
                                         </li>
                                     </ul>
@@ -526,13 +398,17 @@
                                 <div class="tab-pane fade" id="warranty-content" role="tabpanel"
                                      aria-labelledby="warranty-tab">
                                     <p>
-                                        Nuestros instrumentos musicales cuentan con una garantía de 6 meses (para compras realizadas a partir del 24 de marzo de 2023) desde la fecha de compra.
-                                        Encontrarás los detalles específicos de la garantía de cada marca dentro de la caja del producto.
+                                        Nuestros instrumentos musicales cuentan con una garantía de 6 meses (para
+                                        compras realizadas a partir del 24 de marzo de 2023) desde la fecha de compra.
+                                        Encontrarás los detalles específicos de la garantía de cada marca dentro de la
+                                        caja del producto.
                                         <br><br>
                                         Esta garantía cubre únicamente defectos de fabricación.
                                         <br><br>
-                                        El instrumento no debe presentar rayones ni signos evidentes de uso para que la garantía sea válida. Para hacer uso de la garantía con MusicPro,
-                                        necesitarás proporcionar el recibo de compra original y asegurarte de que el producto esté completo y en buenas condiciones.
+                                        El instrumento no debe presentar rayones ni signos evidentes de uso para que la
+                                        garantía sea válida. Para hacer uso de la garantía con MusicPro,
+                                        necesitarás proporcionar el recibo de compra original y asegurarte de que el
+                                        producto esté completo y en buenas condiciones.
                                     </p>
                                 </div>
                             </div>
@@ -593,19 +469,22 @@
                         <h4>Síguenos en</h4>
                     </div>
                     <div class="col-auto">
-                        <a class="btn btn-primary btn-lg btn-floating" style="background-color: #8083ff;" href="https://www.instagram.com/"
+                        <a class="btn btn-primary btn-lg btn-floating" style="background-color: #8083ff;"
+                           href="https://www.instagram.com/"
                            role="button">
                             <i class="fab fa-instagram"></i>
                         </a>
                     </div>
                     <div class="col-auto">
-                        <a class="btn btn-primary btn-lg btn-floating" style="background-color: #8083ff;" href="http://www.facebook.com"
+                        <a class="btn btn-primary btn-lg btn-floating" style="background-color: #8083ff;"
+                           href="http://www.facebook.com"
                            role="button">
                             <i class="fab fa-facebook"></i>
                         </a>
                     </div>
                     <div class="col-auto">
-                        <a class="btn btn-primary btn-lg btn-floating" style="background-color: #8083ff;" href="http://youtube.com"
+                        <a class="btn btn-primary btn-lg btn-floating" style="background-color: #8083ff;"
+                           href="http://youtube.com"
                            role="button">
                             <i class="fab fa-youtube"></i>
                         </a>

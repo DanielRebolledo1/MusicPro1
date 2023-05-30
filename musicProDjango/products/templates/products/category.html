@@ -171,8 +171,10 @@
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         {% if user.is_authenticated %}
                                             {% if user.is_staff %}
-                                                <li><a class="dropdown-item" href="{% url 'administration' %}">Administrar
+                                                <li><a class="dropdown-item" href="{% url 'web_admin' %}">Administrar
                                                     web</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'orders_admin' %}">Administrar
+                                                    órdenes</a></li>
                                             {% endif %}
                                             <li><a class="dropdown-item" href="{% url 'orders' %}">Mis compras</a></li>
                                             <li><a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesión</a>
@@ -268,14 +270,16 @@
                                                     <div class="form-check">
                                                         <input class="form-check-input" type="checkbox" value="1"
                                                                id="PS5Cbx"/>
-                                                        <label class="form-check-label" for="PS5Cbx">Guitarras Acusticas</label>
+                                                        <label class="form-check-label" for="PS5Cbx">Guitarras
+                                                            Acusticas</label>
                                                     </div>
                                                 </li>
                                                 <li class="nav-item">
                                                     <div class="form-check">
                                                         <input class="form-check-input" type="checkbox" value="2"
                                                                id="XBXSCbx"/>
-                                                        <label class="form-check-label" for="XBXSCbx">Set de Baterias</label>
+                                                        <label class="form-check-label" for="XBXSCbx">Set de
+                                                            Baterias</label>
                                                     </div>
                                                 </li>
                                                 <li class="nav-item">

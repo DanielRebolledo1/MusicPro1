@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required, user_passes_test
-from products.models import Producto, Marca, Unidad, Subcategoria
+from products.models import Producto, Marca, Unidad, Subcategoria, Orden
 from .forms import NuevoProductoForm, EditarProductoForm, NuevaMarcaForm, NuevaSubcategoriaForm, \
     NuevaUnidadForm, EditarUnidadForm, DescripcionProductoForm, VideoForm
 
@@ -9,7 +9,7 @@ from .forms import NuevoProductoForm, EditarProductoForm, NuevaMarcaForm, NuevaS
 # Create your views here.
 @login_required
 @user_passes_test(lambda u: u.is_staff, login_url='denied', redirect_field_name=None)
-def administration(request):
+def web_admin(request):
     datos = {
         'nuevoProductoForm': NuevoProductoForm(),
         'editarProductoForm': EditarProductoForm(),
@@ -174,4 +174,45 @@ def administration(request):
             return JsonResponse(unidades, safe=False)
         else:
             return JsonResponse({'error': 'Error en POST: Acción no definida'})
-    return render(request, "staff/administration.html", datos)
+    return render(request, "staff/webAdmin.html", datos)
+
+
+@login_required
+@user_passes_test(lambda u: u.is_staff, login_url='denied', redirect_field_name=None)
+def orders_admin(request):
+    ordenes = []
+    groups = request.user.groups
+
+    try:
+        groups.get(name__iexact="vendedor")
+        rol = "vendedor"
+    except:
+        try:
+            groups.get(name__iexact="bodeguero")
+            rol = "bodeguero"
+        except:
+            try:
+                groups.get(name__iexact="contador")
+                rol = "contador"
+            except:
+                rol = ""
+
+    if rol == "vendedor":
+        ordenesBD = Orden.objects.filter(estado__iexact="Procesada")
+    elif rol == "bodeguero":
+        ordenesBD = Orden.objects.filter(estado__iexact="Aceptada")
+    elif rol == "contador":
+        ordenesBD = Orden.objects.filter(despacho__estado__iexact="En Despacho").filter(pago__estado__iexact="Pendiente")
+    else:
+        ordenesBD = Orden.objects.all()
+
+    for orden in ordenesBD:
+        orden.unidades = Unidad.objects.filter(orden__id__iexact=orden.id)
+        ordenes.append(orden)
+
+    datos = {
+        'ordenes': ordenes,
+        'rol': rol
+    }
+
+    return render(request, "staff/ordersAdmin.html", datos)

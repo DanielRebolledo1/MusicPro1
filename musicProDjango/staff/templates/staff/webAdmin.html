@@ -47,7 +47,7 @@
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 {% if user.is_authenticated %}
                                     {% if user.is_staff %}
-                                        <li><a class="dropdown-item" href="{% url 'administration' %}">Administrar
+                                        <li><a class="dropdown-item" href="{% url 'web_admin' %}">Administrar
                                             web</a></li>
                                     {% endif %}
                                     <li><a class="dropdown-item" href="#">Ajustes</a></li>
@@ -572,7 +572,8 @@
                                                                 <div class="invalid-feedback">Error</div>
                                                                 <div class="valid-feedback">Success</div>
                                                             </div>
-                                                            <p style="color: #595959; font-size: 12px">Ej: https://www.youtube-nocookie.com/embed/123456789</p>
+                                                            <p style="color: #595959; font-size: 12px">Ej:
+                                                                https://www.youtube-nocookie.com/embed/123456789</p>
                                                         </div>
                                                     {% endfor %}
 

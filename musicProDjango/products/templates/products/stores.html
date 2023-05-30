@@ -16,7 +16,8 @@
     <link rel="stylesheet" href="{% static 'products/css/style.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap"
+          rel="stylesheet">
 </head>
 <body class="stores">
 <!--Menu superior-->
@@ -24,7 +25,8 @@
     <div class="container-fluid fixed-top">
         <div class="row align-items-center pe-3 ps-3 gap-2 header-container">
             <div class="col-4 col-md-2 order-2 order-md-1 m-md-0 me-md-auto">
-                <a href="{% url 'home' %}"><img src="{% static 'products/img/MusicPro.png' %}" class="img-fluid header-logo"
+                <a href="{% url 'home' %}"><img src="{% static 'products/img/MusicPro.png' %}"
+                                                class="img-fluid header-logo"
                                                 alt="logo"></a>
             </div>
             <div class="col-auto col-md-auto order-1 order-md-2">
@@ -62,13 +64,17 @@
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 {% if user.is_authenticated %}
                                     {% if user.is_staff %}
-                                        <li><a class="dropdown-item" href="{% url 'administration' %}">Administrar
+                                        <li><a class="dropdown-item" href="{% url 'web_admin' %}">Administrar
                                             web</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'orders_admin' %}">Administrar
+                                            órdenes</a></li>
                                     {% endif %}
                                     <li><a class="dropdown-item" href="{% url 'orders' %}">Mis compras</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesión</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesión</a>
+                                    </li>
                                 {% else %}
-                                    <li><a class="dropdown-item" href="{% url 'login' %}">Iniciar sesión</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'login' %}">Iniciar sesión</a>
+                                    </li>
                                 {% endif %}
                             </ul>
                         </div>
@@ -195,7 +201,8 @@
                 <div class="col">
                     <h1 class="title text-center">Nuestras Tiendas</h1>
                     <h2 class="text-center text-md-start">Información:</h2>
-                    <p class="text-center text-md-start">Cuando nos visites, recuerda seguir y respetar todas las indicaciones de seguridad para
+                    <p class="text-center text-md-start">Cuando nos visites, recuerda seguir y respetar todas las
+                        indicaciones de seguridad para
                         protegernos del Covid-19.</p>
                 </div>
                 <div class="col">
@@ -203,7 +210,8 @@
                         <div class="row g-0 gap-md-3">
                             <div class="col-md-6">
                                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3654.8553670145307!2d-70.40483958442206!3d-23.645350170585694!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x96afd53e14000001%3A0x350ee1bbf69f1561!2sWeplay%20Store!5e0!3m2!1ses!2scl!4v1650863168017!5m2!1ses!2scl"
-                                        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                        allowfullscreen="" loading="lazy"
+                                        referrerpolicy="no-referrer-when-downgrade"></iframe>
                             </div>
                             <div class="col-md">
                                 <div class="card-body">
@@ -228,7 +236,8 @@
                         <div class="row g-0 gap-md-3">
                             <div class="col-md-6">
                                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3330.808778722039!2d-70.57917168156348!3d-33.402152675535774!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9662cf262b00fe53%3A0xe6f43203f4a921d6!2sWeplay!5e0!3m2!1ses!2scl!4v1650861473366!5m2!1ses!2scl"
-                                        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                        allowfullscreen="" loading="lazy"
+                                        referrerpolicy="no-referrer-when-downgrade"></iframe>
                             </div>
                             <div class="col-md">
                                 <div class="card-body">
@@ -253,7 +262,8 @@
                         <div class="row g-0 gap-md-3">
                             <div class="col-md-6">
                                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2813.525803565575!2d-71.54622857037792!3d-33.007337025410926!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9689ddc3da5132d9%3A0x388da1479523f28c!2sWeplay%20Store!5e0!3m2!1ses!2scl!4v1650862721030!5m2!1ses!2scl"
-                                        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                        allowfullscreen="" loading="lazy"
+                                        referrerpolicy="no-referrer-when-downgrade"></iframe>
                             </div>
                             <div class="col-md">
                                 <div class="card-body">
@@ -278,7 +288,8 @@
                         <div class="row g-0 gap-md-3">
                             <div class="col-md-6">
                                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3193.526947777092!2d-73.0656351841352!3d-36.8298540861565!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9669b5dd8e2553f9%3A0x26e21f4c4cdf8419!2sWeplay%20Store!5e0!3m2!1ses!2scl!4v1650863295757!5m2!1ses!2scl"
-                                        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                        allowfullscreen="" loading="lazy"
+                                        referrerpolicy="no-referrer-when-downgrade"></iframe>
                             </div>
                             <div class="col-md">
                                 <div class="card-body">
@@ -303,7 +314,8 @@
                         <div class="row g-0 gap-md-3">
                             <div class="col-md-6">
                                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3112.2945475581682!2d-72.61569518408655!3d-38.73400259502958!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9614d3f6ea59eef5%3A0x922927895048bc2e!2sWeplay%20Store!5e0!3m2!1ses!2scl!4v1650863341579!5m2!1ses!2scl"
-                                        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                        allowfullscreen="" loading="lazy"
+                                        referrerpolicy="no-referrer-when-downgrade"></iframe>
                             </div>
                             <div class="col-md">
                                 <div class="card-body">

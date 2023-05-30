@@ -61,7 +61,7 @@
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         {% if user.is_authenticated %}
                                             {% if user.is_staff %}
-                                                <li><a class="dropdown-item" href="{% url 'administration' %}">Administrar
+                                                <li><a class="dropdown-item" href="{% url 'web_admin' %}">Administrar
                                                     web</a></li>
                                             {% endif %}
                                             <li><a class="dropdown-item" href="#">Ajustes</a></li>
