@@ -433,7 +433,7 @@ if (body.classList.contains('product')) {
         const csrftoken = getCookie('csrftoken');
         const $productGallery = $('#product-gallery');
         const $productThumbsGallery = $('#product-thumbs-gallery');
-        const productId = $('#product-id').html().split(' ')[1];
+        const productId = $('#product-id').html().split(' ').at(-1);
 
         $.ajax({
             url: '/api/videos',
